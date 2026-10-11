@@ -5,8 +5,9 @@
 ## Project Structure
 
 - `backend/`: FastAPI backend service, SQLite database with SQLAlchemy 2.0 models, health/readiness endpoints, and core configuration.
-- `frontend/`: (Planned) Next.js frontend with TypeScript and Tailwind CSS.
+- `frontend/`: Next.js 16 frontend with TypeScript, Tailwind CSS, Turbopack, and live testing telemetry dashboards.
 
 ## Getting Started
 
-Refer to [backend/README.md](file:///D:/veriqo/Veriqo/backend/README.md) for backend environment setup, testing, and execution instructions.
+- Refer to [backend/README.md](backend/README.md) for backend environment setup, testing, and execution instructions.
+- Refer to [frontend/README.md](frontend/README.md) for frontend development server and build instructions.
