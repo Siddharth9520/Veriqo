@@ -1,6 +1,5 @@
-'use client';
-
 import React from 'react';
+import { Icon } from '@/components/ui/Icons';
 
 interface SearchInputProps {
   value: string;
@@ -19,7 +18,7 @@ export function SearchInput({
 }: SearchInputProps) {
   return (
     <div className={`flex items-center bg-[#FFFFFF] border-2 border-[#1A1C1A] px-3 py-1.5 brutal-shadow-sm focus-within:shadow-[3px_3px_0px_#285c45] ${className}`}>
-      <span className="material-symbols-outlined text-[#404943] text-[20px] mr-2">search</span>
+      <Icon name="search" className="w-5 h-5 text-[#404943] mr-2" />
       <input
         type="text"
         value={value}

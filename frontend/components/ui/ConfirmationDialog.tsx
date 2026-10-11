@@ -1,6 +1,5 @@
-'use client';
-
 import React from 'react';
+import { Icon } from '@/components/ui/Icons';
 
 interface ConfirmationDialogProps {
   isOpen: boolean;
@@ -29,13 +28,12 @@ export function ConfirmationDialog({
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#191B19]/70 backdrop-blur-xs">
       <div className="bg-[#FFFFFF] border-2 border-[#1A1C1A] brutal-shadow-lg max-w-md w-full p-6 flex flex-col gap-4 animate-in fade-in zoom-in-95 duration-100">
         <div className="flex items-center gap-2">
-          <span
-            className={`material-symbols-outlined text-[24px] ${
+          <Icon
+            name={isDestructive ? 'warning' : 'help'}
+            className={`w-6 h-6 ${
               isDestructive ? 'text-[#AC3326]' : 'text-[#285C45]'
             }`}
-          >
-            {isDestructive ? 'warning' : 'help'}
-          </span>
+          />
           <h3 className="font-headline font-bold text-[18px] uppercase text-[#1A1C1A]">
             {title}
           </h3>

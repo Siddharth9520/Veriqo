@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { Icon } from '@/components/ui/Icons';
 
 interface EmptyStateProps {
   icon?: string;
@@ -21,7 +22,7 @@ export function EmptyState({
   return (
     <div className="bg-[#FFFFFF] border-2 border-dashed border-[#1A1C1A] p-10 flex flex-col items-center text-center gap-3 brutal-shadow">
       <div className="w-12 h-12 bg-[#F4F4F0] border-2 border-[#1A1C1A] flex items-center justify-center">
-        <span className="material-symbols-outlined text-[28px] text-[#717973]">{icon}</span>
+        <Icon name={icon} className="w-7 h-7 text-[#717973]" />
       </div>
       <h3 className="font-headline font-bold text-[18px] text-[#1A1C1A]">{title}</h3>
       <p className="font-body text-[13px] text-[#404943] max-w-sm">{description}</p>
@@ -55,7 +56,7 @@ export function ErrorState({
 }) {
   return (
     <div className="bg-[#FFDAD6] border-2 border-[#AC3326] p-6 flex flex-col items-center text-center gap-2 brutal-shadow">
-      <span className="material-symbols-outlined text-[32px] text-[#AC3326]">error</span>
+      <Icon name="error" className="w-8 h-8 text-[#AC3326]" />
       <h3 className="font-headline font-bold text-[16px] text-[#AC3326]">Cluster Error</h3>
       <p className="font-mono text-[12px] text-[#404943]">{message}</p>
       {onRetry && (

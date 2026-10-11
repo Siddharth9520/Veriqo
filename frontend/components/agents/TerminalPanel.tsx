@@ -4,6 +4,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { TerminalLog } from '@/lib/types';
 import { initialLogs } from '@/lib/mock-data';
 import { apiClient } from '@/lib/api-client';
+import { Icon } from '@/components/ui/Icons';
 
 export default function TerminalPanel() {
   const [logs, setLogs] = useState<TerminalLog[]>(initialLogs);
@@ -87,7 +88,7 @@ export default function TerminalPanel() {
       {/* Header */}
       <div className="flex items-center justify-between pb-2 border-b border-[#717973]">
         <div className="flex items-center gap-2 text-[#B7EFD0]">
-          <span className="material-symbols-outlined text-[20px]">terminal</span>
+          <Icon name="terminal" className="w-5 h-5" />
           <span className="font-mono text-[12px] uppercase font-bold tracking-wider">
             Autonomous Agent Stream
           </span>
@@ -102,7 +103,7 @@ export default function TerminalPanel() {
             className="text-[#C0C9C1] hover:text-white p-1"
             title="Clear Output"
           >
-            <span className="material-symbols-outlined text-[18px]">delete_sweep</span>
+            <Icon name="delete_sweep" className="w-4 h-4" />
           </button>
         </div>
       </div>

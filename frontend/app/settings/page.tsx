@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { Icon } from '@/components/ui/Icons';
 
 export default function SettingsPage() {
   const [browserEngine, setBrowserEngine] = useState('Headless Chromium v128.0');
@@ -40,7 +41,7 @@ export default function SettingsPage() {
 
       <form onSubmit={handleSave} className="flex flex-col gap-6">
         {/* User Profile Card */}
-        <div className="bg-[#FFFFFF] border-2 border-[#1A1C1A] brutal-shadow-lg p-5 flex flex-col gap-4">
+        <div className="bg-[#FFFFFF] border-2 border-[#1A1C1A] shadow-[4px_4px_0px_#1a1c1a] p-5 flex flex-col gap-4">
           <div className="flex items-center justify-between pb-3 border-b-2 border-[#1A1C1A]">
             <h2 className="font-headline text-[18px] font-bold text-[#1A1C1A]">
               Operator Profile
@@ -51,8 +52,8 @@ export default function SettingsPage() {
           </div>
 
           <div className="flex items-center gap-4">
-            <div className="w-14 h-14 rounded-full bg-[#0B442F] border-2 border-[#1A1C1A] flex items-center justify-center text-white brutal-shadow-sm">
-              <span className="material-symbols-outlined text-[28px]">person</span>
+            <div className="w-14 h-14 rounded-full bg-[#0B442F] border-2 border-[#1A1C1A] flex items-center justify-center text-white shadow-[2px_2px_0px_#1a1c1a] flex-shrink-0">
+              <Icon name="person" className="w-7 h-7 text-white" />
             </div>
             <div className="flex flex-col">
               <span className="font-headline font-bold text-[18px] text-[#1A1C1A]">
@@ -69,12 +70,10 @@ export default function SettingsPage() {
         </div>
 
         {/* Headless Browser Execution Engine */}
-        <div className="bg-[#FFFFFF] border-2 border-[#1A1C1A] brutal-shadow-lg p-5 flex flex-col gap-4 font-mono text-[12px]">
+        <div className="bg-[#FFFFFF] border-2 border-[#1A1C1A] shadow-[4px_4px_0px_#1a1c1a] p-5 flex flex-col gap-4 font-mono text-[12px]">
           <div className="flex items-center justify-between pb-3 border-b-2 border-[#1A1C1A]">
             <div className="flex items-center gap-2">
-              <span className="material-symbols-outlined text-[#285C45] text-[20px]">
-                laptop_chromebook
-              </span>
+              <Icon name="laptop_chromebook" className="w-5 h-5 text-[#285C45] flex-shrink-0" />
               <h2 className="font-headline text-[18px] font-bold text-[#1A1C1A]">
                 Headless Browser &amp; Cluster Engine
               </h2>
@@ -148,12 +147,10 @@ export default function SettingsPage() {
         </div>
 
         {/* Telemetry & Notification Toggles */}
-        <div className="bg-[#FFFFFF] border-2 border-[#1A1C1A] brutal-shadow-lg p-5 flex flex-col gap-4 font-mono text-[12px]">
+        <div className="bg-[#FFFFFF] border-2 border-[#1A1C1A] shadow-[4px_4px_0px_#1a1c1a] p-5 flex flex-col gap-4 font-mono text-[12px]">
           <div className="flex items-center justify-between pb-3 border-b-2 border-[#1A1C1A]">
             <div className="flex items-center gap-2">
-              <span className="material-symbols-outlined text-[#285C45] text-[20px]">
-                notifications_active
-              </span>
+              <Icon name="notifications_active" className="w-5 h-5 text-[#285C45] flex-shrink-0" />
               <h2 className="font-headline text-[18px] font-bold text-[#1A1C1A]">
                 Quality Alerts &amp; Evidence Storage
               </h2>
@@ -194,13 +191,13 @@ export default function SettingsPage() {
           <button
             type="button"
             onClick={() => showToast('Changes discarded.')}
-            className="px-5 py-2.5 bg-[#FFFFFF] border-2 border-[#1A1C1A] font-headline text-[13px] uppercase font-bold brutal-shadow hover:bg-[#EEEEEA] brutal-btn"
+            className="px-5 py-2.5 bg-[#FFFFFF] border-2 border-[#1A1C1A] font-headline text-[13px] uppercase font-bold shadow-[3px_3px_0px_#1a1c1a] hover:bg-[#EEEEEA] brutal-btn"
           >
             Cancel
           </button>
           <button
             type="submit"
-            className="px-5 py-2.5 bg-[#285C45] text-white border-2 border-[#1A1C1A] font-headline text-[13px] uppercase font-bold brutal-shadow hover:bg-[#0B442F] brutal-btn"
+            className="px-5 py-2.5 bg-[#285C45] text-white border-2 border-[#1A1C1A] font-headline text-[13px] uppercase font-bold shadow-[3px_3px_0px_#1a1c1a] hover:bg-[#0B442F] brutal-btn"
           >
             Save Preferences
           </button>
@@ -208,8 +205,8 @@ export default function SettingsPage() {
       </form>
 
       {toastMessage && (
-        <div className="fixed bottom-6 right-6 bg-[#191B19] text-[#F1F1ED] border-2 border-[#1A1C1A] px-4 py-2.5 font-mono text-[12px] brutal-shadow-lg z-50 flex items-center gap-2 animate-in fade-in duration-100">
-          <span className="material-symbols-outlined text-[#B7EFD0] text-[18px]">verified</span>
+        <div className="fixed bottom-6 right-6 bg-[#191B19] text-[#F1F1ED] border-2 border-[#1A1C1A] px-4 py-2.5 font-mono text-[12px] shadow-[4px_4px_0px_#1a1c1a] z-50 flex items-center gap-2 animate-in fade-in duration-100">
+          <Icon name="check" className="w-4 h-4 text-[#B7EFD0]" />
           <span>{toastMessage}</span>
         </div>
       )}

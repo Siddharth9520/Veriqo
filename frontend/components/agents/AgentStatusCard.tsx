@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { swarmAgents } from '@/lib/mock-data';
+import { Icon } from '@/components/ui/Icons';
 
 export default function AgentStatusCard() {
   return (
@@ -9,7 +10,7 @@ export default function AgentStatusCard() {
       {/* Header */}
       <div className="flex items-center justify-between pb-2 border-b border-[#C0C9C1]">
         <div className="flex items-center gap-2">
-          <span className="material-symbols-outlined text-[#285C45] text-[22px]">hub</span>
+          <Icon name="hub" className="w-5 h-5 text-[#285C45]" />
           <span className="font-headline text-[16px] uppercase tracking-wide font-bold">
             Swarm Agent Orchestrator
           </span>
@@ -32,13 +33,12 @@ export default function AgentStatusCard() {
             >
               <div className="flex items-center gap-2.5">
                 <div className="w-8 h-8 bg-[#E2E3DF] border border-[#1A1C1A] flex items-center justify-center">
-                  <span
-                    className={`material-symbols-outlined text-[18px] ${
+                  <Icon
+                    name={agent.icon}
+                    className={`w-4 h-4 ${
                       isExecuting ? 'text-[#AC3326]' : isActive ? 'text-[#285C45]' : 'text-[#717973]'
                     }`}
-                  >
-                    {agent.icon}
-                  </span>
+                  />
                 </div>
                 <div className="flex flex-col">
                   <span className="font-headline text-[14px] font-bold uppercase text-[#1A1C1A]">

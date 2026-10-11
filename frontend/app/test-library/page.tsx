@@ -4,6 +4,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { initialTestLibrary } from '@/lib/mock-data';
 import { TestCase } from '@/lib/types';
 import { apiClient } from '@/lib/api-client';
+import { Icon } from '@/components/ui/Icons';
 
 export default function TestLibraryPage() {
   const [tests, setTests] = useState<TestCase[]>(initialTestLibrary);
@@ -155,7 +156,7 @@ export default function TestLibraryPage() {
           onClick={() => setNewScenarioModalOpen(true)}
           className="bg-[#285C45] text-white border-2 border-[#1A1C1A] px-4 py-2 font-headline text-[13px] uppercase font-bold brutal-shadow hover:bg-[#0B442F] brutal-btn flex items-center gap-1.5 self-start sm:self-auto"
         >
-          <span className="material-symbols-outlined text-[18px]">add</span>
+          <Icon name="add" className="w-4 h-4" />
           <span>+ Create Test Scenario</span>
         </button>
       </div>
@@ -175,7 +176,7 @@ export default function TestLibraryPage() {
       {/* Search and Category Filter Bar */}
       <div className="bg-[#F4F4F0] border-2 border-[#1A1C1A] p-3 brutal-shadow flex flex-col gap-3">
         <div className="flex-1 flex items-center bg-[#FFFFFF] border-2 border-[#1A1C1A] px-3 py-1.5 brutal-shadow-sm">
-          <span className="material-symbols-outlined text-[#404943] text-[18px] mr-2">search</span>
+          <Icon name="search" className="w-4 h-4 text-[#404943] mr-2" />
           <input
             type="text"
             value={searchQuery}
@@ -213,7 +214,7 @@ export default function TestLibraryPage() {
           </div>
         ) : filteredTests.length === 0 ? (
           <div className="col-span-full bg-[#FFFFFF] border-2 border-[#1A1C1A] p-12 text-center flex flex-col items-center gap-2 brutal-shadow">
-            <span className="material-symbols-outlined text-[36px] text-[#717973]">folder_off</span>
+            <Icon name="folder_off" className="w-9 h-9 text-[#717973]" />
             <span className="font-headline font-bold text-[18px]">No test scenarios found</span>
             <span className="font-mono text-[12px] text-[#717973]">Try adjusting your search query or category filter.</span>
           </div>
@@ -275,7 +276,7 @@ export default function TestLibraryPage() {
                       className="bg-[#FFFFFF] text-[#1A1C1A] px-2.5 py-1.5 border border-[#1A1C1A] font-headline text-[11px] uppercase font-bold hover:bg-[#EEEEEA] brutal-shadow-sm brutal-btn"
                       title="Duplicate Test"
                     >
-                      <span className="material-symbols-outlined text-[15px]">content_copy</span>
+                      <Icon name="content_copy" className="w-3.5 h-3.5" />
                     </button>
                   </div>
                 </div>
@@ -285,7 +286,6 @@ export default function TestLibraryPage() {
         )}
       </div>
 
-      {/* New Scenario Modal */}
       {newScenarioModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#191B19]/70 backdrop-blur-xs">
           <div className="bg-[#FFFFFF] border-2 border-[#1A1C1A] brutal-shadow-lg max-w-lg w-full p-6 flex flex-col gap-4 animate-in fade-in zoom-in-95 duration-100">
@@ -294,7 +294,7 @@ export default function TestLibraryPage() {
                 Create Autonomous Test Scenario
               </h2>
               <button onClick={() => setNewScenarioModalOpen(false)}>
-                <span className="material-symbols-outlined text-[20px] text-[#717973]">close</span>
+                <Icon name="close" className="w-5 h-5 text-[#717973]" />
               </button>
             </div>
 
@@ -370,7 +370,7 @@ export default function TestLibraryPage() {
 
       {toastMessage && (
         <div className="fixed bottom-6 right-6 bg-[#191B19] text-[#F1F1ED] border-2 border-[#1A1C1A] px-4 py-2.5 font-mono text-[12px] brutal-shadow-lg z-50 flex items-center gap-2 animate-in fade-in duration-100">
-          <span className="material-symbols-outlined text-[#B7EFD0] text-[18px]">verified</span>
+          <Icon name="verified" className="w-4 h-4 text-[#B7EFD0]" />
           <span>{toastMessage}</span>
         </div>
       )}

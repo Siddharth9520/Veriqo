@@ -6,6 +6,7 @@ import { BugReport } from '@/lib/types';
 import SeverityBadge from '@/components/ui/SeverityBadge';
 import EvidenceModal from '@/components/evidence/EvidenceModal';
 import { apiClient } from '@/lib/api-client';
+import { Icon } from '@/components/ui/Icons';
 
 export default function BugReportsPage() {
   const [bugs, setBugs] = useState<BugReport[]>(initialBugReports);
@@ -126,7 +127,7 @@ export default function BugReportsPage() {
             onClick={() => showToast('Synced defect records with Jira Cloud Project QA-VERIQO.')}
             className="bg-[#FFFFFF] text-[#1A1C1A] border-2 border-[#1A1C1A] px-4 py-2 font-headline text-[13px] uppercase font-bold brutal-shadow hover:bg-[#EEEEEA] brutal-btn flex items-center gap-1.5"
           >
-            <span className="material-symbols-outlined text-[18px]">sync</span>
+            <Icon name="sync" className="w-4 h-4" />
             <span>Sync to Jira</span>
           </button>
         </div>
@@ -147,7 +148,7 @@ export default function BugReportsPage() {
       {/* Filter and Search Console */}
       <div className="bg-[#F4F4F0] border-2 border-[#1A1C1A] p-3 brutal-shadow flex flex-col md:flex-row gap-3 items-stretch md:items-center justify-between">
         <div className="flex-1 flex items-center bg-[#FFFFFF] border-2 border-[#1A1C1A] px-3 py-1.5 brutal-shadow-sm">
-          <span className="material-symbols-outlined text-[#404943] text-[18px] mr-2">search</span>
+          <Icon name="search" className="w-4 h-4 text-[#404943] mr-2" />
           <input
             type="text"
             value={searchQuery}
@@ -187,7 +188,7 @@ export default function BugReportsPage() {
             </div>
           ) : filteredBugs.length === 0 ? (
             <div className="bg-[#FFFFFF] border-2 border-[#1A1C1A] p-12 text-center flex flex-col items-center gap-2 brutal-shadow">
-              <span className="material-symbols-outlined text-[36px] text-[#717973]">verified</span>
+              <Icon name="verified" className="w-9 h-9 text-[#717973]" />
               <span className="font-headline font-bold text-[18px]">No defects match current criteria</span>
               <span className="font-mono text-[12px] text-[#717973]">All assertions passing cleanly under active filters.</span>
             </div>
@@ -228,7 +229,7 @@ export default function BugReportsPage() {
 
                   <div className="mt-3 pt-2 border-t border-[#E2E3DF] flex items-center justify-between font-mono text-[11px] text-[#404943] flex-wrap gap-2">
                     <span className="flex items-center gap-1">
-                      <span className="material-symbols-outlined text-[15px] text-[#285C45]">target</span>
+                      <Icon name="target" className="w-3.5 h-3.5 text-[#285C45]" />
                       Target: <strong className="text-[#1A1C1A]">{bug.targetElement}</strong>
                     </span>
                     <span>Confidence: <strong className="text-[#0B442F]">{bug.reproConfidence}</strong></span>
@@ -308,9 +309,10 @@ export default function BugReportsPage() {
                       : 'bg-[#FD6E5B] text-white hover:bg-[#AC3326]'
                   }`}
                 >
-                  <span className="material-symbols-outlined text-[18px]">
-                    {selectedBug.status === 'VERIFIED' ? 'check_circle' : 'bookmark_add'}
-                  </span>
+                  <Icon
+                    name={selectedBug.status === 'VERIFIED' ? 'check_circle' : 'bookmark_add'}
+                    className="w-4 h-4"
+                  />
                   <span>
                     {pinning
                       ? 'Pinning...'
@@ -324,7 +326,7 @@ export default function BugReportsPage() {
                   onClick={() => setEvidenceModalOpen(true)}
                   className="w-full bg-[#285C45] text-white py-2 border-2 border-[#1A1C1A] font-headline text-[13px] uppercase font-bold text-center brutal-shadow brutal-btn flex items-center justify-center gap-2 hover:bg-[#0B442F]"
                 >
-                  <span className="material-symbols-outlined text-[18px]">visibility</span>
+                  <Icon name="visibility" className="w-4 h-4" />
                   <span>Inspect HTTP &amp; DOM Evidence</span>
                 </button>
 
@@ -332,7 +334,7 @@ export default function BugReportsPage() {
                   onClick={() => setPlaywrightModalOpen(true)}
                   className="w-full bg-[#FFFFFF] text-[#1A1C1A] py-2 border-2 border-[#1A1C1A] font-headline text-[13px] uppercase font-bold text-center brutal-shadow brutal-btn flex items-center justify-center gap-2 hover:bg-[#EEEEEA]"
                 >
-                  <span className="material-symbols-outlined text-[18px]">code</span>
+                  <Icon name="code" className="w-4 h-4" />
                   <span>View Playwright Repro Script</span>
                 </button>
               </div>
@@ -353,13 +355,13 @@ export default function BugReportsPage() {
           <div className="bg-[#FFFFFF] border-2 border-[#1A1C1A] brutal-shadow-lg max-w-2xl w-full p-6 flex flex-col gap-4 animate-in fade-in zoom-in-95 duration-100">
             <div className="flex items-center justify-between pb-2 border-b-2 border-[#1A1C1A]">
               <div className="flex items-center gap-2">
-                <span className="material-symbols-outlined text-[#285C45] text-[20px]">terminal</span>
+                <Icon name="terminal" className="w-5 h-5 text-[#285C45]" />
                 <h3 className="font-headline font-bold text-[18px] uppercase">
                   Synthesized Playwright Repro // {selectedBug.id}
                 </h3>
               </div>
               <button onClick={() => setPlaywrightModalOpen(false)}>
-                <span className="material-symbols-outlined text-[20px] text-[#717973]">close</span>
+                <Icon name="close" className="w-5 h-5 text-[#717973]" />
               </button>
             </div>
 
@@ -405,7 +407,7 @@ test.describe('${selectedBug.id}: ${selectedBug.title}', () => {
                 }}
                 className="bg-[#285C45] text-white px-4 py-1.5 border-2 border-[#1A1C1A] font-headline text-[12px] uppercase font-bold hover:bg-[#0B442F] brutal-shadow-sm brutal-btn flex items-center gap-1.5"
               >
-                <span className="material-symbols-outlined text-[16px]">content_copy</span>
+                <Icon name="content_copy" className="w-4 h-4" />
                 <span>Copy Script</span>
               </button>
             </div>
@@ -415,7 +417,7 @@ test.describe('${selectedBug.id}: ${selectedBug.title}', () => {
 
       {toastMessage && (
         <div className="fixed bottom-6 right-6 bg-[#191B19] text-[#F1F1ED] border-2 border-[#1A1C1A] px-4 py-2.5 font-mono text-[12px] brutal-shadow-lg z-50 flex items-center gap-2 animate-in fade-in duration-100">
-          <span className="material-symbols-outlined text-[#B7EFD0] text-[18px]">verified</span>
+          <Icon name="verified" className="w-4 h-4 text-[#B7EFD0]" />
           <span>{toastMessage}</span>
         </div>
       )}

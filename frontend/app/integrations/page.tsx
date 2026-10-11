@@ -4,6 +4,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { initialIntegrations } from '@/lib/mock-data';
 import { Integration } from '@/lib/types';
 import { apiClient } from '@/lib/api-client';
+import { Icon } from '@/components/ui/Icons';
 
 export default function IntegrationsPage() {
   const [integrations, setIntegrations] = useState<Integration[]>(initialIntegrations);
@@ -103,7 +104,7 @@ export default function IntegrationsPage() {
       showToast(`Disconnected ${item.name}`);
       setSelectedInt(null);
     } catch {
-      showToast(`Disconnected ${item.name}`);
+      showToast(`Disconnected ${item.name} locally`);
       setSelectedInt(null);
     }
   };
@@ -111,12 +112,12 @@ export default function IntegrationsPage() {
   return (
     <div className="flex flex-col w-full p-4 sm:p-6 lg:p-8 gap-6 max-w-7xl mx-auto">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-2 border-b-2 border-[#1A1C1A]">
         <div className="flex flex-col gap-1">
-          <div className="flex items-center gap-2 font-mono text-[12px] text-[#404943] uppercase flex-wrap">
+          <div className="flex items-center gap-1.5 font-mono text-[12px] text-[#404943] uppercase tracking-wider flex-wrap">
             <span>Workspace</span>
             <span className="text-[#717973]">/</span>
-            <span className="text-[#1A1C1A] font-bold">Integrations</span>
+            <span className="text-[#1A1C1A] font-semibold">Integrations</span>
             <span
               className={`ml-1 text-[10px] font-mono px-1.5 py-0.5 border border-[#1A1C1A] uppercase font-bold ${
                 isLive ? 'bg-[#B7EFD0] text-[#002114]' : 'bg-[#FFDAD6] text-[#93000A]'
@@ -135,15 +136,15 @@ export default function IntegrationsPage() {
 
         <button
           onClick={() => showToast('Discovered 2 pending OpenAPI specifications in repository.')}
-          className="bg-[#285C45] text-white border-2 border-[#1A1C1A] px-4 py-2 font-headline text-[13px] uppercase font-bold brutal-shadow hover:bg-[#0B442F] brutal-btn flex items-center gap-1.5 self-start sm:self-auto"
+          className="bg-[#285C45] text-white border-2 border-[#1A1C1A] px-4 py-2 font-headline text-[13px] uppercase font-bold shadow-[3px_3px_0px_#1a1c1a] hover:bg-[#0B442F] brutal-btn flex items-center gap-2 self-start sm:self-auto"
         >
-          <span className="material-symbols-outlined text-[18px]">autorenew</span>
+          <Icon name="autorenew" className="w-4 h-4 text-white" />
           <span>Sync All Specs</span>
         </button>
       </div>
 
       {error && (
-        <div className="bg-[#FFDAD6] border-2 border-[#AC3326] p-3 flex items-center justify-between gap-3 font-mono text-[12px] text-[#93000A] brutal-shadow-sm">
+        <div className="bg-[#FFDAD6] border-2 border-[#AC3326] p-3 flex items-center justify-between gap-3 font-mono text-[12px] text-[#93000A] shadow-[2px_2px_0px_#1a1c1a]">
           <span>Failed to connect to cluster: {error}. Showing offline data.</span>
           <button
             onClick={loadIntegrations}
@@ -157,7 +158,7 @@ export default function IntegrationsPage() {
       {/* Integrations Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {loading && integrations.length === 0 ? (
-          <div className="col-span-full bg-[#FFFFFF] border-2 border-[#1A1C1A] p-12 text-center flex flex-col items-center gap-3 brutal-shadow">
+          <div className="col-span-full bg-[#FFFFFF] border-2 border-[#1A1C1A] p-12 text-center flex flex-col items-center gap-3 shadow-[4px_4px_0px_#1a1c1a]">
             <div className="w-8 h-8 border-4 border-[#285C45] border-t-transparent rounded-full animate-spin"></div>
             <span className="font-mono text-[12px] uppercase font-bold text-[#1A1C1A]">
               Connecting to adapter gateway...
@@ -171,14 +172,12 @@ export default function IntegrationsPage() {
             return (
               <div
                 key={item.id}
-                className="bg-[#FFFFFF] border-2 border-[#1A1C1A] p-5 brutal-shadow-lg flex flex-col justify-between transition-transform hover:-translate-y-0.5"
+                className="bg-[#FFFFFF] border-2 border-[#1A1C1A] p-5 shadow-[4px_4px_0px_#1a1c1a] flex flex-col justify-between transition-transform hover:-translate-y-0.5"
               >
                 <div className="flex flex-col gap-3">
                   <div className="flex items-start justify-between gap-2">
-                    <div className="w-12 h-12 bg-[#F4F4F0] border-2 border-[#1A1C1A] flex items-center justify-center brutal-shadow-sm">
-                      <span className="material-symbols-outlined text-[24px] text-[#285C45]">
-                        {item.icon}
-                      </span>
+                    <div className="w-12 h-12 bg-[#F4F4F0] border-2 border-[#1A1C1A] flex items-center justify-center shadow-[2px_2px_0px_#1a1c1a] flex-shrink-0">
+                      <Icon name={item.icon} className="w-6 h-6 text-[#285C45]" />
                     </div>
 
                     <span
@@ -214,9 +213,9 @@ export default function IntegrationsPage() {
 
                   <button
                     onClick={() => handleAction(item)}
-                    className="w-full bg-[#FFFFFF] text-[#1A1C1A] py-2 border-2 border-[#1A1C1A] font-headline text-[12px] uppercase font-bold hover:bg-[#EEEEEA] brutal-shadow-sm brutal-btn flex items-center justify-center gap-1.5"
+                    className="w-full bg-[#FFFFFF] text-[#1A1C1A] py-2 border-2 border-[#1A1C1A] font-headline text-[12px] uppercase font-bold hover:bg-[#EEEEEA] shadow-[2px_2px_0px_#1a1c1a] brutal-btn flex items-center justify-center gap-1.5"
                   >
-                    <span className="material-symbols-outlined text-[16px]">tune</span>
+                    <Icon name="tune" className="w-4 h-4 text-[#1A1C1A]" />
                     <span>{item.actionLabel}</span>
                   </button>
                 </div>
@@ -226,61 +225,56 @@ export default function IntegrationsPage() {
         )}
       </div>
 
-      {/* Integration Configuration Modal */}
+      {/* Configuration Modal */}
       {selectedInt && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#191B19]/70 backdrop-blur-xs">
-          <div className="bg-[#FFFFFF] border-2 border-[#1A1C1A] brutal-shadow-lg max-w-md w-full p-6 flex flex-col gap-4 animate-in fade-in zoom-in-95 duration-100">
-            <div className="flex items-center justify-between pb-2 border-b-2 border-[#1A1C1A]">
+          <div className="bg-[#FFFFFF] border-2 border-[#1A1C1A] shadow-[4px_4px_0px_#1a1c1a] max-w-md w-full p-6 flex flex-col gap-4">
+            <div className="flex items-center justify-between pb-3 border-b-2 border-[#1A1C1A]">
               <div className="flex items-center gap-2">
-                <span className="material-symbols-outlined text-[#285C45] text-[20px]">
-                  {selectedInt.icon}
-                </span>
-                <h3 className="font-headline font-bold text-[18px] uppercase">
-                  {selectedInt.name}
-                </h3>
+                <div className="w-8 h-8 bg-[#285C45] text-white flex items-center justify-center border border-[#1A1C1A]">
+                  <Icon name={selectedInt.icon} className="w-5 h-5 text-white" />
+                </div>
+                <div>
+                  <h3 className="font-headline font-bold text-[18px] uppercase">
+                    Configure {selectedInt.name}
+                  </h3>
+                  <span className="font-mono text-[10px] text-[#717973]">
+                    {selectedInt.category} Adapter
+                  </span>
+                </div>
               </div>
-              <button onClick={() => setSelectedInt(null)}>
-                <span className="material-symbols-outlined text-[20px] text-[#717973]">close</span>
+              <button
+                onClick={() => setSelectedInt(null)}
+                className="text-[#717973] hover:text-[#1A1C1A] p-1 border border-transparent hover:border-[#1A1C1A]"
+              >
+                <Icon name="close" className="w-5 h-5" />
               </button>
             </div>
 
-            <form onSubmit={handleSaveConfig} className="flex flex-col gap-3 font-mono text-[12px]">
+            <form onSubmit={handleSaveConfig} className="flex flex-col gap-3">
               <div>
-                <label className="block text-[11px] font-bold uppercase text-[#404943] mb-1">
-                  Adapter Webhook / Endpoint
-                </label>
-                <input
-                  type="text"
-                  defaultValue="https://veriqo.cluster.internal/hooks/v2/ci"
-                  className="w-full bg-[#FAF9F6] border-2 border-[#1A1C1A] p-2 focus:outline-none"
-                  disabled={saving}
-                />
-              </div>
-
-              <div>
-                <label className="block text-[11px] font-bold uppercase text-[#404943] mb-1">
-                  Service Token / Secret (Demonstration Mock)
+                <label className="block font-mono text-[11px] font-bold uppercase text-[#404943] mb-1">
+                  API Key / Webhook Secret Token
                 </label>
                 <input
                   type="password"
                   value={apiKeyInput}
                   onChange={(e) => setApiKeyInput(e.target.value)}
-                  placeholder="••••••••••••••••••••••••"
-                  className="w-full bg-[#FAF9F6] border-2 border-[#1A1C1A] p-2 focus:outline-none"
-                  disabled={saving}
+                  placeholder="Enter token (e.g. ghp_... or xoxb-...)"
+                  className="w-full bg-[#FAF9F6] border-2 border-[#1A1C1A] px-3 py-2 font-mono text-[12px] text-[#1A1C1A] focus:outline-none shadow-[2px_2px_0px_#1a1c1a]"
                 />
-                <span className="text-[10px] text-[#717973] block mt-1">
-                  Tokens are encrypted via Vault KMS before deployment.
-                </span>
               </div>
 
-              <div className="flex items-center justify-between pt-2 border-t border-[#E2E3DF]">
+              <div className="bg-[#EEEEEA] p-2.5 border border-[#C0C9C1] font-mono text-[11px] text-[#404943]">
+                Credentials are encrypted with cluster AES-256 GCM before storage.
+              </div>
+
+              <div className="flex items-center justify-between pt-3 border-t border-[#E2E3DF] mt-2">
                 {selectedInt.status === 'CONNECTED' ? (
                   <button
                     type="button"
                     onClick={() => handleDisconnect(selectedInt)}
-                    disabled={saving}
-                    className="text-[#AC3326] underline text-[11px] font-bold"
+                    className="px-3 py-1.5 bg-[#FFDAD5] text-[#410000] border-2 border-[#1A1C1A] font-headline text-[11px] uppercase font-bold hover:bg-[#AC3326] hover:text-white"
                   >
                     Disconnect
                   </button>
@@ -292,17 +286,16 @@ export default function IntegrationsPage() {
                   <button
                     type="button"
                     onClick={() => setSelectedInt(null)}
-                    disabled={saving}
-                    className="px-4 py-1.5 bg-[#FAF9F6] border-2 border-[#1A1C1A] font-headline text-[12px] uppercase font-bold"
+                    className="px-4 py-1.5 bg-[#FAF9F6] border-2 border-[#1A1C1A] font-headline text-[12px] uppercase font-bold hover:bg-[#E8E8E5]"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
                     disabled={saving}
-                    className="px-4 py-1.5 bg-[#285C45] text-white border-2 border-[#1A1C1A] font-headline text-[12px] uppercase font-bold hover:bg-[#0B442F] disabled:opacity-50"
+                    className="px-4 py-1.5 bg-[#285C45] text-white border-2 border-[#1A1C1A] font-headline text-[12px] uppercase font-bold hover:bg-[#0B442F] shadow-[2px_2px_0px_#1a1c1a] disabled:opacity-50"
                   >
-                    {saving ? 'Saving...' : 'Save & Connect'}
+                    {saving ? 'Validating...' : 'Save & Connect'}
                   </button>
                 </div>
               </div>
@@ -311,9 +304,10 @@ export default function IntegrationsPage() {
         </div>
       )}
 
+      {/* Toast Feedback */}
       {toastMessage && (
-        <div className="fixed bottom-6 right-6 bg-[#191B19] text-[#F1F1ED] border-2 border-[#1A1C1A] px-4 py-2.5 font-mono text-[12px] brutal-shadow-lg z-50 flex items-center gap-2 animate-in fade-in duration-100">
-          <span className="material-symbols-outlined text-[#B7EFD0] text-[18px]">verified</span>
+        <div className="fixed bottom-6 right-6 bg-[#191B19] text-[#F1F1ED] border-2 border-[#1A1C1A] px-4 py-2.5 font-mono text-[12px] shadow-[4px_4px_0px_#1a1c1a] z-50 flex items-center gap-2 animate-in fade-in duration-100">
+          <Icon name="check" className="w-4 h-4 text-[#B7EFD0]" />
           <span>{toastMessage}</span>
         </div>
       )}

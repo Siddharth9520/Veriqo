@@ -5,6 +5,7 @@ import { formatDuration } from '@/lib/formatters';
 import { apiClient } from '@/lib/api-client';
 import { TestRun } from '@/lib/types';
 import { activeTestRun } from '@/lib/mock-data';
+import { Icon } from '@/components/ui/Icons';
 
 interface CommandBarProps {
   onScrollToTerminal: () => void;
@@ -165,7 +166,7 @@ export default function CommandBar({
         {actionError && (
           <div className="bg-[#FFDAD6] border-2 border-[#93000A] text-[#93000A] px-3 py-1.5 font-mono text-[12px] flex items-center justify-between brutal-shadow-sm">
             <span className="flex items-center gap-1.5">
-              <span className="material-symbols-outlined text-[16px]">error</span>
+              <Icon name="error" className="w-4 h-4" />
               {actionError}
             </span>
             <button
@@ -216,12 +217,12 @@ export default function CommandBar({
               </div>
               <div className="flex items-center gap-2 text-[#404943] font-mono text-[11px] mt-0.5">
                 <span className="flex items-center gap-1 font-semibold">
-                  <span className="material-symbols-outlined text-[15px] text-[#285C45]">dns</span>
+                  <Icon name="dns" className="w-3.5 h-3.5 text-[#285C45]" />
                   {run.environment}
                 </span>
                 <span className="text-[#717973]">•</span>
                 <span className="flex items-center gap-1">
-                  <span className="material-symbols-outlined text-[15px]">laptop_chromebook</span>
+                  <Icon name="laptop_chromebook" className="w-3.5 h-3.5" />
                   {run.browser}
                 </span>
               </div>
@@ -239,9 +240,7 @@ export default function CommandBar({
                   : 'bg-[#EEEEEA] text-[#1A1C1A] hover:bg-[#E2E3DF]'
               }`}
             >
-              <span className="material-symbols-outlined text-[18px]">
-                {isPaused ? 'play_arrow' : 'pause'}
-              </span>
+              <Icon name={isPaused ? 'play_arrow' : 'pause'} className="w-4 h-4" />
               <span>{isPaused ? 'RESUME RUN' : 'PAUSE RUN'}</span>
             </button>
 
@@ -250,7 +249,7 @@ export default function CommandBar({
               disabled={isAborted || updating}
               className="flex items-center gap-1.5 bg-[#FD6E5B] text-white border-2 border-[#1A1C1A] px-3 py-1.5 font-headline text-[12px] uppercase font-bold brutal-shadow-sm hover:bg-[#AC3326] brutal-btn disabled:opacity-50"
             >
-              <span className="material-symbols-outlined text-[18px]">cancel</span>
+              <Icon name="cancel" className="w-4 h-4" />
               <span>ABORT</span>
             </button>
 
@@ -258,7 +257,7 @@ export default function CommandBar({
               onClick={handleDownloadRealHar}
               className="flex items-center gap-1.5 bg-[#FFFFFF] text-[#1A1C1A] border-2 border-[#1A1C1A] px-3 py-1.5 font-headline text-[12px] uppercase font-semibold brutal-shadow-sm hover:bg-[#F4F4F0] brutal-btn"
             >
-              <span className="material-symbols-outlined text-[18px]">download</span>
+              <Icon name="download" className="w-4 h-4" />
               <span>HAR SNAPSHOT</span>
             </button>
 
@@ -266,7 +265,7 @@ export default function CommandBar({
               onClick={onScrollToTerminal}
               className="flex items-center gap-1.5 bg-[#285C45] text-white border-2 border-[#1A1C1A] px-3 py-1.5 font-headline text-[12px] uppercase font-bold brutal-shadow-sm hover:bg-[#0B442F] brutal-btn"
             >
-              <span className="material-symbols-outlined text-[18px]">terminal</span>
+              <Icon name="terminal" className="w-4 h-4" />
               <span>LIVE AGENT LOG</span>
             </button>
           </div>
@@ -302,7 +301,7 @@ export default function CommandBar({
           <div className="md:col-span-7 flex flex-col gap-1.5">
             <div className="flex justify-between items-center font-mono text-[12px]">
               <span className="uppercase tracking-wider font-bold text-[#1A1C1A] flex items-center gap-1.5">
-                <span className="material-symbols-outlined text-[18px] text-[#285C45]">verified</span>
+                <Icon name="verified" className="w-4 h-4 text-[#285C45]" />
                 Assertions Evaluated: {evaluated} / {total}
               </span>
               <span className="font-bold text-[#0B442F]">{progressPct}% COMPLETE</span>
@@ -329,7 +328,7 @@ export default function CommandBar({
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#191B19]/70 backdrop-blur-xs">
           <div className="bg-[#FFFFFF] border-2 border-[#1A1C1A] brutal-shadow-lg max-w-md w-full p-6 flex flex-col gap-4">
             <div className="flex items-center gap-2 text-[#AC3326]">
-              <span className="material-symbols-outlined text-[24px]">warning</span>
+              <Icon name="warning" className="w-6 h-6" />
               <h3 className="font-headline font-bold text-[18px] uppercase">
                 Abort Active Test Run?
               </h3>

@@ -8,6 +8,7 @@ import StatusBadge from '@/components/ui/StatusBadge';
 import ProgressBar from '@/components/ui/ProgressBar';
 import NewTestRunModal from '@/components/forms/NewTestRunModal';
 import { apiClient } from '@/lib/api-client';
+import { Icon } from '@/components/ui/Icons';
 
 export default function TestRunsPage() {
   const [runs, setRuns] = useState<TestRun[]>(initialTestRuns);
@@ -168,15 +169,15 @@ export default function TestRunsPage() {
 
         <button
           onClick={() => setNewRunModalOpen(true)}
-          className="bg-[#285C45] text-white border-2 border-[#1A1C1A] px-4 py-2 font-headline text-[13px] uppercase font-bold brutal-shadow hover:bg-[#0B442F] brutal-btn flex items-center gap-1.5 self-start sm:self-auto"
+          className="bg-[#285C45] text-white border-2 border-[#1A1C1A] px-4 py-2 font-headline text-[13px] uppercase font-bold shadow-[3px_3px_0px_#1a1c1a] hover:bg-[#0B442F] brutal-btn flex items-center gap-1.5 self-start sm:self-auto"
         >
-          <span className="material-symbols-outlined text-[18px]">add</span>
+          <Icon name="plus" className="w-4 h-4 text-white" />
           <span>+ New Autonomous Run</span>
         </button>
       </div>
 
       {error && (
-        <div className="bg-[#FFDAD6] border-2 border-[#AC3326] p-3 flex items-center justify-between gap-3 font-mono text-[12px] text-[#93000A] brutal-shadow-sm">
+        <div className="bg-[#FFDAD6] border-2 border-[#AC3326] p-3 flex items-center justify-between gap-3 font-mono text-[12px] text-[#93000A] shadow-[2px_2px_0px_#1a1c1a]">
           <span>Failed to connect to cluster: {error}. Showing offline data.</span>
           <button
             onClick={loadRuns}
@@ -188,9 +189,9 @@ export default function TestRunsPage() {
       )}
 
       {/* Filter and Search Bar */}
-      <div className="bg-[#F4F4F0] border-2 border-[#1A1C1A] p-3 brutal-shadow flex flex-col md:flex-row gap-3 items-stretch md:items-center justify-between">
-        <div className="flex-1 flex items-center bg-[#FFFFFF] border-2 border-[#1A1C1A] px-3 py-1.5 brutal-shadow-sm">
-          <span className="material-symbols-outlined text-[#404943] text-[18px] mr-2">search</span>
+      <div className="bg-[#F4F4F0] border-2 border-[#1A1C1A] p-3 shadow-[4px_4px_0px_#1a1c1a] flex flex-col md:flex-row gap-3 items-stretch md:items-center justify-between">
+        <div className="flex-1 flex items-center bg-[#FFFFFF] border-2 border-[#1A1C1A] px-3 py-1.5 shadow-[2px_2px_0px_#1a1c1a]">
+          <Icon name="search" className="w-4 h-4 text-[#404943] mr-2 flex-shrink-0" />
           <input
             type="text"
             value={searchQuery}
@@ -230,7 +231,7 @@ export default function TestRunsPage() {
             </div>
           ) : filteredRuns.length === 0 ? (
             <div className="bg-[#FFFFFF] border-2 border-[#1A1C1A] p-12 text-center flex flex-col items-center gap-2 brutal-shadow">
-              <span className="material-symbols-outlined text-[36px] text-[#717973]">folder_off</span>
+              <Icon name="folder_off" className="w-9 h-9 text-[#717973]" />
               <span className="font-headline font-bold text-[18px]">No test runs found</span>
               <span className="font-mono text-[12px] text-[#717973]">
                 Try adjusting your search query or status filter.
@@ -342,7 +343,7 @@ export default function TestRunsPage() {
                 {selectedRun.criticalDefectId && (
                   <div className="bg-[#FFDAD6] border-2 border-[#AC3326] p-3 flex flex-col gap-1">
                     <div className="flex items-center gap-1.5 text-[#AC3326] font-bold text-[11px] uppercase">
-                      <span className="material-symbols-outlined text-[16px]">warning</span>
+                      <Icon name="warning" className="w-4 h-4" />
                       <span>Critical P0 Defect Flagged</span>
                     </div>
                     <span className="font-headline font-bold text-[13px] text-[#1A1C1A]">
@@ -366,7 +367,7 @@ export default function TestRunsPage() {
                       href="/command-center"
                       className="w-full bg-[#285C45] text-white py-2 border-2 border-[#1A1C1A] font-headline text-[13px] uppercase font-bold text-center brutal-shadow brutal-btn flex items-center justify-center gap-2"
                     >
-                      <span className="material-symbols-outlined text-[18px]">terminal</span>
+                      <Icon name="terminal" className="w-4 h-4" />
                       <span>Attach to Live Command Center</span>
                     </Link>
                     <div className="flex gap-2">
@@ -392,7 +393,7 @@ export default function TestRunsPage() {
                     disabled={actionLoading}
                     className="w-full bg-[#285C45] text-white py-2 border-2 border-[#1A1C1A] font-headline text-[13px] uppercase font-bold text-center brutal-shadow brutal-btn flex items-center justify-center gap-2"
                   >
-                    <span className="material-symbols-outlined text-[18px]">replay</span>
+                    <Icon name="replay" className="w-4 h-4" />
                     <span>Re-Execute Autonomous Suite</span>
                   </button>
                 )}
@@ -401,7 +402,7 @@ export default function TestRunsPage() {
                   onClick={() => handleExportHar(selectedRun)}
                   className="w-full bg-[#FFFFFF] text-[#1A1C1A] py-2 border-2 border-[#1A1C1A] font-headline text-[13px] uppercase font-bold text-center brutal-shadow brutal-btn flex items-center justify-center gap-2 hover:bg-[#EEEEEA]"
                 >
-                  <span className="material-symbols-outlined text-[18px]">download</span>
+                  <Icon name="download" className="w-4 h-4" />
                   <span>Export Real HAR &amp; CDP Artifacts</span>
                 </button>
               </div>
@@ -424,7 +425,7 @@ export default function TestRunsPage() {
 
       {toastMessage && (
         <div className="fixed bottom-6 right-6 bg-[#191B19] text-[#F1F1ED] border-2 border-[#1A1C1A] px-4 py-2.5 font-mono text-[12px] brutal-shadow-lg z-50 flex items-center gap-2 animate-in fade-in duration-100">
-          <span className="material-symbols-outlined text-[#B7EFD0] text-[18px]">verified</span>
+          <Icon name="verified" className="w-4 h-4 text-[#B7EFD0]" />
           <span>{toastMessage}</span>
         </div>
       )}

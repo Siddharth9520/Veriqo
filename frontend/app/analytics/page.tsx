@@ -4,6 +4,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import MetricCard from '@/components/ui/MetricCard';
 import { apiClient } from '@/lib/api-client';
 import { AnalyticsData } from '@/lib/types';
+import { Icon } from '@/components/ui/Icons';
 
 const defaultAnalytics: AnalyticsData = {
   passRate: 96.2,
@@ -338,7 +339,7 @@ export default function AnalyticsPage() {
 
       {toastMessage && (
         <div className="fixed bottom-6 right-6 bg-[#191B19] text-[#F1F1ED] border-2 border-[#1A1C1A] px-4 py-2.5 font-mono text-[12px] brutal-shadow-lg z-50 flex items-center gap-2 animate-in fade-in duration-100">
-          <span className="material-symbols-outlined text-[#B7EFD0] text-[18px]">verified</span>
+          <Icon name="verified" className="w-4 h-4 text-[#B7EFD0]" />
           <span>{toastMessage}</span>
         </div>
       )}

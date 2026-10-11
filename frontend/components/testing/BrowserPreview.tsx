@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { Icon } from '@/components/ui/Icons';
 
 interface BrowserPreviewProps {
   onInspectEvidence?: () => void;
@@ -27,16 +28,16 @@ export default function BrowserPreview({ onInspectEvidence }: BrowserPreviewProp
             </div>
 
             <div className="bg-[#FFFFFF] border border-[#1A1C1A] px-3 py-1 flex items-center gap-2 brutal-shadow-sm">
-              <span className="material-symbols-outlined text-[#285C45] text-[16px]">shopping_cart</span>
+              <Icon name="shopping_cart" className="w-4 h-4 text-[#285C45]" />
               <span className="font-mono text-[12px] text-[#1A1C1A] font-semibold truncate max-w-[200px]">
                 Checkout · Payment Finalize
               </span>
-              <span className="material-symbols-outlined text-[#717973] text-[14px]">close</span>
+              <Icon name="close" className="w-3.5 h-3.5 text-[#717973]" />
             </div>
           </div>
 
           <div className="flex items-center gap-1.5 font-mono text-[11px] text-[#1A1C1A] font-semibold bg-[#EEEEEA] border border-[#1A1C1A] px-2 py-0.5">
-            <span className="material-symbols-outlined text-[15px] text-[#285C45]">tab</span>
+            <Icon name="tab" className="w-3.5 h-3.5 text-[#285C45]" />
             <span>INSPECTOR ATTACHED</span>
           </div>
         </div>
@@ -44,7 +45,7 @@ export default function BrowserPreview({ onInspectEvidence }: BrowserPreviewProp
         {/* Address & Status Bar */}
         <div className="bg-[#F4F4F0] border-b-2 border-[#1A1C1A] px-4 py-2 flex flex-wrap items-center justify-between gap-2">
           <div className="flex items-center gap-2 flex-1 min-w-[240px] bg-[#FFFFFF] border border-[#1A1C1A] px-3 py-1 shadow-inner">
-            <span className="material-symbols-outlined text-[#285C45] text-[16px]">lock</span>
+            <Icon name="lock" className="w-4 h-4 text-[#285C45]" />
             <span className="font-mono text-[12px] text-[#1A1C1A] select-all truncate">
               https://shop-flow-staging.internal.app/checkout
             </span>
@@ -92,11 +93,11 @@ export default function BrowserPreview({ onInspectEvidence }: BrowserPreviewProp
               <label className="font-mono text-[11px] uppercase font-bold text-[#404943]">Payment Method</label>
               <div className="grid grid-cols-2 gap-2">
                 <div className="bg-[#E8E8E5] border border-[#1A1C1A] p-2 flex items-center gap-2 brutal-shadow-sm">
-                  <span className="material-symbols-outlined text-[#285C45] text-[18px]">credit_card</span>
+                  <Icon name="credit_card" className="w-4 h-4 text-[#285C45]" />
                   <span className="font-mono text-[12px] font-bold">Credit Card</span>
                 </div>
                 <div className="bg-[#F4F4F0] border border-[#C0C9C1] p-2 flex items-center gap-2 opacity-60">
-                  <span className="material-symbols-outlined text-[18px]">account_balance_wallet</span>
+                  <Icon name="account_balance_wallet" className="w-4 h-4" />
                   <span className="font-mono text-[12px]">Digital Wallet</span>
                 </div>
               </div>
@@ -115,7 +116,7 @@ export default function BrowserPreview({ onInspectEvidence }: BrowserPreviewProp
             <div className="relative mt-2">
               <div className="absolute -inset-2 bg-[#FD6E5B]/10 border-2 border-[#FD6E5B] pointer-events-none z-20 flex flex-col justify-between">
                 <div className="self-start -mt-5 bg-[#FD6E5B] text-white border border-[#1A1C1A] px-2 py-0.5 font-mono text-[10px] font-bold brutal-shadow-sm uppercase flex items-center gap-1">
-                  <span className="material-symbols-outlined text-[13px]">target</span>
+                  <Icon name="target" className="w-3.5 h-3.5" />
                   [TARGET BOUND: #submit-payment-btn] CONFIDENCE: 99.4%
                 </div>
                 <div className="self-end -mb-5 bg-[#FFDF9B] text-[#4C3800] border border-[#1A1C1A] px-2 py-0.5 font-mono text-[10px] font-bold brutal-shadow-sm uppercase">
@@ -132,9 +133,7 @@ export default function BrowserPreview({ onInspectEvidence }: BrowserPreviewProp
                     : 'bg-[#285C45] text-white hover:bg-[#0B442F]'
                 }`}
               >
-                <span className="material-symbols-outlined text-[18px]">
-                  {simulatedClick ? 'bolt' : 'lock'}
-                </span>
+                <Icon name={simulatedClick ? 'bolt' : 'lock'} className="w-4 h-4" />
                 <span>
                   {simulatedClick
                     ? '⚡ CONCURRENT 2x POST DISPATCHED (Δ 12ms)'
@@ -146,9 +145,7 @@ export default function BrowserPreview({ onInspectEvidence }: BrowserPreviewProp
             {/* Simulated Agent Pointer Overlay */}
             <div className="absolute top-[280px] right-[60px] z-30 pointer-events-none flex flex-col items-start transition-all duration-300 transform animate-bounce">
               <div className="flex items-center">
-                <span className="material-symbols-outlined text-[#FD6E5B] text-[28px] drop-shadow-md">
-                  near_me
-                </span>
+                <Icon name="near_me" className="w-7 h-7 text-[#FD6E5B] drop-shadow-md" />
               </div>
               <div className="bg-[#191B19] text-[#F1F1ED] border border-[#717973] font-mono font-semibold text-[11px] px-2 py-1 brutal-shadow-sm whitespace-nowrap">
                 Agent Action: Trigger double-click race condition (dt: 12ms)
@@ -159,7 +156,7 @@ export default function BrowserPreview({ onInspectEvidence }: BrowserPreviewProp
           {/* Fuzz Payload Banner */}
           <div className="w-full flex justify-center mt-4">
             <div className="bg-[#191B19] text-[#F1F1ED] border-2 border-[#1A1C1A] px-4 py-1.5 flex items-center gap-2 brutal-shadow font-mono text-[11px]">
-              <span className="material-symbols-outlined text-[#FFDF9B] text-[16px]">memory</span>
+              <Icon name="memory" className="w-4 h-4 text-[#FFDF9B]" />
               <span>Simulating payload: Tokenized Visa 4242-xxxx-xxxx-4242 · Nonce: _rnd_7f29a</span>
               <span className="w-2 h-2 rounded-full bg-[#B7EFD0] inline-block animate-ping"></span>
             </div>
@@ -170,15 +167,15 @@ export default function BrowserPreview({ onInspectEvidence }: BrowserPreviewProp
         <div className="bg-[#E2E3DF] border-t-2 border-[#1A1C1A] px-4 py-2 flex flex-wrap items-center justify-between gap-2 font-mono text-[12px] text-[#1A1C1A]">
           <div className="flex items-center gap-4 flex-wrap">
             <span className="flex items-center gap-1">
-              <span className="material-symbols-outlined text-[16px] text-[#717973]">account_tree</span>
+              <Icon name="account_tree" className="w-4 h-4 text-[#717973]" />
               <span>DOM Nodes: <strong className="font-bold">1,420 parsed</strong></span>
             </span>
             <span className="flex items-center gap-1">
-              <span className="material-symbols-outlined text-[16px] text-[#285C45]">speed</span>
+              <Icon name="speed" className="w-4 h-4 text-[#285C45]" />
               <span>Latency: <strong className="font-bold">34ms</strong></span>
             </span>
             <span className="flex items-center gap-1">
-              <span className="material-symbols-outlined text-[16px] text-[#717973]">cookie</span>
+              <Icon name="cookie" className="w-4 h-4 text-[#717973]" />
               <span>Active Cookies: <strong className="font-bold">4</strong></span>
             </span>
           </div>
