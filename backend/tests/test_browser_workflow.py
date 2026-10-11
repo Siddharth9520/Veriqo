@@ -1,5 +1,6 @@
 """Automated tests for real Playwright browser execution and evidence capture."""
 
+from unittest.mock import patch
 from fastapi.testclient import TestClient
 
 
@@ -87,8 +88,9 @@ def test_real_browser_journey_deliberate_assertion_failure(
     assert run_resp.status_code == 201
     run_data = run_resp.json()
 
-    assert run_data["status"] in ("failed", "timed_out")
+    assert run_data["status"] == "failed"
     assert run_data["error_message"] is not None
+    assert "assertion failed" in run_data["error_message"].lower()
     assert len(run_data["action_results"]) == 2
     assert run_data["action_results"][0]["status"] == "passed"
     assert run_data["action_results"][1]["status"] == "failed"
@@ -131,3 +133,49 @@ def test_evidence_download_path_traversal_blocked(client: TestClient):
     # Attempting to traverse out using ..
     resp = client.get("/api/v1/test-runs/1/evidence/../../etc/passwd")
     assert resp.status_code in (403, 404)
+
+
+def test_distinguish_assertion_failure_from_timeout(
+    client: TestClient, local_test_server: str
+):
+    """Regression test ensuring assertion conditions produce status='failed' while operational timeouts produce 'timed_out'."""
+    app_resp = client.post(
+        "/api/v1/target-apps",
+        json={"name": "Classification App", "url": local_test_server},
+    )
+    target_app_id = app_resp.json()["id"]
+
+    # 1. Assertion failure (missing text) -> Must be 'failed'
+    assert_fail_payload = {
+        "target_app_id": target_app_id,
+        "journey": {
+            "name": "Assertion Missing Text",
+            "actions": [
+                {"type": "navigate", "url": "/"},
+                {"type": "assert_text_visible", "text": "GUARANTEED_ABSENT_DOM_TEXT"},
+            ],
+        },
+    }
+    resp1 = client.post("/api/v1/test-runs", json=assert_fail_payload)
+    assert resp1.status_code == 201
+    data1 = resp1.json()
+    assert data1["status"] == "failed"
+    assert "assertion failed" in data1["error_message"].lower()
+
+    # 2. Operational timeout (e.g. actionability timeout on click) -> Must be 'timed_out'
+    with patch("app.services.browser.settings.DEFAULT_ACTION_TIMEOUT_MS", 300):
+        timeout_payload = {
+            "target_app_id": target_app_id,
+            "journey": {
+                "name": "Click Timeout Action",
+                "actions": [
+                    {"type": "navigate", "url": "/"},
+                    {"type": "click", "selector": "#non-existent-button-to-click"},
+                ],
+            },
+        }
+        resp2 = client.post("/api/v1/test-runs", json=timeout_payload)
+        assert resp2.status_code == 201
+        data2 = resp2.json()
+        assert data2["status"] == "timed_out"
+        assert "timeout during action" in data2["error_message"].lower()

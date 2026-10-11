@@ -1,4 +1,5 @@
 from fastapi import APIRouter
+from app.api.v1.certificates import router as certificates_router
 from app.api.v1.defects import router as defects_router
 from app.api.v1.regression_journeys import router as regression_router
 from app.api.v1.replays import router as replays_router
@@ -13,6 +14,8 @@ api_router.include_router(test_runs_router)
 api_router.include_router(regression_router)
 api_router.include_router(defects_router)
 api_router.include_router(replays_router)
+api_router.include_router(certificates_router)
+
 
 
 @api_router.get("/info", summary="API v1 Information")

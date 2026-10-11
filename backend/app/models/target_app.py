@@ -8,6 +8,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.db.base import Base
 
 if TYPE_CHECKING:
+    from app.models.certificate import Certificate
     from app.models.regression_journey import RegressionJourney
     from app.models.test_run import TestRun
 
@@ -41,6 +42,11 @@ class TargetApp(Base):
     )
     regression_journeys: Mapped[List["RegressionJourney"]] = relationship(
         "RegressionJourney",
+        back_populates="target_app",
+        cascade="all, delete-orphan",
+    )
+    certificates: Mapped[List["Certificate"]] = relationship(
+        "Certificate",
         back_populates="target_app",
         cascade="all, delete-orphan",
     )

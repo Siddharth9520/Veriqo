@@ -1,5 +1,11 @@
 """Schemas package registry."""
 
+from app.schemas.certificate import (
+    CertificateCreateRequest,
+    CertificateRead,
+    CertificateVerifyRequest,
+    CertificateVerifyResponse,
+)
 from app.schemas.defect import DefectBase, DefectCreate, DefectRead
 from app.schemas.health import HealthResponse, ReadinessResponse
 from app.schemas.journey import (
@@ -24,6 +30,9 @@ from app.schemas.replay_attempt import (
 )
 from app.schemas.target_app import TargetAppBase, TargetAppCreate, TargetAppRead
 from app.schemas.test_run import TestRunBase, TestRunCreate, TestRunRead
+
+from app.schemas.fix_prompt import FixPromptResponse
+from app.schemas.show_me import ShowMeResponse
 
 __all__ = [
     "HealthResponse",
@@ -51,4 +60,10 @@ __all__ = [
     "ReplayOutcome",
     "ReplayAttemptCreate",
     "ReplayAttemptRead",
+    "CertificateCreateRequest",
+    "CertificateRead",
+    "CertificateVerifyRequest",
+    "CertificateVerifyResponse",
+    "ShowMeResponse",
+    "FixPromptResponse",
 ]

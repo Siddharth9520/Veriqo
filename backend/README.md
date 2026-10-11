@@ -147,6 +147,21 @@ Interactive documentation:
   ```
 - `GET /api/v1/defects`: List recorded defects.
 - `GET /api/v1/defects/{id}`: Get defect details.
+- `PATCH /api/v1/defects/{id}`: Partially update mutable defect fields.
+
+  Permitted fields: `severity`, `status`, `description`, `reproduction_steps`, `expected_behavior`.
+
+  Immutable fields (`id`, `test_run_id`, `title`) cannot be changed. Unknown fields are rejected with HTTP 422.
+  An empty request body is valid and returns the unchanged defect (HTTP 200).
+
+  **Allowed `severity` values**: `CRITICAL`, `HIGH`, `MEDIUM`, `LOW`.
+
+  **Allowed `status` values via API**: `OPEN`, `IN_PROGRESS`, `CLOSED`, `WONT_FIX`.
+  `VERIFIED` is not an allowed caller-set value — it is set exclusively by BlindReplay when a replay outcome is `CONFIRMED`.
+  Already-`VERIFIED` defects cannot have their status mutated via PATCH (HTTP 409).
+
+- `GET /api/v1/defects/{id}/show-me`: **Show Me Mode** — Explains a reported defect using actual stored evidence and replay outcomes. Returns defect context, verified/missing screenshots, execution logs, and diagnostic explanations. Strictly read-only; redacts secrets.
+- `GET /api/v1/defects/{id}/fix-prompt`: **Fix Prompt Export** — Generates a structured, developer-ready prompt in copyable Markdown format, including verified facts, reproduction steps, evidence references, and BlindReplay trust boundary details. Strictly read-only; redacts secrets.
 
 ### 5. BlindReplay (Independent Defect Verification)
 BlindReplay independently verifies reported defects using **only**:
@@ -169,6 +184,31 @@ The replay runs in a **fresh browser context** without original scripts, selecto
 - `FAILED`: Execution could not complete due to an infrastructure or process error.
 - `TIMED_OUT`: The replay exceeded its execution timeout limit.
 
+### 6. Deterministic Scoring & QA Certificates
+Deterministic scoring and verifiable QA certificates provide reproducible quality measurement without subjective LLM evaluations.
+
+- `POST /api/v1/target-apps/{app_id}/certificates`: Issue a deterministic QA Certificate for evaluated terminal runs.
+- `GET /api/v1/target-apps/{app_id}/certificates`: List issued certificates for a target application.
+- `GET /api/v1/certificates/{cert_id}`: Retrieve certificate strictly by public certificate ID (prevents sequential integer primary key scraping).
+- `POST /api/v1/certificates/verify`: Dual-mode verification of certificate payload integrity and mathematical consistency.
+
+#### Scoring Policy & Penalties
+- **Base Score**: 50% journey pass rate + 50% evaluated assertion pass rate (or 100% journey pass rate if no assertions were evaluated). Unreached assertions are excluded.
+- **Defect Penalties**: Deduplicated by normalized `(title, reproduction_steps)` and penalized once:
+  - Verified Finding (`CONFIRMED` replay): Critical = 35.0, High = 20.0, Medium = 10.0, Low = 5.0 points.
+  - Non-Verified Finding (no `CONFIRMED` replay): 50% of the corresponding severity penalty.
+- **Evidence Audit Deductions**: 5.0 points deducted per missing expected evidence artifact.
+- **Hard Caps**:
+  - Assertionless suite: capped at 75 points (Grade C).
+  - Verified High defect: capped at 65 points (Grade D).
+  - Verified Critical defect: capped at 40 points (Grade F).
+- **Rounding & Grades**: Unrounded intermediate values; final score half-up rounded (`floor(score + 0.5)`). Pure numerical grade bands: A (90–100), B (80–89), C (70–79), D (60–69), F (0–59), and `UNTESTED` for 0 eligible runs.
+
+#### Verification Trust Boundaries
+1. **Self-Contained Verification (`self_contained`)**: Re-executes the pure mathematical scoring formula from immutable inputs and verifies canonical SHA-256 integrity without trusting database records or caller summaries.
+2. **Database-Backed Verification (`database_backed`)**: Compares submitted canonical JSON and hash against stored database records. `system_matched` is reported independently of mathematical consistency (detecting corrupted stored records).
+3. **Issuer Authentication**: `issuer_verified` remains strictly `false`. An unkeyed SHA-256 hash guarantees data integrity against accidental tampering, but does not provide digital signatures, PKI, or public non-repudiation.
+
 ## Security & Reliability Design
 
 1. **Origin Restriction**: Browser navigation is strictly constrained to the registered target application origin (`scheme://netloc`). Any attempt to navigate outside the allowed origin is blocked and recorded as a failure.
@@ -176,6 +216,45 @@ The replay runs in a **fresh browser context** without original scripts, selecto
 3. **Strict Independence Contract**: BlindReplay receives only high-level human instructions, user-facing role locators, and expected outcomes.
 4. **Resource Lifecycle**: Browser pages, contexts, and instances are guaranteed to be closed via `try/finally` blocks even upon unexpected step failures or timeouts.
 5. **Path Traversal Protection**: Evidence retrieval sanitizes paths and asserts relative containment within `evidence/` before serving files.
+
+## Local Demo Target Fixture
+
+Veriqo provides an in-tree, reproducible local web target fixture (`app.demo_fixture`) that requires no external network calls, credentials, or LLMs. It binds strictly to `127.0.0.1` (loopback only) and serves:
+- `/` — Healthy home page (`#welcome-heading`, `#nav-healthy`, `#nav-buggy`)
+- `/order` — Healthy checkout flow (updates `#order-status` to `"Order Confirmed: #1001"`)
+- `/buggy-order` — Known failing scenario (updates `#order-status` to `"Internal Server Error: 500"`, displaying `#error-badge`)
+
+### Startup & Shutdown
+
+```powershell
+# Start local fixture on port 8080 (loopback only)
+python -m app.demo_fixture --port 8080
+
+# To stop: Press Ctrl+C in the terminal.
+```
+
+## Controlled Functional Benchmark
+
+To execute the 6 deterministic verification scenarios against local targets:
+
+```powershell
+python -m app.benchmark
+```
+
+## Safe Demo Data Reset
+
+To reset disposable demo records without touching ordinary user applications or database schemas:
+
+```powershell
+# Resets only demo records (target apps matching '[Demo]', 'Demo', or localhost test origin)
+python -m app.reset_demo --confirm
+
+# Reset a single target app by ID
+python -m app.reset_demo --confirm --app-id <TARGET_APP_ID>
+
+# Full database wipe (requires explicit confirmation flags)
+python -m app.reset_demo --confirm --all --force
+```
 
 ## Running Automated Tests
 

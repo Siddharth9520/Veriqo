@@ -66,3 +66,9 @@ def test_safe_url_origin_validation():
     with pytest.raises(ValueError) as exc_info:
         resolve_safe_target_url(target_origin, "https://malicious.example.com/evil")
     assert "disallowed" in str(exc_info.value).lower()
+
+    # Disallowed dangerous non-HTTP schemes
+    for dangerous in ["javascript:alert(1)", "file:///etc/passwd", "data:text/html;base64,PHNjcmlwdD5hbGVydCgxKTwvc2NyaXB0Pg=="]:
+        with pytest.raises(ValueError) as exc_info:
+            resolve_safe_target_url(target_origin, dangerous)
+        assert "disallowed" in str(exc_info.value).lower()

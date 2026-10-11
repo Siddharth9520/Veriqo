@@ -36,25 +36,27 @@ def resolve_safe_target_url(target_app_url: str, nav_url: str) -> str:
 
     Relative paths are resolved against target_app_url.
     Absolute URLs must share the exact scheme and netloc (origin).
+    Dangerous schemes (javascript, file, data, etc.) are strictly disallowed.
     """
     parsed_target = urlparse(target_app_url)
     target_origin = f"{parsed_target.scheme}://{parsed_target.netloc}"
 
     # Handle relative or empty path
     if not nav_url or nav_url.startswith("/") or not urlparse(nav_url).netloc:
-        return urljoin(target_app_url, nav_url)
+        resolved = urljoin(target_app_url, nav_url)
+    else:
+        resolved = nav_url
 
-    # Handle absolute URL
-    parsed_nav = urlparse(nav_url)
-    nav_origin = f"{parsed_nav.scheme}://{parsed_nav.netloc}"
+    parsed_resolved = urlparse(resolved)
+    resolved_origin = f"{parsed_resolved.scheme}://{parsed_resolved.netloc}"
 
-    if nav_origin != target_origin:
+    if parsed_resolved.scheme not in ("http", "https") or resolved_origin != target_origin:
         raise ValueError(
-            f"Security violation: Navigation to origin '{nav_origin}' is disallowed. "
-            f"Allowed target origin is '{target_origin}'."
+            f"Security violation: Navigation to '{resolved}' is disallowed. "
+            f"Allowed target origin is '{target_origin}' with HTTP or HTTPS scheme."
         )
 
-    return nav_url
+    return resolved
 
 
 async def execute_browser_journey(
@@ -130,30 +132,41 @@ async def execute_browser_journey(
                         )
 
                     elif action_type == ActionType.ASSERT_TEXT_VISIBLE:
-                        if action.selector:
+                        try:
+                            if action.selector:
+                                locator = page.locator(action.selector)
+                                await locator.wait_for(
+                                    state="visible",
+                                    timeout=settings.DEFAULT_ACTION_TIMEOUT_MS,
+                                )
+                                content = await locator.inner_text()
+                                if action.text not in content:
+                                    raise AssertionError(
+                                        f"Expected text '{action.text}' not found in selector '{action.selector}'. Content: '{content}'"
+                                    )
+                            else:
+                                locator = page.get_by_text(action.text)
+                                await locator.first.wait_for(
+                                    state="visible",
+                                    timeout=settings.DEFAULT_ACTION_TIMEOUT_MS,
+                                )
+                        except PlaywrightTimeoutError:
+                            target_desc = f"'{action.text}'" + (f" in selector '{action.selector}'" if action.selector else "")
+                            raise AssertionError(
+                                f"Assertion failed: Expected visible text {target_desc} was not found within {settings.DEFAULT_ACTION_TIMEOUT_MS}ms"
+                            )
+
+                    elif action_type == ActionType.ASSERT_ELEMENT_VISIBLE:
+                        try:
                             locator = page.locator(action.selector)
                             await locator.wait_for(
                                 state="visible",
                                 timeout=settings.DEFAULT_ACTION_TIMEOUT_MS,
                             )
-                            content = await locator.inner_text()
-                            if action.text not in content:
-                                raise AssertionError(
-                                    f"Expected text '{action.text}' not found in selector '{action.selector}'. Content: '{content}'"
-                                )
-                        else:
-                            locator = page.get_by_text(action.text)
-                            await locator.first.wait_for(
-                                state="visible",
-                                timeout=settings.DEFAULT_ACTION_TIMEOUT_MS,
+                        except PlaywrightTimeoutError:
+                            raise AssertionError(
+                                f"Assertion failed: Expected element '{action.selector}' was not visible within {settings.DEFAULT_ACTION_TIMEOUT_MS}ms"
                             )
-
-                    elif action_type == ActionType.ASSERT_ELEMENT_VISIBLE:
-                        locator = page.locator(action.selector)
-                        await locator.wait_for(
-                            state="visible",
-                            timeout=settings.DEFAULT_ACTION_TIMEOUT_MS,
-                        )
 
                     else:
                         raise ValueError(f"Unsupported action type: {action_type}")
@@ -163,6 +176,10 @@ async def execute_browser_journey(
                 except PlaywrightTimeoutError as timeout_err:
                     action_error = f"Timeout during action {idx} ({action_type}): {str(timeout_err)}"
                     overall_status = "timed_out"
+                    final_error = action_error
+                except AssertionError as assert_err:
+                    action_error = str(assert_err)
+                    overall_status = "failed"
                     final_error = action_error
                 except Exception as step_exc:
                     action_error = f"Error during action {idx} ({action_type}): {str(step_exc)}"
