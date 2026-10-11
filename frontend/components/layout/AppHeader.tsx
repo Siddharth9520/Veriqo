@@ -8,6 +8,7 @@ import GlobalSearchModal from '@/components/forms/GlobalSearchModal';
 import AppSidebar from './AppSidebar';
 import { apiClient } from '@/lib/api-client';
 import { ClusterHealth } from '@/lib/types';
+import { Icon } from '@/components/ui/Icons';
 
 export default function AppHeader() {
   const pathname = usePathname();
@@ -65,7 +66,11 @@ export default function AppHeader() {
             className="md:hidden flex items-center justify-center p-1.5 border-2 border-[#1A1C1A] bg-[#FAF9F6] text-[#1A1C1A] brutal-shadow-sm hover:bg-[#E8E8E5]"
             aria-label="Open Navigation Menu"
           >
-            <span className="material-symbols-outlined text-[20px]">menu</span>
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+              <line x1="3" y1="12" x2="21" y2="12" />
+              <line x1="3" y1="6" x2="21" y2="6" />
+              <line x1="3" y1="18" x2="21" y2="18" />
+            </svg>
           </button>
 
           <div className="flex items-center gap-2 font-mono text-[13px] uppercase">
@@ -74,7 +79,7 @@ export default function AppHeader() {
             <span className="text-[#1A1C1A] font-bold">{getRouteTitle()}</span>
           </div>
 
-          <div className="hidden lg:flex items-center gap-1.5 bg-[#EEEEEA] border border-[#1A1C1A] px-2.5 py-0.5 brutal-shadow-sm">
+          <div className="hidden lg:flex items-center gap-1.5 bg-[#EEEEEA] border border-[#1A1C1A] px-2.5 py-0.5 shadow-[2px_2px_0px_#1a1c1a]">
             <span
               className={`w-2 h-2 rounded-full inline-block ${
                 isLive ? 'bg-[#285C45] animate-pulse' : 'bg-[#FD6E5B]'
@@ -95,9 +100,9 @@ export default function AppHeader() {
           {/* Quick Search Button */}
           <button
             onClick={() => setSearchOpen(true)}
-            className="hidden md:flex items-center gap-2 bg-[#F4F4F0] border-2 border-[#1A1C1A] px-3 py-1 brutal-shadow-sm hover:bg-[#EEEEEA] transition-transform"
+            className="hidden md:flex items-center gap-2 bg-[#F4F4F0] border-2 border-[#1A1C1A] px-3 py-1 shadow-[2px_2px_0px_#1a1c1a] hover:bg-[#EEEEEA] transition-transform"
           >
-            <span className="material-symbols-outlined text-[#404943] text-[18px]">search</span>
+            <Icon name="search" className="w-4 h-4 text-[#404943]" />
             <span className="font-mono text-[12px] text-[#717973] text-left w-36 truncate">
               Quick search command...
             </span>
@@ -109,18 +114,18 @@ export default function AppHeader() {
           {/* Connect App Action */}
           <button
             onClick={() => setConnectOpen(true)}
-            className="hidden sm:flex items-center gap-1.5 bg-[#FFFFFF] border-2 border-[#1A1C1A] px-3 py-1.5 font-headline text-[13px] uppercase text-[#1A1C1A] font-bold hover:bg-[#E8E8E5] brutal-btn brutal-shadow"
+            className="hidden sm:flex items-center gap-1.5 bg-[#FFFFFF] border-2 border-[#1A1C1A] px-3 py-1.5 font-headline text-[13px] uppercase text-[#1A1C1A] font-bold hover:bg-[#E8E8E5] brutal-btn shadow-[3px_3px_0px_#1a1c1a]"
           >
-            <span className="material-symbols-outlined text-[18px]">cable</span>
+            <Icon name="cable" className="w-4 h-4 text-[#1A1C1A]" />
             <span>Connect App</span>
           </button>
 
           {/* New Test Run Action */}
           <button
             onClick={() => setTestRunOpen(true)}
-            className="flex items-center gap-1.5 bg-[#285C45] text-white border-2 border-[#1A1C1A] px-3 py-1.5 font-headline text-[13px] uppercase font-bold hover:bg-[#0B442F] brutal-btn brutal-shadow"
+            className="flex items-center gap-1.5 bg-[#285C45] text-white border-2 border-[#1A1C1A] px-3 py-1.5 font-headline text-[13px] uppercase font-bold hover:bg-[#0B442F] brutal-btn shadow-[3px_3px_0px_#1a1c1a]"
           >
-            <span className="material-symbols-outlined text-[18px]">add</span>
+            <Icon name="plus" className="w-4 h-4 text-white" />
             <span className="hidden xs:inline">+ New Test Run</span>
             <span className="xs:hidden">+ Run</span>
           </button>
@@ -130,7 +135,7 @@ export default function AppHeader() {
             className="w-8 h-8 rounded-full bg-[#0B442F] flex items-center justify-center border border-[#1A1C1A] text-white cursor-pointer"
             title="E. Turing (Lead QA Architect)"
           >
-            <span className="material-symbols-outlined text-[18px]">person</span>
+            <Icon name="person" className="w-4 h-4 text-white" />
           </div>
         </div>
       </header>

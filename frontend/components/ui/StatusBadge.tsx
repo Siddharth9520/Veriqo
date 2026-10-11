@@ -17,8 +17,10 @@ export default function StatusBadge({ status, label, size = 'sm' }: StatusBadgeP
 
   if (norm === 'healthy' || norm === 'completed') {
     return (
-      <div className={`bg-[#B7EFD0] text-[#002114] border-2 border-[#1A1C1A] brutal-shadow-sm font-mono font-bold uppercase tracking-wider flex items-center gap-1 ${padding}`}>
-        <span className="material-symbols-outlined text-[14px] text-[#0B442F]">check_circle</span>
+      <div className={`bg-[#B7EFD0] text-[#002114] border-2 border-[#1A1C1A] brutal-shadow-sm font-mono font-bold uppercase tracking-wider flex items-center gap-1.5 ${padding}`}>
+        <svg className="w-3.5 h-3.5 text-[#0B442F] flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+          <path clipRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" fillRule="evenodd" />
+        </svg>
         <span>{label || 'Healthy'}</span>
       </div>
     );
@@ -27,7 +29,7 @@ export default function StatusBadge({ status, label, size = 'sm' }: StatusBadgeP
   if (norm === 'critical_regression' || norm === 'failed') {
     return (
       <div className={`bg-[#AC3326] text-[#FFFFFF] border-2 border-[#1A1C1A] brutal-shadow-sm font-mono font-bold uppercase tracking-wider flex items-center gap-1.5 ${padding}`}>
-        <span className="w-2 h-2 rounded-full bg-white inline-block"></span>
+        <span className="w-2 h-2 rounded-full bg-white inline-block animate-pulse flex-shrink-0"></span>
         <span>{label || 'Critical Regression'}</span>
       </div>
     );
@@ -36,7 +38,7 @@ export default function StatusBadge({ status, label, size = 'sm' }: StatusBadgeP
   if (norm === 'scanning' || norm === 'running') {
     return (
       <div className={`bg-[#FFDF9B] text-[#251A00] border-2 border-[#1A1C1A] brutal-shadow-sm font-mono font-bold uppercase tracking-wider flex items-center gap-1.5 ${padding}`}>
-        <span className="w-2 h-2 rounded-full bg-[#694E00] animate-ping inline-block"></span>
+        <span className="w-2 h-2 rounded-full bg-[#694E00] animate-ping inline-block flex-shrink-0"></span>
         <span>{label || (norm === 'running' ? 'STATUS: RUNNING' : 'Scanning in Progress')}</span>
       </div>
     );
@@ -44,8 +46,11 @@ export default function StatusBadge({ status, label, size = 'sm' }: StatusBadgeP
 
   if (norm === 'paused') {
     return (
-      <div className={`bg-[#FFDF9B] text-[#4C3800] border-2 border-[#1A1C1A] brutal-shadow-sm font-mono font-bold uppercase tracking-wider flex items-center gap-1 ${padding}`}>
-        <span className="material-symbols-outlined text-[14px]">pause</span>
+      <div className={`bg-[#FFDF9B] text-[#4C3800] border-2 border-[#1A1C1A] brutal-shadow-sm font-mono font-bold uppercase tracking-wider flex items-center gap-1.5 ${padding}`}>
+        <svg className="w-3.5 h-3.5 text-[#4C3800] flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
+          <rect x="6" y="4" width="4" height="16" />
+          <rect x="14" y="4" width="4" height="16" />
+        </svg>
         <span>{label || 'PAUSED'}</span>
       </div>
     );

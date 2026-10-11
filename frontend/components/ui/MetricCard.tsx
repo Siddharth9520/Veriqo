@@ -1,11 +1,12 @@
 'use client';
 
 import React from 'react';
+import { Icon } from './Icons';
 
 interface MetricCardProps {
   label: string;
   value: string;
-  icon: string;
+  icon: string | React.ReactNode;
   iconBg?: string;
   iconColor?: string;
   footerLeft: React.ReactNode;
@@ -24,18 +25,20 @@ export default function MetricCard({
   return (
     <div className="bg-[#FFFFFF] border-2 border-[#1A1C1A] p-4 brutal-shadow-lg flex flex-col justify-between relative overflow-hidden">
       <div className="flex items-start justify-between">
-        <div className="flex flex-col">
+        <div className="flex flex-col pr-2">
           <span className="font-mono text-[10px] uppercase tracking-widest text-[#404943] font-bold">
             {label}
           </span>
-          <span className="font-headline text-[30px] sm:text-[32px] text-[#1A1C1A] font-bold mt-1 leading-none">
+          <span className="font-headline text-[30px] sm:text-[32px] text-[#1A1C1A] font-bold mt-1 leading-none tracking-tight">
             {value}
           </span>
         </div>
-        <div className={`w-10 h-10 ${iconBg} border-2 border-[#1A1C1A] flex items-center justify-center brutal-shadow-sm`}>
-          <span className={`material-symbols-outlined ${iconColor} text-[22px]`}>
-            {icon}
-          </span>
+        <div className={`w-10 h-10 ${iconBg} border-2 border-[#1A1C1A] flex items-center justify-center brutal-shadow-sm flex-shrink-0`}>
+          {typeof icon === 'string' ? (
+            <Icon name={icon} className={`w-5 h-5 ${iconColor}`} />
+          ) : (
+            icon
+          )}
         </div>
       </div>
 

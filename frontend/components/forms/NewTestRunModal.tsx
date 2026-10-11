@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { apiClient } from '@/lib/api-client';
 import { Project } from '@/lib/types';
 import { initialProjects } from '@/lib/mock-data';
+import { Icon } from '@/components/ui/Icons';
 
 interface NewTestRunModalProps {
   isOpen: boolean;
@@ -70,7 +71,7 @@ export default function NewTestRunModal({ isOpen, onClose }: NewTestRunModalProp
         <div className="flex items-center justify-between pb-3 border-b-2 border-[#1A1C1A]">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 bg-[#285C45] text-white flex items-center justify-center border border-[#1A1C1A]">
-              <span className="material-symbols-outlined text-[18px]">play_arrow</span>
+              <Icon name="play" className="w-4 h-4 text-white" />
             </div>
             <div>
               <h2 className="font-headline text-[20px] font-bold text-[#1A1C1A] leading-tight">
@@ -85,13 +86,13 @@ export default function NewTestRunModal({ isOpen, onClose }: NewTestRunModalProp
             onClick={onClose}
             className="text-[#717973] hover:text-[#1A1C1A] p-1 border border-transparent hover:border-[#1A1C1A]"
           >
-            <span className="material-symbols-outlined text-[20px]">close</span>
+            <Icon name="close" className="w-5 h-5" />
           </button>
         </div>
 
         {error && (
           <div className="bg-[#FFDAD6] border-2 border-[#AC3326] p-2.5 flex items-center gap-2 font-mono text-[12px] text-[#93000A]">
-            <span className="material-symbols-outlined text-[18px]">error</span>
+            <Icon name="warning" className="w-4 h-4 text-[#93000A]" />
             <span>{error}</span>
           </div>
         )}
@@ -179,7 +180,7 @@ export default function NewTestRunModal({ isOpen, onClose }: NewTestRunModalProp
 
           {/* Telemetry info banner */}
           <div className="bg-[#FAF9F6] border border-[#717973] p-2.5 flex items-center gap-2 font-mono text-[11px]">
-            <span className="material-symbols-outlined text-[18px] text-[#285C45]">insights</span>
+            <Icon name="analytics" className="w-4 h-4 text-[#285C45] flex-shrink-0" />
             <span className="text-[#404943]">
               Allocates isolated container sandbox with HAR trace recording and DevTools CDP hooks.
             </span>
@@ -207,7 +208,7 @@ export default function NewTestRunModal({ isOpen, onClose }: NewTestRunModalProp
                 </>
               ) : (
                 <>
-                  <span className="material-symbols-outlined text-[16px]">play_arrow</span>
+                  <Icon name="play" className="w-4 h-4 text-white" />
                   <span>Dispatch Swarm Run</span>
                 </>
               )}

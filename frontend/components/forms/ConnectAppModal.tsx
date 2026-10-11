@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { apiClient, ApiError } from '@/lib/api-client';
 import { Project, ProjectEnvironment } from '@/lib/types';
+import { Icon } from '@/components/ui/Icons';
 
 interface ConnectAppModalProps {
   isOpen: boolean;
@@ -90,7 +91,7 @@ export default function ConnectAppModal({ isOpen, onClose, onSuccess }: ConnectA
         <div className="flex items-center justify-between pb-3 border-b-2 border-[#1A1C1A]">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 bg-[#285C45] text-white flex items-center justify-center border border-[#1A1C1A]">
-              <span className="material-symbols-outlined text-[18px]">cable</span>
+              <Icon name="cable" className="w-4 h-4 text-white" />
             </div>
             <div>
               <h2 className="font-headline text-[20px] font-bold text-[#1A1C1A] leading-tight">
@@ -105,7 +106,7 @@ export default function ConnectAppModal({ isOpen, onClose, onSuccess }: ConnectA
             onClick={onClose}
             className="text-[#717973] hover:text-[#1A1C1A] p-1 border border-transparent hover:border-[#1A1C1A]"
           >
-            <span className="material-symbols-outlined text-[20px]">close</span>
+            <Icon name="close" className="w-5 h-5" />
           </button>
         </div>
 
@@ -143,14 +144,14 @@ export default function ConnectAppModal({ isOpen, onClose, onSuccess }: ConnectA
         {/* Error / Success Feedback Banners */}
         {error && (
           <div className="bg-[#FFDAD6] border-2 border-[#AC3326] p-2.5 flex items-center gap-2 font-mono text-[12px] text-[#93000A]">
-            <span className="material-symbols-outlined text-[18px]">error</span>
+            <Icon name="warning" className="w-4 h-4 text-[#93000A]" />
             <span>{error}</span>
           </div>
         )}
 
         {successMsg && (
           <div className="bg-[#B7EFD0] border-2 border-[#285C45] p-2.5 flex items-center gap-2 font-mono text-[12px] text-[#002114]">
-            <span className="material-symbols-outlined text-[18px]">verified</span>
+            <Icon name="check" className="w-4 h-4 text-[#002114]" />
             <span>{successMsg}</span>
           </div>
         )}
@@ -163,7 +164,7 @@ export default function ConnectAppModal({ isOpen, onClose, onSuccess }: ConnectA
                   Target Staging / Production URL *
                 </label>
                 <div className="flex items-center bg-[#FAF9F6] border-2 border-[#1A1C1A] px-3 py-2 brutal-shadow-sm focus-within:shadow-[3px_3px_0px_#285c45]">
-                  <span className="material-symbols-outlined text-[#717973] text-[18px] mr-2">link</span>
+                  <Icon name="link" className="w-4 h-4 text-[#717973] mr-2" />
                   <input
                     type="text"
                     value={url}
@@ -224,7 +225,7 @@ export default function ConnectAppModal({ isOpen, onClose, onSuccess }: ConnectA
                 />
               </div>
               <div className="border-2 border-dashed border-[#1A1C1A] p-4 text-center bg-[#FAF9F6] cursor-pointer hover:bg-[#EEEEEA]">
-                <span className="material-symbols-outlined text-[24px] text-[#404943]">upload_file</span>
+                <Icon name="upload" className="w-6 h-6 text-[#404943] mx-auto" />
                 <p className="font-mono text-[11px] font-bold uppercase text-[#1A1C1A] mt-1">
                   Drop .har, .json, or .yaml file here
                 </p>
@@ -278,7 +279,7 @@ export default function ConnectAppModal({ isOpen, onClose, onSuccess }: ConnectA
                 </>
               ) : (
                 <>
-                  <span className="material-symbols-outlined text-[16px]">check</span>
+                  <Icon name="check" className="w-4 h-4 text-white" />
                   <span>Confirm Link Application</span>
                 </>
               )}

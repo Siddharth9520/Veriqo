@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { Icon } from '@/components/ui/Icons';
 
 interface GlobalSearchModalProps {
   isOpen: boolean;
@@ -57,7 +58,7 @@ export default function GlobalSearchModal({ isOpen, onClose }: GlobalSearchModal
       <div className="bg-[#FFFFFF] border-2 border-[#1A1C1A] brutal-shadow-lg w-full max-w-xl flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-100">
         {/* Search Input Bar */}
         <div className="p-3 border-b-2 border-[#1A1C1A] bg-[#FAF9F6] flex items-center gap-2">
-          <span className="material-symbols-outlined text-[20px] text-[#717973]">search</span>
+          <Icon name="search" className="w-5 h-5 text-[#717973] flex-shrink-0" />
           <input
             autoFocus
             type="text"
@@ -85,10 +86,8 @@ export default function GlobalSearchModal({ isOpen, onClose }: GlobalSearchModal
                 className="w-full px-3 py-2.5 flex items-center justify-between text-left hover:bg-[#FAF9F6] transition-colors group"
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 bg-[#F4F4F0] border border-[#1A1C1A] flex items-center justify-center group-hover:bg-[#B7EFD0] transition-colors">
-                    <span className="material-symbols-outlined text-[18px] text-[#1A1C1A]">
-                      {item.icon}
-                    </span>
+                  <div className="w-8 h-8 bg-[#F4F4F0] border border-[#1A1C1A] flex items-center justify-center group-hover:bg-[#B7EFD0] transition-colors flex-shrink-0">
+                    <Icon name={item.icon} className="w-4 h-4 text-[#1A1C1A]" />
                   </div>
                   <div className="flex flex-col">
                     <span className="font-headline font-bold text-[13px] text-[#1A1C1A]">

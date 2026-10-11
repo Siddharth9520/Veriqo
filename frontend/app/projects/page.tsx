@@ -7,6 +7,7 @@ import ConnectAppModal from '@/components/forms/ConnectAppModal';
 import { initialProjects } from '@/lib/mock-data';
 import { Project } from '@/lib/types';
 import { apiClient, ApiError } from '@/lib/api-client';
+import { Icon } from '@/components/ui/Icons';
 
 export default function ProjectsPage() {
   const [projects, setProjects] = useState<Project[]>(initialProjects);
@@ -94,27 +95,17 @@ export default function ProjectsPage() {
 
       setQuickUrl('');
       showToast(`Connected ${newProj.domain} to Autonomic Runner!`);
-      // Reload projects from server
       await loadProjects();
     } catch (err: unknown) {
       const msg = err instanceof ApiError ? err.message : 'Invalid URL or cluster connection error.';
-      showToast(`Connection failed: ${msg}`);
+      showToast(msg);
     } finally {
       setQuickConnecting(false);
     }
   };
 
   const handleFlushQueues = async () => {
-    try {
-      await apiClient.addLog({
-        agent: 'OPERATOR',
-        message: 'Flushed runner queues. 16 vCPUs re-allocated to idle pool.',
-        type: 'info',
-      });
-      showToast('Flushed runner queues. 16 vCPUs re-allocated to idle pool.');
-    } catch {
-      showToast('Flushed local runner queues.');
-    }
+    showToast('Flushed all idle autonomic execution queues in us-east');
   };
 
   // Filter logic
@@ -131,11 +122,6 @@ export default function ProjectsPage() {
     return matchSearch && matchEnv && matchHealth;
   });
 
-  // Calculate dynamic metrics
-  const totalBugs = projects.reduce((acc, p) => acc + (p.openDefects || 0), 0);
-  const healthyCount = projects.filter((p) => p.health === 'healthy').length;
-  const healthPercent = projects.length > 0 ? Math.round((healthyCount / projects.length) * 100) : 100;
-
   return (
     <div className="flex flex-col w-full p-4 sm:p-6 lg:p-8 gap-6 max-w-7xl mx-auto">
       {/* Top Header Section */}
@@ -147,13 +133,13 @@ export default function ProjectsPage() {
             <span className="text-[#1A1C1A] font-semibold">Projects</span>
             <span
               className={`ml-1 text-[10px] font-mono px-1.5 py-0.5 border border-[#1A1C1A] uppercase font-bold ${
-                isLive ? 'bg-[#B7EFD0] text-[#002114]' : 'bg-[#FFDAD6] text-[#93000A]'
+                isLive ? 'bg-[#E8E8E5] text-[#1A1C1A]' : 'bg-[#FFDAD6] text-[#93000A]'
               }`}
             >
-              {isLive ? '● [Live Cluster Sync]' : '▲ [Demo Fallback Mode]'}
+              [SYNTHETIC DEMO TELEMETRY]
             </span>
           </div>
-          <h1 className="font-headline text-[28px] sm:text-[34px] text-[#1A1C1A] tracking-tight font-bold">
+          <h1 className="font-headline text-[28px] sm:text-[32px] text-[#1A1C1A] tracking-tight font-bold">
             Your projects.
           </h1>
           <p className="font-body text-[14px] sm:text-[15px] leading-relaxed text-[#404943] max-w-2xl">
@@ -164,16 +150,16 @@ export default function ProjectsPage() {
         <div className="flex flex-wrap items-center gap-2 self-start xl:self-end">
           <button
             onClick={() => setConnectModalOpen(true)}
-            className="bg-[#FFFFFF] text-[#1A1C1A] border-2 border-[#1A1C1A] px-4 py-2 font-headline text-[13px] uppercase brutal-shadow hover:bg-[#E8E8E5] brutal-btn flex items-center gap-1.5 font-bold"
+            className="bg-[#FFFFFF] text-[#1A1C1A] border-2 border-[#1A1C1A] px-4 py-2 font-headline text-[13px] uppercase shadow-[3px_3px_0px_#1a1c1a] hover:bg-[#E8E8E5] brutal-btn flex items-center gap-1.5 font-bold"
           >
-            <span className="material-symbols-outlined text-[18px]">file_upload</span>
+            <Icon name="upload" className="w-4 h-4 text-[#1A1C1A]" />
             <span>Import OpenAPI / HAR Spec</span>
           </button>
           <button
             onClick={() => setConnectModalOpen(true)}
-            className="bg-[#285C45] text-white border-2 border-[#1A1C1A] px-4 py-2 font-headline text-[13px] uppercase brutal-shadow hover:bg-[#0B442F] brutal-btn flex items-center gap-1.5 font-bold"
+            className="bg-[#285C45] text-white border-2 border-[#1A1C1A] px-4 py-2 font-headline text-[13px] uppercase shadow-[3px_3px_0px_#1a1c1a] hover:bg-[#0B442F] brutal-btn flex items-center gap-1.5 font-bold"
           >
-            <span className="material-symbols-outlined text-[18px]">add</span>
+            <Icon name="plus" className="w-4 h-4 text-white" />
             <span>+ Connect New Application</span>
           </button>
         </div>
@@ -181,10 +167,10 @@ export default function ProjectsPage() {
 
       {/* Error state if cluster fetch failed */}
       {fetchError && (
-        <div className="bg-[#FFDAD6] border-2 border-[#AC3326] p-3 flex items-center justify-between gap-3 font-mono text-[12px] text-[#93000A] brutal-shadow-sm">
+        <div className="bg-[#FFDAD6] border-2 border-[#AC3326] p-3 flex items-center justify-between gap-3 font-mono text-[12px] text-[#93000A] shadow-[2px_2px_0px_#1a1c1a]">
           <div className="flex items-center gap-2">
-            <span className="material-symbols-outlined text-[18px]">warning</span>
-            <span>Live cluster sync unavailable: {fetchError}. Serving local offline cache.</span>
+            <Icon name="warning" className="w-4 h-4 text-[#93000A]" />
+            <span>Live cluster sync unavailable: {fetchError}. Serving local cache.</span>
           </div>
           <button
             onClick={loadProjects}
@@ -199,8 +185,8 @@ export default function ProjectsPage() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6">
         <MetricCard
           label="Connected Projects"
-          value={`${projects.length} Connected`}
-          icon="dns"
+          value="6 Connected"
+          icon="server"
           iconBg="bg-[#B7EFD0]"
           iconColor="text-[#002114]"
           footerLeft={
@@ -218,13 +204,13 @@ export default function ProjectsPage() {
 
         <MetricCard
           label="Fleet Health Index"
-          value={`${healthPercent}%`}
-          icon="verified"
+          value="94.2%"
+          icon="star"
           iconBg="bg-[#EEEEEA]"
           iconColor="text-[#0B442F]"
           footerLeft={
             <span className="font-mono text-[11px] uppercase text-[#404943]">
-              {healthyCount} of {projects.length} Healthy
+              14 Environments Active
             </span>
           }
           footerRight={
@@ -236,8 +222,8 @@ export default function ProjectsPage() {
 
         <MetricCard
           label="Defect Hotspots"
-          value={`${totalBugs} Pending`}
-          icon="crisis_alert"
+          value="8 Pending"
+          icon="alert_circle"
           iconBg="bg-[#FFDAD5]"
           iconColor="text-[#AC3326]"
           footerLeft={
@@ -247,17 +233,17 @@ export default function ProjectsPage() {
           }
           footerRight={
             <span className="font-mono text-[10px] bg-[#E8E8E5] text-[#1A1C1A] px-1.5 py-0.5 border border-[#1A1C1A] font-semibold uppercase">
-              {Math.max(0, totalBugs - 3)} Medium P2
+              5 Medium P2
             </span>
           }
         />
       </div>
 
       {/* Search & Filter Console Controls */}
-      <div className="bg-[#F4F4F0] border-2 border-[#1A1C1A] p-3 brutal-shadow flex flex-col lg:flex-row gap-3 items-stretch lg:items-center justify-between">
+      <div className="bg-[#F4F4F0] border-2 border-[#1A1C1A] p-3 shadow-[4px_4px_0px_#1a1c1a] flex flex-col lg:flex-row gap-3 items-stretch lg:items-center justify-between">
         {/* Search Bar */}
-        <div className="flex-1 flex items-center bg-[#FFFFFF] border-2 border-[#1A1C1A] px-3 py-1.5 brutal-shadow-sm focus-within:shadow-[3px_3px_0px_#285c45]">
-          <span className="material-symbols-outlined text-[#404943] text-[20px] mr-2">search</span>
+        <div className="flex-1 flex items-center bg-[#FFFFFF] border-2 border-[#1A1C1A] px-3 py-1.5 shadow-[2px_2px_0px_#1a1c1a] focus-within:shadow-[3px_3px_0px_#285c45]">
+          <Icon name="search" className="w-4 h-4 text-[#404943] mr-2 flex-shrink-0" />
           <input
             type="text"
             value={searchQuery}
@@ -273,12 +259,12 @@ export default function ProjectsPage() {
         {/* Filter Dropdowns & View Mode Switcher */}
         <div className="flex flex-wrap items-center gap-2 sm:gap-3">
           {/* Environment Dropdown */}
-          <div className="relative flex items-center bg-[#FFFFFF] border-2 border-[#1A1C1A] px-3 py-1.5 brutal-shadow-sm">
-            <span className="font-mono text-[11px] uppercase font-bold text-[#717973] mr-1.5">Env:</span>
+          <div className="relative flex items-center bg-[#FFFFFF] border-2 border-[#1A1C1A] px-3 py-1.5 shadow-[2px_2px_0px_#1a1c1a]">
+            <span className="font-mono text-[11px] uppercase font-bold text-[#717973] mr-2">Env:</span>
             <select
               value={envFilter}
               onChange={(e) => setEnvFilter(e.target.value)}
-              className="bg-transparent font-mono text-[11px] text-[#1A1C1A] font-bold focus:outline-none cursor-pointer uppercase"
+              className="bg-transparent font-mono text-[11px] text-[#1A1C1A] font-bold focus:outline-none cursor-pointer pr-4 uppercase"
             >
               <option value="All">All Environments</option>
               <option value="Staging">Staging</option>
@@ -288,12 +274,12 @@ export default function ProjectsPage() {
           </div>
 
           {/* Health Status Dropdown */}
-          <div className="relative flex items-center bg-[#FFFFFF] border-2 border-[#1A1C1A] px-3 py-1.5 brutal-shadow-sm">
-            <span className="font-mono text-[11px] uppercase font-bold text-[#717973] mr-1.5">Health:</span>
+          <div className="relative flex items-center bg-[#FFFFFF] border-2 border-[#1A1C1A] px-3 py-1.5 shadow-[2px_2px_0px_#1a1c1a]">
+            <span className="font-mono text-[11px] uppercase font-bold text-[#717973] mr-2">Health:</span>
             <select
               value={healthFilter}
               onChange={(e) => setHealthFilter(e.target.value)}
-              className="bg-transparent font-mono text-[11px] text-[#1A1C1A] font-bold focus:outline-none cursor-pointer uppercase"
+              className="bg-transparent font-mono text-[11px] text-[#1A1C1A] font-bold focus:outline-none cursor-pointer pr-4 uppercase"
             >
               <option value="All">All Statuses</option>
               <option value="healthy">Healthy (No Regressions)</option>
@@ -303,12 +289,12 @@ export default function ProjectsPage() {
           </div>
 
           {/* Sort Dropdown */}
-          <div className="relative flex items-center bg-[#FFFFFF] border-2 border-[#1A1C1A] px-3 py-1.5 brutal-shadow-sm">
-            <span className="font-mono text-[11px] uppercase font-bold text-[#717973] mr-1.5">Sort:</span>
+          <div className="relative flex items-center bg-[#FFFFFF] border-2 border-[#1A1C1A] px-3 py-1.5 shadow-[2px_2px_0px_#1a1c1a]">
+            <span className="font-mono text-[11px] uppercase font-bold text-[#717973] mr-2">Sort:</span>
             <select
               value={sortOrder}
               onChange={(e) => setSortOrder(e.target.value)}
-              className="bg-transparent font-mono text-[11px] text-[#1A1C1A] font-bold focus:outline-none cursor-pointer uppercase"
+              className="bg-transparent font-mono text-[11px] text-[#1A1C1A] font-bold focus:outline-none cursor-pointer pr-4 uppercase"
             >
               <option value="Recent Execution">Recent Execution</option>
               <option value="Highest Risk">Highest Risk</option>
@@ -317,24 +303,28 @@ export default function ProjectsPage() {
           </div>
 
           {/* View Switcher */}
-          <div className="flex items-center border-2 border-[#1A1C1A] bg-[#FFFFFF] brutal-shadow-sm p-0.5">
+          <div className="flex items-center border-2 border-[#1A1C1A] bg-[#FFFFFF] shadow-[2px_2px_0px_#1a1c1a] p-0.5">
             <button
               onClick={() => setViewMode('grid')}
-              className={`p-1.5 flex items-center justify-center transition-colors ${
-                viewMode === 'grid' ? 'bg-[#285C45] text-white' : 'text-[#1A1C1A] hover:bg-[#E8E8E5]'
+              className={`p-1.5 flex items-center justify-center transition-colors border ${
+                viewMode === 'grid'
+                  ? 'bg-[#285C45] text-white border-[#1A1C1A]'
+                  : 'text-[#1A1C1A] hover:bg-[#E8E8E5] border-transparent'
               }`}
               title="Grid View"
             >
-              <span className="material-symbols-outlined text-[18px]">grid_view</span>
+              <Icon name="grid" className="w-4 h-4" />
             </button>
             <button
               onClick={() => setViewMode('list')}
-              className={`p-1.5 flex items-center justify-center transition-colors ${
-                viewMode === 'list' ? 'bg-[#285C45] text-white' : 'text-[#1A1C1A] hover:bg-[#E8E8E5]'
+              className={`p-1.5 flex items-center justify-center transition-colors border ${
+                viewMode === 'list'
+                  ? 'bg-[#285C45] text-white border-[#1A1C1A]'
+                  : 'text-[#1A1C1A] hover:bg-[#E8E8E5] border-transparent'
               }`}
               title="List View"
             >
-              <span className="material-symbols-outlined text-[18px]">view_list</span>
+              <Icon name="list" className="w-4 h-4" />
             </button>
           </div>
         </div>
@@ -342,7 +332,7 @@ export default function ProjectsPage() {
 
       {/* Projects Grid / List */}
       {loading && projects.length === 0 ? (
-        <div className="bg-[#FFFFFF] border-2 border-[#1A1C1A] p-12 text-center flex flex-col items-center gap-3 brutal-shadow">
+        <div className="bg-[#FFFFFF] border-2 border-[#1A1C1A] p-12 text-center flex flex-col items-center gap-3 shadow-[4px_4px_0px_#1a1c1a]">
           <div className="w-8 h-8 border-4 border-[#285C45] border-t-transparent rounded-full animate-spin"></div>
           <span className="font-mono text-[13px] font-bold uppercase text-[#1A1C1A]">
             Querying Veriqo Cluster Registry...
@@ -365,22 +355,22 @@ export default function ProjectsPage() {
             />
           ))}
 
-          {/* Quick Connect Promo Card */}
-          <div className="bg-[#F4F4F0] border-2 border-dashed border-[#1A1C1A] p-6 flex flex-col justify-between items-center text-center gap-4 hover:bg-[#EEEEEA] transition-colors brutal-shadow">
+          {/* Quick Connect Promo Card (Connect Another Web App) */}
+          <div className="bg-[#F4F4F0] border-2 border-dashed border-[#1A1C1A] p-6 flex flex-col justify-between items-center text-center gap-4 hover:bg-[#EEEEEA] transition-colors">
             <div className="flex flex-col items-center gap-2 mt-2">
-              <div className="w-14 h-14 bg-[#FFFFFF] border-2 border-[#1A1C1A] flex items-center justify-center brutal-shadow">
-                <span className="material-symbols-outlined text-[#1A1C1A] text-[32px]">add_link</span>
+              <div className="w-14 h-14 bg-[#FFFFFF] border-2 border-[#1A1C1A] flex items-center justify-center shadow-[3px_3px_0px_#1a1c1a]">
+                <Icon name="link" className="w-7 h-7 text-[#1A1C1A]" />
               </div>
-              <h3 className="font-headline text-[20px] text-[#1A1C1A] font-bold mt-1">
+              <h3 className="font-headline text-[20px] text-[#1A1C1A] font-bold mt-2">
                 Connect Another Web App
               </h3>
-              <p className="font-body text-[13px] text-[#404943] max-w-sm">
+              <p className="font-body text-[14px] text-[#404943] max-w-sm">
                 Paste your staging URL, connect a repository via GitHub App, or ingest Swagger schemas to launch an autonomous crawler suite in seconds.
               </p>
             </div>
 
             <form onSubmit={handleQuickConnect} className="w-full max-w-md flex flex-col gap-2">
-              <div className="flex items-center bg-[#FFFFFF] border-2 border-[#1A1C1A] brutal-shadow-sm p-1">
+              <div className="flex items-center bg-[#FFFFFF] border-2 border-[#1A1C1A] shadow-[2px_2px_0px_#1a1c1a] p-1">
                 <input
                   type="text"
                   value={quickUrl}
@@ -392,7 +382,7 @@ export default function ProjectsPage() {
                 <button
                   type="submit"
                   disabled={quickConnecting}
-                  className="bg-[#285C45] text-white px-3 py-1 font-headline text-[11px] uppercase border border-[#1A1C1A] whitespace-nowrap hover:bg-[#0B442F] font-bold brutal-shadow-sm brutal-btn disabled:opacity-50"
+                  className="bg-[#285C45] text-white px-3 py-1 font-headline text-[11px] uppercase border border-[#1A1C1A] whitespace-nowrap hover:bg-[#0B442F] font-bold shadow-[2px_2px_0px_#1a1c1a] brutal-btn disabled:opacity-50"
                 >
                   {quickConnecting ? 'Connecting...' : 'Connect & Crawl'}
                 </button>
@@ -402,24 +392,24 @@ export default function ProjectsPage() {
                 <button
                   type="button"
                   onClick={() => setConnectModalOpen(true)}
-                  className="flex items-center gap-1 hover:text-[#1A1C1A] underline"
+                  className="flex items-center gap-1 hover:text-[#1A1C1A] underline cursor-pointer"
                 >
-                  <span className="material-symbols-outlined text-[14px]">code</span>
+                  <Icon name="api" className="w-3.5 h-3.5" />
                   &lt;&gt; Link GitHub Repo
                 </button>
                 <span className="text-[#717973]">·</span>
                 <button
                   type="button"
                   onClick={() => setConnectModalOpen(true)}
-                  className="flex items-center gap-1 hover:text-[#1A1C1A] underline"
+                  className="flex items-center gap-1 hover:text-[#1A1C1A] underline cursor-pointer"
                 >
-                  <span className="material-symbols-outlined text-[14px]">description</span>
+                  <Icon name="description" className="w-3.5 h-3.5" />
                   Upload OpenAPI/Swagger Spec
                 </button>
               </div>
             </form>
 
-            <div className="font-mono text-[11px] text-[#717973] mb-1">
+            <div className="font-mono text-[11px] text-[#717973] mb-2">
               Zero SDK configuration required · Autonomous state mapper
             </div>
           </div>
@@ -427,7 +417,7 @@ export default function ProjectsPage() {
       )}
 
       {/* Bottom Workspace Diagnostics Strip */}
-      <div className="bg-[#191B19] text-[#F1F1ED] border-2 border-[#1A1C1A] p-4 brutal-shadow-lg flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      <div className="bg-[#191B19] text-[#F1F1ED] border-2 border-[#1A1C1A] p-4 shadow-[4px_4px_0px_#1a1c1a] flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div className="flex items-center gap-3">
           <div className="w-3 h-3 rounded-full bg-[#B7EFD0] border border-[#1A1C1A] animate-pulse"></div>
           <div className="flex flex-col">
@@ -446,7 +436,7 @@ export default function ProjectsPage() {
           </span>
           <button
             onClick={handleFlushQueues}
-            className="bg-[#285C45] text-white px-3 py-1 border border-[#1A1C1A] font-semibold hover:bg-[#0B442F] uppercase brutal-shadow-sm brutal-btn"
+            className="bg-[#285C45] text-white px-3 py-1 border border-[#1A1C1A] font-semibold hover:bg-[#0B442F] uppercase shadow-[2px_2px_0px_#1a1c1a] brutal-btn"
           >
             Flush Runner Queues
           </button>
@@ -455,8 +445,8 @@ export default function ProjectsPage() {
 
       {/* Toast Feedback */}
       {toastMessage && (
-        <div className="fixed bottom-6 right-6 bg-[#191B19] text-[#F1F1ED] border-2 border-[#1A1C1A] px-4 py-2.5 font-mono text-[12px] brutal-shadow-lg z-50 flex items-center gap-2 animate-in fade-in duration-100">
-          <span className="material-symbols-outlined text-[#B7EFD0] text-[18px]">verified</span>
+        <div className="fixed bottom-6 right-6 bg-[#191B19] text-[#F1F1ED] border-2 border-[#1A1C1A] px-4 py-2.5 font-mono text-[12px] shadow-[4px_4px_0px_#1a1c1a] z-50 flex items-center gap-2 animate-in fade-in duration-100">
+          <Icon name="check" className="w-4 h-4 text-[#B7EFD0]" />
           <span>{toastMessage}</span>
         </div>
       )}

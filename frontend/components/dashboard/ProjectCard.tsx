@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Project } from '@/lib/types';
 import StatusBadge from '@/components/ui/StatusBadge';
 import ProgressBar from '@/components/ui/ProgressBar';
+import { Icon } from '@/components/ui/Icons';
 
 interface ProjectCardProps {
   project: Project;
@@ -24,14 +25,14 @@ export default function ProjectCard({
 
   return (
     <div
-      className={`bg-[#FFFFFF] border-2 border-[#1A1C1A] brutal-shadow-lg flex flex-col justify-between transition-transform hover:-translate-y-0.5 ${
+      className={`bg-[#FFFFFF] border-2 border-[#1A1C1A] shadow-[4px_4px_0px_#1a1c1a] flex flex-col justify-between transition-transform hover:-translate-y-0.5 ${
         viewMode === 'list' ? 'w-full' : ''
       }`}
     >
       {/* Header Strip */}
       <div className="p-4 border-b-2 border-[#1A1C1A] flex flex-col gap-1 bg-[#FAF9F6]">
         <div className="flex items-start justify-between gap-2">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 min-w-0">
             <div
               className={`w-10 h-10 ${
                 isCritical
@@ -39,28 +40,27 @@ export default function ProjectCard({
                   : isScanning
                   ? 'bg-[#FFDF9B]'
                   : 'bg-[#B7EFD0]'
-              } border-2 border-[#1A1C1A] flex items-center justify-center brutal-shadow-sm`}
+              } border-2 border-[#1A1C1A] flex items-center justify-center shadow-[2px_2px_0px_#1a1c1a] flex-shrink-0`}
             >
-              <span
-                className={`material-symbols-outlined text-[22px] ${
+              <Icon
+                name={project.icon || 'folder'}
+                className={`w-5 h-5 ${
                   isCritical
                     ? 'text-[#AC3326]'
                     : isScanning
                     ? 'text-[#4C3800]'
                     : 'text-[#0B442F]'
                 }`}
-              >
-                {project.icon || 'folder_code'}
-              </span>
+              />
             </div>
 
-            <div className="flex flex-col">
-              <span className="font-headline text-[18px] sm:text-[20px] text-[#1A1C1A] font-bold tracking-tight">
+            <div className="flex flex-col min-w-0">
+              <span className="font-headline text-[18px] sm:text-[20px] text-[#1A1C1A] font-bold tracking-tight truncate">
                 {project.name}
               </span>
-              <div className="flex items-center gap-2 font-mono text-[11px] text-[#404943] flex-wrap">
-                <span className="flex items-center gap-0.5">
-                  <span className="material-symbols-outlined text-[14px]">link</span>
+              <div className="flex items-center gap-2 font-mono text-[11px] text-[#404943] flex-wrap mt-0.5">
+                <span className="flex items-center gap-1">
+                  <Icon name="link" className="w-3.5 h-3.5 text-[#404943] flex-shrink-0" />
                   <span className="underline">{project.domain}</span>
                 </span>
                 <span className="px-1.5 py-0.5 bg-[#E2E3DF] border border-[#1A1C1A] text-[#1A1C1A] uppercase font-bold text-[10px]">
@@ -74,21 +74,18 @@ export default function ProjectCard({
         </div>
 
         <div className="flex items-center gap-3 text-[#404943] font-mono text-[11px] mt-1 flex-wrap">
-          <div className="flex items-center gap-1">
-            <span
-              className={`material-symbols-outlined text-[14px] ${
-                isScanning ? 'text-[#694E00] animate-spin' : ''
-              }`}
-            >
-              {isScanning ? 'sync' : 'schedule'}
-            </span>
+          <div className="flex items-center gap-1.5">
+            <Icon
+              name={isScanning ? 'sync' : 'schedule'}
+              className={`w-3.5 h-3.5 ${isScanning ? 'text-[#694E00] animate-spin' : 'text-[#717973]'}`}
+            />
             <span className={isScanning ? 'text-[#694E00] font-bold' : ''}>
               {isScanning ? 'Running now' : `Last Exec: ${project.lastExecution}`}
             </span>
           </div>
           <span className="text-[#717973]">·</span>
-          <div className="flex items-center gap-1">
-            {!isScanning && <span className="material-symbols-outlined text-[14px]">timer</span>}
+          <div className="flex items-center gap-1.5">
+            {!isScanning && <Icon name="timer" className="w-3.5 h-3.5 text-[#717973]" />}
             <span>{isScanning ? project.duration : `Duration: ${project.duration}`}</span>
           </div>
         </div>
@@ -146,8 +143,8 @@ export default function ProjectCard({
         {isScanning && project.liveProgress ? (
           <div className="flex flex-col gap-1.5 bg-[#EEEEEA] p-3 border-2 border-[#1A1C1A]">
             <div className="flex items-center justify-between font-mono text-[11px] uppercase font-bold">
-              <span className="flex items-center gap-1 text-[#1A1C1A]">
-                <span className="material-symbols-outlined text-[16px] text-[#694E00]">autorenew</span>
+              <span className="flex items-center gap-1.5 text-[#1A1C1A]">
+                <Icon name="sync" className="w-4 h-4 text-[#694E00] animate-spin" />
                 Live Autonomous Execution Progress
               </span>
               <span className="font-mono text-[#694E00] font-bold">
@@ -207,17 +204,17 @@ export default function ProjectCard({
           <>
             <Link
               href="/command-center"
-              className="bg-[#191B19] text-[#F1F1ED] border-2 border-[#1A1C1A] px-4 py-1.5 font-headline text-[13px] uppercase brutal-shadow hover:bg-[#1A1C1A] brutal-btn flex items-center gap-1.5"
+              className="bg-[#191B19] text-[#F1F1ED] border-2 border-[#1A1C1A] px-4 py-1.5 font-headline text-[13px] uppercase shadow-[3px_3px_0px_#1a1c1a] hover:bg-[#1A1C1A] brutal-btn flex items-center gap-1.5"
             >
-              <span className="material-symbols-outlined text-[16px] text-[#9CD2B5]">terminal</span>
+              <Icon name="terminal" className="w-4 h-4 text-[#9CD2B5]" />
               <span>View Live Stream</span>
             </Link>
 
             <button
               onClick={() => alert('Run paused for debugging snapshot.')}
-              className="bg-[#FFDAD5] text-[#410000] border-2 border-[#1A1C1A] px-4 py-1.5 font-headline text-[13px] uppercase font-bold brutal-shadow hover:bg-[#AC3326] hover:text-white brutal-btn flex items-center gap-1.5"
+              className="bg-[#FFDAD5] text-[#410000] border-2 border-[#1A1C1A] px-4 py-1.5 font-headline text-[13px] uppercase font-bold shadow-[3px_3px_0px_#1a1c1a] hover:bg-[#AC3326] hover:text-white brutal-btn flex items-center gap-1.5"
             >
-              <span className="material-symbols-outlined text-[16px]">stop_circle</span>
+              <Icon name="stop_circle" className="w-4 h-4" />
               <span>Stop Run</span>
             </button>
           </>
@@ -225,26 +222,26 @@ export default function ProjectCard({
           <>
             <button
               onClick={() => (onOpenDetails ? onOpenDetails(project) : alert(`Inspecting ${project.name}`))}
-              className="bg-[#FFFFFF] text-[#1A1C1A] border-2 border-[#1A1C1A] px-4 py-1.5 font-headline text-[13px] uppercase font-bold brutal-shadow hover:bg-[#E8E8E5] brutal-btn flex items-center gap-1.5"
+              className="bg-[#FFFFFF] text-[#1A1C1A] border-2 border-[#1A1C1A] px-4 py-1.5 font-headline text-[13px] uppercase font-bold shadow-[3px_3px_0px_#1a1c1a] hover:bg-[#E8E8E5] brutal-btn flex items-center gap-1.5"
             >
-              <span className="material-symbols-outlined text-[16px]">folder_open</span>
+              <Icon name="folder_open" className="w-4 h-4 text-[#1A1C1A]" />
               <span>Open Project</span>
             </button>
 
             {onStartRun ? (
               <button
                 onClick={() => onStartRun(project)}
-                className="bg-[#285C45] text-white border-2 border-[#1A1C1A] px-4 py-1.5 font-headline text-[13px] uppercase font-bold brutal-shadow hover:bg-[#0B442F] brutal-btn flex items-center gap-1.5"
+                className="bg-[#285C45] text-white border-2 border-[#1A1C1A] px-4 py-1.5 font-headline text-[13px] uppercase font-bold shadow-[3px_3px_0px_#1a1c1a] hover:bg-[#0B442F] brutal-btn flex items-center gap-1.5"
               >
-                <span className="material-symbols-outlined text-[16px]">play_arrow</span>
+                <Icon name="play" className="w-4 h-4" />
                 <span>+ Start Autonomous Run</span>
               </button>
             ) : (
               <Link
                 href="/command-center"
-                className="bg-[#285C45] text-white border-2 border-[#1A1C1A] px-4 py-1.5 font-headline text-[13px] uppercase font-bold brutal-shadow hover:bg-[#0B442F] brutal-btn flex items-center gap-1.5"
+                className="bg-[#285C45] text-white border-2 border-[#1A1C1A] px-4 py-1.5 font-headline text-[13px] uppercase font-bold shadow-[3px_3px_0px_#1a1c1a] hover:bg-[#0B442F] brutal-btn flex items-center gap-1.5"
               >
-                <span className="material-symbols-outlined text-[16px]">play_arrow</span>
+                <Icon name="play" className="w-4 h-4" />
                 <span>+ Start Autonomous Run</span>
               </Link>
             )}

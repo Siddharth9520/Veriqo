@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { navigationItems } from '@/lib/navigation';
+import { Icon } from '@/components/ui/Icons';
 
 interface AppSidebarProps {
   mobileOpen?: boolean;
@@ -29,7 +30,7 @@ export default function AppSidebar({ mobileOpen = false, onMobileClose }: AppSid
         <div className="h-16 px-4 border-b-2 border-[#1A1C1A] flex items-center justify-between bg-[#191B19]">
           <Link href="/command-center" className="flex items-center gap-2">
             <div className="w-9 h-9 bg-[#285C45] border-2 border-[#1A1C1A] flex items-center justify-center relative brutal-shadow-sm">
-              <span className="material-symbols-outlined text-[#9CD2B5] text-[20px]">radar</span>
+              <Icon name="radar" className="w-5 h-5 text-[#9CD2B5]" />
               <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-[#9CD2B5] border border-[#1A1C1A] rounded-full"></span>
             </div>
             <div className="flex flex-col">
@@ -49,7 +50,7 @@ export default function AppSidebar({ mobileOpen = false, onMobileClose }: AppSid
                 className="md:hidden text-[#C0C9C1] hover:text-[#FFFFFF] p-1"
                 aria-label="Close Sidebar"
               >
-                <span className="material-symbols-outlined text-[20px]">close</span>
+                <Icon name="close" className="w-5 h-5" />
               </button>
             )}
           </div>
@@ -65,7 +66,7 @@ export default function AppSidebar({ mobileOpen = false, onMobileClose }: AppSid
               <span className="font-mono text-[9px] uppercase tracking-wider text-[#C0C9C1]">Target Cluster</span>
               <span className="font-mono text-[12px] truncate text-[#F1F1ED] font-semibold">{cluster}</span>
             </div>
-            <span className="material-symbols-outlined text-[#C0C9C1] text-[18px]">unfold_more</span>
+            <Icon name="unfold_more" className="w-4 h-4 text-[#C0C9C1] flex-shrink-0" />
           </button>
 
           {showClusterDropdown && (
@@ -103,12 +104,12 @@ export default function AppSidebar({ mobileOpen = false, onMobileClose }: AppSid
                 onClick={onMobileClose}
                 className={`flex items-center justify-between px-3 py-1.5 font-mono text-[12px] tracking-wide uppercase transition-all ${
                   isActive
-                    ? 'bg-[#285C45] text-[#FFFFFF] border-2 border-[#1A1C1A] shadow-[3px_3px_0px_#1A1C1A] font-semibold'
+                    ? 'bg-[#285C45] text-[#FFFFFF] border-2 border-[#1A1C1A] shadow-[3px_3px_0px_#1a1c1a] font-semibold'
                     : 'text-[#F1F1ED] hover:bg-[#1A1C1A] hover:text-[#FAF9F6] border border-transparent'
                 }`}
               >
-                <div className="flex items-center gap-2">
-                  <span className="material-symbols-outlined text-[18px]">{item.icon}</span>
+                <div className="flex items-center gap-2.5">
+                  <Icon name={item.icon} className="w-4 h-4 flex-shrink-0" />
                   <span>{item.title}</span>
                 </div>
                 {item.badge && (
@@ -143,9 +144,9 @@ export default function AppSidebar({ mobileOpen = false, onMobileClose }: AppSid
         <div className="flex items-center justify-between px-1">
           <Link
             href="/settings"
-            className="font-mono text-[11px] text-[#C0C9C1] hover:text-[#F1F1ED] uppercase tracking-wider flex items-center gap-1"
+            className="font-mono text-[11px] text-[#C0C9C1] hover:text-[#F1F1ED] uppercase tracking-wider flex items-center gap-1.5"
           >
-            <span className="material-symbols-outlined text-[14px]">help</span>
+            <Icon name="help" className="w-3.5 h-3.5 text-[#C0C9C1]" />
             <span>Docs &amp; Manual</span>
           </Link>
           <span className="font-mono text-[10px] text-[#C0C9C1]">v2.4.1</span>
@@ -154,15 +155,15 @@ export default function AppSidebar({ mobileOpen = false, onMobileClose }: AppSid
         {/* User Profile */}
         <div className="flex items-center justify-between pt-1.5 border-t border-[#717973]">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-full bg-[#0B442F] flex items-center justify-center border border-[#1A1C1A]">
-              <span className="material-symbols-outlined text-white text-[18px]">person</span>
+            <div className="w-8 h-8 rounded-full bg-[#0B442F] flex items-center justify-center border border-[#1A1C1A] flex-shrink-0">
+              <Icon name="person" className="w-4 h-4 text-white" />
             </div>
             <div className="flex flex-col">
               <span className="font-mono text-[12px] text-[#F1F1ED] font-semibold leading-tight">E. Turing</span>
               <span className="font-mono text-[10px] text-[#C0C9C1]">Lead QA Architect</span>
             </div>
           </div>
-          <span className="material-symbols-outlined text-[#C0C9C1] text-[18px]">more_vert</span>
+          <Icon name="more_vert" className="w-4 h-4 text-[#C0C9C1] flex-shrink-0 cursor-pointer" />
         </div>
       </div>
     </div>
