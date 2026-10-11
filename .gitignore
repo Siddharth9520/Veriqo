@@ -30,6 +30,11 @@ venv/
 ENV/
 env/
 
+# Test Evidence & Screenshots
+evidence/
+*.png
+*.jpg
+
 # Environment variables
 .env
 *.env.local

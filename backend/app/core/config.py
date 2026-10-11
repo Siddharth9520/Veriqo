@@ -19,6 +19,12 @@ class Settings(BaseSettings):
     # Database
     DATABASE_URL: str = "sqlite:///./veriqo.db"
 
+    # Evidence & Playwright Configuration
+    EVIDENCE_DIR: str = "evidence"
+    BROWSER_HEADLESS: bool = True
+    DEFAULT_ACTION_TIMEOUT_MS: int = 5000
+    DEFAULT_NAVIGATION_TIMEOUT_MS: int = 10000
+
     # CORS
     CORS_ORIGINS: List[str] = [
         "http://localhost:3000",

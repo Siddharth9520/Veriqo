@@ -1,7 +1,9 @@
 """Pytest fixtures and configuration."""
 
-import pytest
+from http.server import BaseHTTPRequestHandler, HTTPServer
+import threading
 from typing import Generator
+import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, sessionmaker
@@ -61,3 +63,49 @@ def client(db_session: Session) -> Generator[TestClient, None, None]:
     with TestClient(app) as test_client:
         yield test_client
     app.dependency_overrides.clear()
+
+
+class MockWebHandler(BaseHTTPRequestHandler):
+    """Simple HTTP handler serving controlled test pages."""
+
+    def do_GET(self):
+        self.send_response(200)
+        self.send_header("Content-Type", "text/html; charset=utf-8")
+        self.end_headers()
+        if self.path == "/about":
+            content = "<html><body><h1>About Veriqo Target</h1><p>About page loaded.</p></body></html>"
+        else:
+            content = """
+            <!DOCTYPE html>
+            <html>
+            <head><title>Veriqo Test Target</title></head>
+            <body>
+              <h1 id="heading">Welcome to Veriqo Test App</h1>
+              <p id="status-text">Ready for testing</p>
+              <input id="username-input" type="text" placeholder="Enter username" />
+              <button id="submit-btn" onclick="document.getElementById('status-text').innerText = 'Submitted successfully'; document.getElementById('result').style.display = 'block';">Submit</button>
+              <div id="result" style="display:none;">Action completed!</div>
+              <a id="nav-link" href="/about">About</a>
+            </body>
+            </html>
+            """
+        self.wfile.write(content.encode("utf-8"))
+
+    def log_message(self, format, *args):
+        # Silence access logs in test output
+        pass
+
+
+@pytest.fixture(scope="session")
+def local_test_server() -> Generator[str, None, None]:
+    """Spins up a lightweight in-process HTTP server for browser tests."""
+    server = HTTPServer(("127.0.0.1", 0), MockWebHandler)
+    port = server.server_address[1]
+    thread = threading.Thread(target=server.serve_forever, daemon=True)
+    thread.start()
+
+    base_url = f"http://127.0.0.1:{port}"
+    yield base_url
+
+    server.shutdown()
+    server.server_close()

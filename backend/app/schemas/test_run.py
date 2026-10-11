@@ -1,8 +1,7 @@
-"""TestRun Pydantic schemas."""
-
 from datetime import datetime
-from typing import Optional
+from typing import Any, Dict, List, Optional
 from pydantic import BaseModel, ConfigDict
+from app.schemas.journey import JourneyDefinition
 
 
 class TestRunBase(BaseModel):
@@ -13,9 +12,10 @@ class TestRunBase(BaseModel):
 
 
 class TestRunCreate(TestRunBase):
-    """Schema for initiating a new test run."""
+    """Schema for initiating a new test run with a journey definition."""
 
     __test__ = False
+    journey: JourneyDefinition
 
 
 class TestRunRead(TestRunBase):
@@ -24,6 +24,11 @@ class TestRunRead(TestRunBase):
     __test__ = False
     id: int
     status: str
+    journey_definition: Optional[Dict[str, Any]] = None
+    action_results: Optional[List[Dict[str, Any]]] = None
+    error_message: Optional[str] = None
+    evidence_paths: Optional[List[str]] = None
+    regression_journey_id: Optional[int] = None
     started_at: Optional[datetime] = None
     completed_at: Optional[datetime] = None
     created_at: datetime
