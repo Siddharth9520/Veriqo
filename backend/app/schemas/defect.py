@@ -14,6 +14,7 @@ class DefectBase(BaseModel):
     severity: str = "MEDIUM"
     status: str = "OPEN"
     reproduction_steps: Optional[str] = None
+    expected_behavior: Optional[str] = None
 
 
 class DefectCreate(DefectBase):

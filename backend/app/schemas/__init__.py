@@ -17,6 +17,11 @@ from app.schemas.regression_journey import (
     RegressionJourneyCreate,
     RegressionJourneyRead,
 )
+from app.schemas.replay_attempt import (
+    ReplayAttemptCreate,
+    ReplayAttemptRead,
+    ReplayOutcome,
+)
 from app.schemas.target_app import TargetAppBase, TargetAppCreate, TargetAppRead
 from app.schemas.test_run import TestRunBase, TestRunCreate, TestRunRead
 
@@ -43,4 +48,7 @@ __all__ = [
     "ActionExecutionResult",
     "RegressionJourneyCreate",
     "RegressionJourneyRead",
+    "ReplayOutcome",
+    "ReplayAttemptCreate",
+    "ReplayAttemptRead",
 ]

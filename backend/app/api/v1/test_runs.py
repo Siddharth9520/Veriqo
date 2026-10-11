@@ -142,10 +142,11 @@ def download_run_evidence(
         )
 
     evidence_root = Path(settings.EVIDENCE_DIR).resolve()
-    target_path = (evidence_root / f"run_{run_id}" / filename).resolve()
+    run_dir = (evidence_root / f"run_{run_id}").resolve()
+    target_path = (run_dir / filename).resolve()
 
     # Prevent directory traversal attacks
-    if not target_path.is_relative_to(evidence_root):
+    if not target_path.is_relative_to(run_dir):
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Forbidden: Path traversal is not permitted.",

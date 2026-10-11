@@ -8,6 +8,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.db.base import Base
 
 if TYPE_CHECKING:
+    from app.models.replay_attempt import ReplayAttempt
     from app.models.test_run import TestRun
 
 
@@ -36,6 +37,7 @@ class Defect(Base):
         nullable=False,
     )
     reproduction_steps: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    expected_behavior: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
 
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
@@ -52,4 +54,9 @@ class Defect(Base):
     test_run: Mapped["TestRun"] = relationship(
         "TestRun",
         back_populates="defects",
+    )
+    replays: Mapped[list["ReplayAttempt"]] = relationship(
+        "ReplayAttempt",
+        back_populates="defect",
+        cascade="all, delete-orphan",
     )

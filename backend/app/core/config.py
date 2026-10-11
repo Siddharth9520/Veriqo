@@ -24,6 +24,7 @@ class Settings(BaseSettings):
     BROWSER_HEADLESS: bool = True
     DEFAULT_ACTION_TIMEOUT_MS: int = 5000
     DEFAULT_NAVIGATION_TIMEOUT_MS: int = 10000
+    DEFAULT_REPLAY_TIMEOUT_SECONDS: int = 30
 
     # CORS
     CORS_ORIGINS: List[str] = [

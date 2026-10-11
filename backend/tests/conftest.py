@@ -69,11 +69,43 @@ class MockWebHandler(BaseHTTPRequestHandler):
     """Simple HTTP handler serving controlled test pages."""
 
     def do_GET(self):
+        if self.path == "/redirect-to-external":
+            self.send_response(302)
+            self.send_header("Location", "http://unauthorized-evil-domain.com/hack")
+            self.end_headers()
+            return
+
         self.send_response(200)
         self.send_header("Content-Type", "text/html; charset=utf-8")
         self.end_headers()
         if self.path == "/about":
             content = "<html><body><h1>About Veriqo Target</h1><p>About page loaded.</p></body></html>"
+        elif self.path == "/buggy-page":
+            content = """
+            <!DOCTYPE html>
+            <html>
+            <head><title>Buggy Form</title></head>
+            <body>
+              <h1>Buggy Order Form</h1>
+              <input id="email" type="text" placeholder="Email" />
+              <button id="submit" onclick="document.getElementById('status').innerText = 'Internal Server Error: 500'">Submit Order</button>
+              <div id="status">Ready</div>
+            </body>
+            </html>
+            """
+        elif self.path == "/working-page":
+            content = """
+            <!DOCTYPE html>
+            <html>
+            <head><title>Working Form</title></head>
+            <body>
+              <h1>Working Order Form</h1>
+              <input id="email" type="text" placeholder="Email" />
+              <button id="submit" onclick="document.getElementById('status').innerText = 'Order Confirmed: Thank you!'">Submit Order</button>
+              <div id="status">Ready</div>
+            </body>
+            </html>
+            """
         else:
             content = """
             <!DOCTYPE html>
