@@ -66,7 +66,7 @@ export interface CertificateVerifyResult {
  * Otherwise, default to relative '/api/v1' which resolves to the Next.js API route handlers.
  */
 export function getApiBaseUrl(): string {
-  const envUrl = process.env.NEXT_PUBLIC_API_BASE_URL?.trim();
+  const envUrl = (process.env.NEXT_PUBLIC_API_URL || process.env.NEXT_PUBLIC_API_BASE_URL)?.trim();
   if (envUrl) {
     return envUrl.endsWith('/') ? envUrl.slice(0, -1) : envUrl;
   }

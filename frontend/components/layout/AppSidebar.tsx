@@ -171,10 +171,12 @@ export default function AppSidebar({ mobileOpen = false, onMobileClose }: AppSid
 
   return (
     <>
-      {/* Desktop Persistent Sidebar */}
-      <aside className="hidden md:flex fixed left-0 top-0 h-full w-72 bg-[#191B19] border-r-2 border-[#1A1C1A] z-50 flex-col justify-between">
-        {sidebarContent}
-      </aside>
+      {/* Desktop Persistent Sidebar (rendered once by RootLayout) */}
+      {!onMobileClose && (
+        <aside className="hidden md:flex fixed left-0 top-0 h-full w-72 bg-[#191B19] border-r-2 border-[#1A1C1A] z-50 flex-col justify-between">
+          {sidebarContent}
+        </aside>
+      )}
 
       {/* Mobile Drawer Overlay */}
       {mobileOpen && (
