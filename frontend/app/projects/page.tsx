@@ -4,6 +4,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import MetricCard from '@/components/ui/MetricCard';
 import ProjectCard from '@/components/dashboard/ProjectCard';
 import ConnectAppModal from '@/components/forms/ConnectAppModal';
+import CertificateModal from '@/components/certificates/CertificateModal';
 import { initialProjects } from '@/lib/mock-data';
 import { Project } from '@/lib/types';
 import { apiClient, ApiError } from '@/lib/api-client';
@@ -21,6 +22,7 @@ export default function ProjectsPage() {
   const [sortOrder, setSortOrder] = useState('Recent Execution');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [connectModalOpen, setConnectModalOpen] = useState(false);
+  const [certificateModalOpen, setCertificateModalOpen] = useState(false);
   const [quickUrl, setQuickUrl] = useState('');
   const [quickConnecting, setQuickConnecting] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
@@ -133,10 +135,10 @@ export default function ProjectsPage() {
             <span className="text-[#1A1C1A] font-semibold">Projects</span>
             <span
               className={`ml-1 text-[10px] font-mono px-1.5 py-0.5 border border-[#1A1C1A] uppercase font-bold ${
-                isLive ? 'bg-[#E8E8E5] text-[#1A1C1A]' : 'bg-[#FFDAD6] text-[#93000A]'
+                isLive ? 'bg-[#B7EFD0] text-[#002114]' : 'bg-[#FFDAD6] text-[#93000A]'
               }`}
             >
-              [SYNTHETIC DEMO TELEMETRY]
+              {isLive ? '● [FastAPI & veriqo.db Active]' : '▲ [Local Cache Fallback]'}
             </span>
           </div>
           <h1 className="font-headline text-[28px] sm:text-[32px] text-[#1A1C1A] tracking-tight font-bold">
@@ -149,11 +151,11 @@ export default function ProjectsPage() {
 
         <div className="flex flex-wrap items-center gap-2 self-start xl:self-end">
           <button
-            onClick={() => setConnectModalOpen(true)}
+            onClick={() => setCertificateModalOpen(true)}
             className="bg-[#FFFFFF] text-[#1A1C1A] border-2 border-[#1A1C1A] px-4 py-2 font-headline text-[13px] uppercase shadow-[3px_3px_0px_#1a1c1a] hover:bg-[#E8E8E5] brutal-btn flex items-center gap-1.5 font-bold"
           >
-            <Icon name="upload" className="w-4 h-4 text-[#1A1C1A]" />
-            <span>Import OpenAPI / HAR Spec</span>
+            <Icon name="verified" className="w-4 h-4 text-[#285C45]" />
+            <span>QA Certificates &amp; Integrity</span>
           </button>
           <button
             onClick={() => setConnectModalOpen(true)}
@@ -459,6 +461,13 @@ export default function ProjectsPage() {
           showToast(`Connected ${newP.name} to Veriqo Cluster!`);
           await loadProjects();
         }}
+      />
+
+      {/* QA Certificate Modal */}
+      <CertificateModal
+        isOpen={certificateModalOpen}
+        onClose={() => setCertificateModalOpen(false)}
+        projects={projects}
       />
     </div>
   );

@@ -6,6 +6,7 @@ import { BugReport } from '@/lib/types';
 import SeverityBadge from '@/components/ui/SeverityBadge';
 import EvidenceModal from '@/components/evidence/EvidenceModal';
 import { apiClient } from '@/lib/api-client';
+import { BackendShowMeResponse, BackendFixPromptResponse } from '@/lib/backend-bridge';
 import { Icon } from '@/components/ui/Icons';
 
 export default function BugReportsPage() {
@@ -22,9 +23,22 @@ export default function BugReportsPage() {
   const [toastMessage, setToastMessage] = useState('');
   const [pinning, setPinning] = useState(false);
 
+  // Show Me Mode state
+  const [showMeData, setShowMeData] = useState<BackendShowMeResponse | null>(null);
+  const [showMeModalOpen, setShowMeModalOpen] = useState(false);
+  const [loadingShowMe, setLoadingShowMe] = useState(false);
+
+  // Fix Prompt state
+  const [fixPromptData, setFixPromptData] = useState<BackendFixPromptResponse | null>(null);
+  const [fixPromptModalOpen, setFixPromptModalOpen] = useState(false);
+  const [loadingFixPrompt, setLoadingFixPrompt] = useState(false);
+
+  // BlindReplay state
+  const [replaying, setReplaying] = useState(false);
+
   const showToast = (msg: string) => {
     setToastMessage(msg);
-    setTimeout(() => setToastMessage(''), 3000);
+    setTimeout(() => setToastMessage(''), 3500);
   };
 
   const loadBugs = useCallback(async () => {
@@ -76,7 +90,7 @@ export default function BugReportsPage() {
     setPinning(true);
     try {
       const updated = await apiClient.pinBugReport(id);
-      showToast(`Defect ${updated.id} pinned to Vault with verified Playwright trace.`);
+      showToast(`Defect ${updated.id} status updated to ${updated.status}.`);
       setBugs((prev) => prev.map((b) => (b.id === updated.id ? updated : b)));
       if (selectedBug?.id === updated.id) {
         setSelectedBug(updated);
@@ -85,6 +99,53 @@ export default function BugReportsPage() {
       showToast('Pinned defect to local vault.');
     } finally {
       setPinning(false);
+    }
+  };
+
+  const handleLaunchShowMe = async () => {
+    if (!selectedBug) return;
+    setLoadingShowMe(true);
+    try {
+      const report = await apiClient.getDefectShowMe(selectedBug.id);
+      setShowMeData(report);
+      setShowMeModalOpen(true);
+    } catch (err: unknown) {
+      showToast(err instanceof Error ? err.message : 'Failed to generate Show Me diagnosis.');
+    } finally {
+      setLoadingShowMe(false);
+    }
+  };
+
+  const handleLaunchFixPrompt = async () => {
+    if (!selectedBug) return;
+    setLoadingFixPrompt(true);
+    try {
+      const prompt = await apiClient.getDefectFixPrompt(selectedBug.id);
+      setFixPromptData(prompt);
+      setFixPromptModalOpen(true);
+    } catch (err: unknown) {
+      showToast(err instanceof Error ? err.message : 'Failed to generate Fix Prompt.');
+    } finally {
+      setLoadingFixPrompt(false);
+    }
+  };
+
+  const handleExecuteBlindReplay = async () => {
+    if (!selectedBug || replaying) return;
+    setReplaying(true);
+    showToast('Executing independent BlindReplay in fresh browser session...');
+    try {
+      const result = await apiClient.triggerBlindReplay(
+        selectedBug.id,
+        selectedBug.reproductionSteps.join('\n'),
+        selectedBug.expectedBehavior
+      );
+      showToast(`BlindReplay finished: ${result.outcome || result.status}!`);
+      await loadBugs();
+    } catch (err: unknown) {
+      showToast(err instanceof Error ? err.message : 'BlindReplay execution failed.');
+    } finally {
+      setReplaying(false);
     }
   };
 
@@ -111,14 +172,14 @@ export default function BugReportsPage() {
                 isLive ? 'bg-[#B7EFD0] text-[#002114]' : 'bg-[#FFDAD6] text-[#93000A]'
               }`}
             >
-              {isLive ? '● [Live Defect Records]' : '▲ [Demo Offline Cache]'}
+              {isLive ? '● [FastAPI & veriqo.db Active]' : '▲ [Local Cache Fallback]'}
             </span>
           </div>
           <h1 className="font-headline text-[28px] sm:text-[34px] font-bold text-[#1A1C1A] tracking-tight">
             Defect Vault &amp; Evidence Dossiers
           </h1>
           <p className="font-body text-[14px] text-[#404943]">
-            Autonomously captured regression proofs with deterministic Playwright repro scripts, HAR traces, and DOM diffs.
+            Autonomously captured regression proofs with deterministic Playwright repro scripts, Show Me Mode diagnostics, and independent BlindReplay verification.
           </p>
         </div>
 
@@ -215,7 +276,7 @@ export default function BugReportsPage() {
                         </span>
                         {bug.status === 'VERIFIED' && (
                           <span className="bg-[#B7EFD0] text-[#002114] border border-[#1A1C1A] px-1.5 py-0.2 font-mono text-[9px] font-bold uppercase">
-                            PINNED
+                            BLINDREPLAY VERIFIED
                           </span>
                         )}
                       </div>
@@ -298,44 +359,68 @@ export default function BugReportsPage() {
                 </div>
               </div>
 
-              {/* Actions */}
+              {/* Integrated Actions */}
               <div className="flex flex-col gap-2 pt-2 border-t border-[#E2E3DF]">
+                {/* 1. Show Me Mode */}
+                <button
+                  onClick={handleLaunchShowMe}
+                  disabled={loadingShowMe}
+                  className="w-full bg-[#1A1C1A] text-white py-2 border-2 border-[#1A1C1A] font-headline text-[13px] uppercase font-bold text-center brutal-shadow brutal-btn flex items-center justify-center gap-2 hover:bg-[#333333]"
+                >
+                  <Icon name="psychology" className="w-4 h-4 text-[#B7EFD0]" />
+                  <span>{loadingShowMe ? 'Diagnosing...' : 'Show Me Mode (Diagnosis)'}</span>
+                </button>
+
+                {/* 2. Execute Independent BlindReplay */}
+                <button
+                  onClick={handleExecuteBlindReplay}
+                  disabled={replaying}
+                  className={`w-full py-2 border-2 border-[#1A1C1A] font-headline text-[13px] uppercase font-bold text-center brutal-shadow brutal-btn flex items-center justify-center gap-2 ${
+                    replaying
+                      ? 'bg-[#EEEEEA] text-[#1A1C1A]'
+                      : 'bg-[#285C45] text-white hover:bg-[#0B442F]'
+                  }`}
+                >
+                  <Icon name="replay" className={`w-4 h-4 ${replaying ? 'animate-spin' : ''}`} />
+                  <span>{replaying ? 'Executing Replay in Browser...' : 'Execute BlindReplay'}</span>
+                </button>
+
+                {/* 3. Export Developer Fix Prompt */}
+                <button
+                  onClick={handleLaunchFixPrompt}
+                  disabled={loadingFixPrompt}
+                  className="w-full bg-[#FFFFFF] text-[#1A1C1A] py-2 border-2 border-[#1A1C1A] font-headline text-[13px] uppercase font-bold text-center brutal-shadow brutal-btn flex items-center justify-center gap-2 hover:bg-[#EEEEEA]"
+                >
+                  <Icon name="terminal" className="w-4 h-4 text-[#285C45]" />
+                  <span>{loadingFixPrompt ? 'Generating...' : 'Export Fix Prompt (Markdown)'}</span>
+                </button>
+
+                {/* 4. Pin / Status Toggle */}
                 <button
                   onClick={() => handlePinBug(selectedBug.id)}
                   disabled={pinning}
-                  className={`w-full py-2 border-2 border-[#1A1C1A] font-headline text-[13px] uppercase font-bold text-center brutal-shadow brutal-btn flex items-center justify-center gap-2 ${
-                    selectedBug.status === 'VERIFIED'
-                      ? 'bg-[#EEEEEA] text-[#1A1C1A]'
-                      : 'bg-[#FD6E5B] text-white hover:bg-[#AC3326]'
-                  }`}
+                  className="w-full bg-[#F4F4F0] text-[#1A1C1A] py-2 border-2 border-[#1A1C1A] font-headline text-[12px] uppercase font-bold text-center hover:bg-[#E8E8E5] flex items-center justify-center gap-2"
                 >
                   <Icon
                     name={selectedBug.status === 'VERIFIED' ? 'check_circle' : 'bookmark_add'}
-                    className="w-4 h-4"
+                    className="w-4 h-4 text-[#AC3326]"
                   />
                   <span>
                     {pinning
-                      ? 'Pinning...'
+                      ? 'Updating...'
                       : selectedBug.status === 'VERIFIED'
-                      ? 'Pinned in Defect Vault'
-                      : 'Pin to Defect Vault'}
+                      ? 'Status: VERIFIED (Confirmed)'
+                      : 'Mark Investigating'}
                   </span>
                 </button>
 
-                <button
-                  onClick={() => setEvidenceModalOpen(true)}
-                  className="w-full bg-[#285C45] text-white py-2 border-2 border-[#1A1C1A] font-headline text-[13px] uppercase font-bold text-center brutal-shadow brutal-btn flex items-center justify-center gap-2 hover:bg-[#0B442F]"
-                >
-                  <Icon name="visibility" className="w-4 h-4" />
-                  <span>Inspect HTTP &amp; DOM Evidence</span>
-                </button>
-
+                {/* 5. Playwright Repro Script */}
                 <button
                   onClick={() => setPlaywrightModalOpen(true)}
-                  className="w-full bg-[#FFFFFF] text-[#1A1C1A] py-2 border-2 border-[#1A1C1A] font-headline text-[13px] uppercase font-bold text-center brutal-shadow brutal-btn flex items-center justify-center gap-2 hover:bg-[#EEEEEA]"
+                  className="w-full bg-[#FFFFFF] text-[#404943] py-1.5 border border-[#1A1C1A] font-headline text-[11px] uppercase font-bold text-center hover:bg-[#EEEEEA] flex items-center justify-center gap-2"
                 >
-                  <Icon name="code" className="w-4 h-4" />
-                  <span>View Playwright Repro Script</span>
+                  <Icon name="code" className="w-3.5 h-3.5" />
+                  <span>View Playwright Script</span>
                 </button>
               </div>
             </>
@@ -348,6 +433,186 @@ export default function BugReportsPage() {
       </div>
 
       <EvidenceModal isOpen={evidenceModalOpen} onClose={() => setEvidenceModalOpen(false)} />
+
+      {/* Show Me Mode Modal */}
+      {showMeModalOpen && showMeData && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#191B19]/75 backdrop-blur-xs">
+          <div className="bg-[#FFFFFF] border-2 border-[#1A1C1A] brutal-shadow-lg max-w-3xl w-full p-6 flex flex-col gap-4 animate-in fade-in zoom-in-95 duration-100 max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between pb-3 border-b-2 border-[#1A1C1A]">
+              <div className="flex items-center gap-2">
+                <Icon name="psychology" className="w-6 h-6 text-[#285C45]" />
+                <div>
+                  <h3 className="font-headline font-bold text-[20px] uppercase">
+                    Show Me Mode // Defect #{showMeData.defect_id}
+                  </h3>
+                  <span className="font-mono text-[11px] text-[#404943]">
+                    {showMeData.title} · Severity: {showMeData.severity}
+                  </span>
+                </div>
+              </div>
+              <button onClick={() => setShowMeModalOpen(false)} className="hover:opacity-75">
+                <Icon name="close" className="w-5 h-5 text-[#1A1C1A]" />
+              </button>
+            </div>
+
+            {/* Diagnostic Summary */}
+            <div className="bg-[#FAF9F6] border-2 border-[#1A1C1A] p-4 brutal-shadow-sm flex flex-col gap-2">
+              <span className="font-mono text-[11px] uppercase font-bold text-[#285C45]">
+                Automated Root-Cause Diagnostic
+              </span>
+              <p className="font-body text-[14px] text-[#1A1C1A] leading-relaxed">
+                {showMeData.explanation?.summary}
+              </p>
+              <div className="flex items-center gap-3 pt-2 border-t border-[#E2E3DF] font-mono text-[11px] text-[#404943]">
+                <span>Confidence: <strong className="text-[#0B442F]">{showMeData.explanation?.confidence}</strong></span>
+                <span>•</span>
+                <span className="text-[#717973]">{showMeData.explanation?.disclaimer}</span>
+              </div>
+            </div>
+
+            {/* BlindReplay Section */}
+            <div className="border border-[#1A1C1A] p-3 bg-[#F4F4F0]">
+              <div className="flex items-center justify-between">
+                <span className="font-mono text-[11px] uppercase font-bold text-[#1A1C1A]">
+                  Independent BlindReplay Evidence
+                </span>
+                <span className="font-mono text-[11px] bg-[#B7EFD0] text-[#002114] px-2 py-0.5 border border-[#1A1C1A] font-bold">
+                  {showMeData.blind_replay?.latest_outcome || 'NO REPLAY YET'}
+                </span>
+              </div>
+              <div className="mt-2 font-mono text-[12px] text-[#404943]">
+                Total Reproduction Attempts: {showMeData.blind_replay?.replays_count} · Verified: {showMeData.blind_replay?.is_verified ? 'Yes (CONFIRMED)' : 'No'}
+              </div>
+            </div>
+
+            {/* Evidence Artifacts */}
+            <div className="flex flex-col gap-2">
+              <span className="font-mono text-[11px] uppercase font-bold text-[#1A1C1A]">
+                Captured Evidence Artifacts ({showMeData.evidence?.total_artifacts || 0})
+              </span>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                {showMeData.evidence?.artifacts?.map((art, idx) => (
+                  <div key={idx} className="bg-[#FFFFFF] border border-[#1A1C1A] p-2.5 font-mono text-[11px] flex flex-col justify-between">
+                    <div>
+                      <span className="font-bold text-[#1A1C1A] truncate block">{art.path}</span>
+                      <span className="text-[#717973] text-[10px]">Source: {art.source}</span>
+                    </div>
+                    <div className="mt-2 flex items-center justify-between pt-1 border-t border-[#E2E3DF]">
+                      <span className={art.exists ? 'text-[#0B442F] font-bold' : 'text-[#AC3326]'}>
+                        {art.exists ? `Verified (${Math.round((art.file_size_bytes || 0) / 1024)} KB)` : 'Missing'}
+                      </span>
+                      {art.exists && (
+                        <a
+                          href={`/api/v1/evidence/${art.path}`}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="bg-[#285C45] text-white px-2 py-0.5 text-[10px] font-bold uppercase hover:bg-[#0B442F]"
+                        >
+                          View Image
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Execution Logs */}
+            {showMeData.evidence?.execution_logs && showMeData.evidence.execution_logs.length > 0 && (
+              <div className="bg-[#191B19] text-[#F1F1ED] p-3 font-mono text-[11px] overflow-x-auto border border-[#717973]">
+                <span className="text-[#B7EFD0] font-bold block mb-1">Execution Step Trace:</span>
+                {showMeData.evidence.execution_logs.map((log: Record<string, unknown>, idx: number) => (
+                  <div key={idx} className="flex gap-2 py-0.5">
+                    <span className="text-[#717973]">#{String(log.step_index)}</span>
+                    <span className="text-[#9CD2B5]">{String(log.action_type)}</span>
+                    <span className={log.status === 'passed' ? 'text-[#B7EFD0]' : 'text-[#FD6E5B]'}>
+                      [{String(log.status).toUpperCase()}]
+                    </span>
+                    {Boolean(log.error_message) && <span className="text-[#FFDAD6]">{String(log.error_message)}</span>}
+                  </div>
+                ))}
+              </div>
+            )}
+
+            <div className="flex justify-end pt-2 border-t border-[#E2E3DF]">
+              <button
+                onClick={() => setShowMeModalOpen(false)}
+                className="bg-[#1A1C1A] text-white px-5 py-2 font-headline text-[12px] uppercase font-bold hover:bg-[#333]"
+              >
+                Close Diagnostic
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Fix Prompt Modal */}
+      {fixPromptModalOpen && fixPromptData && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#191B19]/75 backdrop-blur-xs">
+          <div className="bg-[#FFFFFF] border-2 border-[#1A1C1A] brutal-shadow-lg max-w-3xl w-full p-6 flex flex-col gap-4 animate-in fade-in zoom-in-95 duration-100 max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between pb-3 border-b-2 border-[#1A1C1A]">
+              <div className="flex items-center gap-2">
+                <Icon name="terminal" className="w-6 h-6 text-[#285C45]" />
+                <div>
+                  <h3 className="font-headline font-bold text-[20px] uppercase">
+                    Developer Fix Prompt // #{fixPromptData.defect_id}
+                  </h3>
+                  <span className="font-mono text-[11px] text-[#404943]">
+                    {fixPromptData.title} · Verification: {fixPromptData.verification_context?.is_verified ? 'VERIFIED' : 'UNVERIFIED'}
+                  </span>
+                </div>
+              </div>
+              <button onClick={() => setFixPromptModalOpen(false)} className="hover:opacity-75">
+                <Icon name="close" className="w-5 h-5 text-[#1A1C1A]" />
+              </button>
+            </div>
+
+            {/* Trust Boundary Banner */}
+            <div className="bg-[#FAF9F6] border border-[#1A1C1A] p-3 font-mono text-[11px]">
+              <strong className="text-[#285C45] block">Verified Trust Boundary:</strong>
+              <p className="mt-1 text-[#404943]">
+                {fixPromptData.verification_context?.verification_notes}
+              </p>
+            </div>
+
+            {/* Prompt Markdown Content */}
+            <div className="bg-[#191B19] text-[#F1F1ED] p-4 font-mono text-[12px] leading-relaxed overflow-x-auto border border-[#717973] max-h-72">
+              <pre className="whitespace-pre-wrap text-[#9CD2B5]">
+                {fixPromptData.prompt_text}
+              </pre>
+            </div>
+
+            {/* Developer Tasks */}
+            {fixPromptData.developer_tasks && fixPromptData.developer_tasks.length > 0 && (
+              <div className="flex flex-col gap-1 font-mono text-[12px]">
+                <span className="font-bold text-[#1A1C1A]">Prescribed Action Items:</span>
+                <ul className="list-disc list-inside space-y-1 text-[#404943]">
+                  {fixPromptData.developer_tasks.map((task, idx) => (
+                    <li key={idx}>{task}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            <div className="flex items-center justify-between pt-2 border-t border-[#E2E3DF]">
+              <span className="font-mono text-[11px] text-[#717973]">
+                Exported with verified Playwright facts and redacted credentials
+              </span>
+              <button
+                onClick={() => {
+                  navigator.clipboard.writeText(fixPromptData.prompt_text);
+                  showToast('Copied Developer Fix Prompt to clipboard!');
+                  setFixPromptModalOpen(false);
+                }}
+                className="bg-[#285C45] text-white px-5 py-2 border-2 border-[#1A1C1A] font-headline text-[13px] uppercase font-bold hover:bg-[#0B442F] brutal-shadow-sm brutal-btn flex items-center gap-1.5"
+              >
+                <Icon name="content_copy" className="w-4 h-4" />
+                <span>Copy Prompt Markdown</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Playwright Script Modal */}
       {playwrightModalOpen && selectedBug && (
@@ -371,24 +636,17 @@ export default function BugReportsPage() {
 
 test.describe('${selectedBug.id}: ${selectedBug.title}', () => {
   test('reproduce concurrency race condition on ${selectedBug.targetElement}', async ({ page }) => {
-    await page.goto('https://shop-flow-staging.internal.app/checkout');
+    await page.goto('http://127.0.0.1:8000/orders');
     
     // Auto-synthesized test inputs
     await page.fill('#card-number', '4242-xxxx-xxxx-4242');
     await page.fill('#card-exp', '12/28');
     await page.fill('#card-cvc', '123');
 
-    // Synthetic double-click race vector with 12ms delta
     const btn = page.locator('${selectedBug.targetElement}');
-    const [response1, response2] = await Promise.all([
-      btn.click(),
-      new Promise((resolve) => setTimeout(resolve, 12)).then(() => btn.click()),
-      page.waitForResponse((res) => res.url().includes('/api/v1/checkout/charge')),
-    ]);
+    await btn.click();
 
-    // Invariant: Second in-flight request should be invalidated via idempotency nonce
-    expect(response1.status()).toBe(200);
-    expect(response2.status()).toBe(409); // Expected Conflict/De-duped, Got 200 OK!
+    expect(page.locator('text=Order Confirmed')).toBeVisible();
   });
 });`}
               </pre>
@@ -400,7 +658,7 @@ test.describe('${selectedBug.id}: ${selectedBug.title}', () => {
               </span>
               <button
                 onClick={() => {
-                  const scriptText = `import { test, expect } from '@playwright/test';\n\ntest.describe('${selectedBug.id}: ${selectedBug.title}', () => {\n  test('reproduce on ${selectedBug.targetElement}', async ({ page }) => {\n    await page.goto('https://shop-flow-staging.internal.app/checkout');\n  });\n});`;
+                  const scriptText = `import { test, expect } from '@playwright/test';\n\ntest.describe('${selectedBug.id}: ${selectedBug.title}', () => {\n  test('reproduce on ${selectedBug.targetElement}', async ({ page }) => {\n    await page.goto('http://127.0.0.1:8000/orders');\n  });\n});`;
                   navigator.clipboard.writeText(scriptText);
                   showToast('Copied synthesized Playwright script to clipboard!');
                   setPlaywrightModalOpen(false);

@@ -14,7 +14,7 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
+/lib/
 lib64/
 parts/
 sdist/
@@ -31,9 +31,14 @@ ENV/
 env/
 
 # Test Evidence & Screenshots
-evidence/
+/evidence/
+/backend/evidence/
 *.png
 *.jpg
+
+# Explicitly ensure frontend code directories are not accidentally ignored
+!frontend/lib/
+!frontend/components/evidence/
 
 # Environment variables
 .env

@@ -1,4 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
+import {
+  backendFetch,
+  BackendTestRun,
+  BackendTargetApp,
+} from '@/lib/backend-bridge';
+import { mapBackendRunToFrontend } from '../route';
 import { db } from '@/lib/db';
 import { TestRun } from '@/lib/types';
 
@@ -8,8 +14,25 @@ export async function GET(
 ) {
   try {
     const { id } = await params;
-    const run = db.getTestRun(id);
+    const numericId = parseInt(id.replace(/^run-/, '').replace(/^#VRQ-/, ''), 10);
 
+    if (!isNaN(numericId)) {
+      try {
+        const [backendRun, apps] = await Promise.all([
+          backendFetch<BackendTestRun>(`/api/v1/test-runs/${numericId}`),
+          backendFetch<BackendTargetApp[]>('/api/v1/target-apps').catch(() => []),
+        ]);
+
+        if (backendRun) {
+          const mapped = mapBackendRunToFrontend(backendRun, apps);
+          return NextResponse.json(mapped, { status: 200 });
+        }
+      } catch {
+        // Fall through to local DB
+      }
+    }
+
+    const run = db.getTestRun(id);
     if (!run) {
       return NextResponse.json(
         { error: `Test run execution '${id}' not found.` },

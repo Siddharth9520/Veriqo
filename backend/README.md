@@ -78,7 +78,7 @@ backend/
 From within the `backend/` directory:
 
 ```powershell
-cd D:\veriqo\Veriqo\backend
+cd backend
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 ```
