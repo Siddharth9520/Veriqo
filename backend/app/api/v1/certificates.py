@@ -2,7 +2,8 @@
 
 from typing import List, Optional
 import uuid
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Query, status
+from pydantic import BaseModel
 from sqlalchemy import func
 from sqlalchemy.orm import Session
 
@@ -24,6 +25,47 @@ from app.services.scoring import (
 )
 
 router = APIRouter(tags=["Certificates"])
+
+
+class CertificateCreateRootRequest(BaseModel):
+    app_id: int
+    test_run_ids: Optional[List[int]] = None
+
+
+@router.get(
+    "/certificates",
+    response_model=List[CertificateRead],
+    summary="List Certificates",
+)
+def list_all_certificates(
+    app_id: Optional[int] = Query(None, description="Optional target app ID filter"),
+    db: Session = Depends(get_db),
+) -> List[Certificate]:
+    """Retrieve certificates across all apps or for a specific app."""
+    query = db.query(Certificate)
+    if app_id is not None:
+        query = query.filter(Certificate.target_app_id == app_id)
+    return query.order_by(Certificate.id.desc()).all()
+
+
+@router.post(
+    "/certificates",
+    response_model=CertificateRead,
+    status_code=status.HTTP_201_CREATED,
+    summary="Generate QA Certificate (Root)",
+)
+def create_certificate_root(
+    payload: CertificateCreateRootRequest,
+    db: Session = Depends(get_db),
+) -> Certificate:
+    """Generate and persist a QA Certificate using root payload with app_id."""
+    sub_payload = (
+        CertificateCreateRequest(test_run_ids=payload.test_run_ids)
+        if payload.test_run_ids
+        else None
+    )
+    return create_certificate(app_id=payload.app_id, payload=sub_payload, db=db)
+
 
 
 @router.post(

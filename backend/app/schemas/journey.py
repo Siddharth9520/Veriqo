@@ -1,8 +1,9 @@
 """Typed schemas for browser journeys and action definitions."""
 
 from enum import Enum
-from typing import Annotated, List, Literal, Optional, Union
-from pydantic import BaseModel, Field
+from typing import Annotated, Any, List, Literal, Optional, Union
+from pydantic import BaseModel, Field, model_validator
+
 
 
 class ActionType(str, Enum):
@@ -13,6 +14,8 @@ class ActionType(str, Enum):
     FILL = "fill"
     ASSERT_TEXT_VISIBLE = "assert_text_visible"
     ASSERT_ELEMENT_VISIBLE = "assert_element_visible"
+    SCREENSHOT = "screenshot"
+    ASSERT_TITLE_CONTAINS = "assert_title_contains"
 
 
 class NavigateAction(BaseModel):
@@ -54,6 +57,20 @@ class AssertElementVisibleAction(BaseModel):
     selector: str = Field(..., min_length=1, description="Element selector that must be visible")
 
 
+class ScreenshotAction(BaseModel):
+    """Capture a screenshot at current page state."""
+
+    type: Literal["screenshot"] = "screenshot"
+    description: Optional[str] = Field(None, description="Optional screenshot label or description")
+
+
+class AssertTitleContainsAction(BaseModel):
+    """Assert that page title contains expected string."""
+
+    type: Literal["assert_title_contains"] = "assert_title_contains"
+    value: str = Field("", description="Sub-string expected in page title")
+
+
 JourneyAction = Annotated[
     Union[
         NavigateAction,
@@ -61,6 +78,8 @@ JourneyAction = Annotated[
         FillAction,
         AssertTextVisibleAction,
         AssertElementVisibleAction,
+        ScreenshotAction,
+        AssertTitleContainsAction,
     ],
     Field(discriminator="type"),
 ]
@@ -75,6 +94,29 @@ class JourneyDefinition(BaseModel):
         ..., min_length=1, description="Ordered sequence of actions to execute"
     )
 
+    @model_validator(mode="before")
+
+
+    @classmethod
+    def normalize_fields(cls, data: Any) -> Any:
+        if isinstance(data, dict):
+            # Allow journey_name as alias for name
+            if "name" not in data and "journey_name" in data:
+                data["name"] = data["journey_name"]
+            # Normalize actions if action_type was supplied instead of type
+            if "actions" in data and isinstance(data["actions"], list):
+                norm_actions = []
+                for act in data["actions"]:
+                    if isinstance(act, dict):
+                        act_copy = dict(act)
+                        if "type" not in act_copy and "action_type" in act_copy:
+                            act_copy["type"] = act_copy["action_type"]
+                        norm_actions.append(act_copy)
+                    else:
+                        norm_actions.append(act)
+                data["actions"] = norm_actions
+        return data
+
 
 class ActionExecutionResult(BaseModel):
     """Outcome report for an individual action in a journey."""
@@ -84,3 +126,4 @@ class ActionExecutionResult(BaseModel):
     status: Literal["passed", "failed"]
     error: Optional[str] = None
     duration_ms: float
+

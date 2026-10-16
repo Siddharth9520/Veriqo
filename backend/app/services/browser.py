@@ -168,10 +168,29 @@ async def execute_browser_journey(
                                 f"Assertion failed: Expected element '{action.selector}' was not visible within {settings.DEFAULT_ACTION_TIMEOUT_MS}ms"
                             )
 
+                    elif action_type == ActionType.SCREENSHOT:
+                        screenshot_rel = f"run_{test_run_id}/step_{idx}_manual.png"
+                        screenshot_full = evidence_dir / screenshot_rel
+                        try:
+                            await page.screenshot(path=str(screenshot_full))
+                            evidence_paths.append(screenshot_rel)
+                        except Exception as ss_err:
+                            logger.warning("Could not take manual screenshot at step %d: %s", idx, ss_err)
+
+
+                    elif action_type == ActionType.ASSERT_TITLE_CONTAINS:
+                        current_title = await page.title()
+                        expected_val = getattr(action, "value", "") or ""
+                        if expected_val and expected_val.lower() not in current_title.lower():
+                            raise AssertionError(
+                                f"Assertion failed: Expected page title to contain '{expected_val}', but got '{current_title}'"
+                            )
+
                     else:
                         raise ValueError(f"Unsupported action type: {action_type}")
 
                     action_passed = True
+
 
                 except PlaywrightTimeoutError as timeout_err:
                     action_error = f"Timeout during action {idx} ({action_type}): {str(timeout_err)}"

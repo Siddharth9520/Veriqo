@@ -49,13 +49,62 @@ def check_db_connection() -> bool:
 
 
 def init_db() -> None:
-    """Initialize database tables from registered SQLAlchemy models."""
+    """Initialize database tables and seed baseline application if empty."""
     from app.db.base import Base
     import app.models  # noqa: F401 - ensure models are imported and registered
+    from app.models.defect import Defect
+    from app.models.target_app import TargetApp
+    from app.models.test_run import TestRun
 
     try:
         Base.metadata.create_all(bind=engine)
         logger.info("Database initialized successfully.")
+
+        # Seed initial target application if database is completely empty
+        with SessionLocal() as db:
+            if db.query(TargetApp).count() == 0:
+                demo_app = TargetApp(
+                    name="Commerce Platform (Storefront Web)",
+                    url="http://127.0.0.1:8080",
+                    description="Environment: Staging | Swarm: Deep Heuristic",
+                )
+                db.add(demo_app)
+                db.commit()
+                db.refresh(demo_app)
+
+                run = TestRun(
+                    target_app_id=demo_app.id,
+                    status="failed",
+                    journey_definition={
+                        "name": "E2E Checkout Race Condition Audit",
+                        "actions": [
+                            {"type": "navigate", "url": "/"},
+                            {"type": "screenshot", "description": "catalog_landing"},
+                            {"type": "click", "selector": "#nav-buggy"},
+                            {"type": "fill", "selector": "#email-input", "value": "tester@veriqo.local"},
+                            {"type": "click", "selector": "#submit-order-btn"},
+                            {"type": "assert_text_visible", "text": "Order Confirmed: #1001"},
+                        ],
+                    },
+                    error_message="Assertion failed: Expected visible text 'Order Confirmed: #1001' was not found",
+                )
+                db.add(run)
+                db.commit()
+                db.refresh(run)
+
+                defect = Defect(
+                    test_run_id=run.id,
+                    title="Rapid Double-Click Order Submission Race Condition",
+                    description="Duplicate order execution and unhandled 500 error triggered during high concurrency checkout.",
+                    severity="CRITICAL",
+                    status="OPEN",
+                    reproduction_steps="1. Navigate to /buggy-order\n2. Fill customer email 'tester@veriqo.local'\n3. Click 'Submit Order' button rapidly\n4. Observe 500 database lock acquisition failure",
+                    expected_behavior="Expected idempotency token to prevent duplicate order generation and display 'Order Confirmed: #1001'.",
+                )
+                db.add(defect)
+                db.commit()
+                logger.info("Seeded initial demo target application and verified baseline run.")
     except Exception as exc:
         logger.critical("Database initialization failed: %s", exc)
         raise
+
