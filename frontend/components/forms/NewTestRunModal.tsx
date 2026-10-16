@@ -66,11 +66,11 @@ export default function NewTestRunModal({ isOpen, onClose }: NewTestRunModalProp
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#191B19]/70 backdrop-blur-xs">
-      <div className="bg-[#FFFFFF] border-2 border-[#1A1C1A] brutal-shadow-lg w-full max-w-lg p-6 flex flex-col gap-4 relative animate-in fade-in zoom-in-95 duration-100">
+      <div className="bg-[#FFFFFF] border-2 border-[#1A1C1A] brutal-shadow-lg rounded-2xl w-full max-w-lg p-6 flex flex-col gap-4 relative animate-in fade-in zoom-in-95 duration-100">
         {/* Header */}
         <div className="flex items-center justify-between pb-3 border-b-2 border-[#1A1C1A]">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-[#285C45] text-white flex items-center justify-center border border-[#1A1C1A]">
+            <div className="w-8 h-8 bg-[#285C45] text-white flex items-center justify-center border border-[#1A1C1A] rounded-lg">
               <Icon name="play" className="w-4 h-4 text-white" />
             </div>
             <div>
@@ -84,14 +84,14 @@ export default function NewTestRunModal({ isOpen, onClose }: NewTestRunModalProp
           </div>
           <button
             onClick={onClose}
-            className="text-[#717973] hover:text-[#1A1C1A] p-1 border border-transparent hover:border-[#1A1C1A]"
+            className="text-[#717973] hover:text-[#1A1C1A] p-1 border border-transparent hover:border-[#1A1C1A] rounded-md transition-colors"
           >
             <Icon name="close" className="w-5 h-5" />
           </button>
         </div>
 
         {error && (
-          <div className="bg-[#FFDAD6] border-2 border-[#AC3326] p-2.5 flex items-center gap-2 font-mono text-[12px] text-[#93000A]">
+          <div className="bg-[#FFDAD6] border-2 border-[#AC3326] p-2.5 flex items-center gap-2 font-mono text-[12px] text-[#93000A] rounded-lg">
             <Icon name="warning" className="w-4 h-4 text-[#93000A]" />
             <span>{error}</span>
           </div>
@@ -106,7 +106,7 @@ export default function NewTestRunModal({ isOpen, onClose }: NewTestRunModalProp
             <select
               value={selectedProject}
               onChange={(e) => setSelectedProject(e.target.value)}
-              className="w-full bg-[#FAF9F6] border-2 border-[#1A1C1A] px-3 py-2 font-mono text-[12px] font-bold text-[#1A1C1A] focus:outline-none brutal-shadow-sm"
+              className="w-full bg-[#FAF9F6] border-2 border-[#1A1C1A] px-3 py-2 font-mono text-[12px] font-bold text-[#1A1C1A] focus:outline-none brutal-shadow-sm rounded-lg"
             >
               {projects.map((p) => (
                 <option key={p.slug} value={p.slug}>
@@ -132,7 +132,7 @@ export default function NewTestRunModal({ isOpen, onClose }: NewTestRunModalProp
                   key={mode.id}
                   type="button"
                   onClick={() => setSwarmMode(mode.id)}
-                  className={`p-2 border-2 text-left flex flex-col gap-0.5 transition-all ${
+                  className={`p-2 border-2 text-left flex flex-col gap-0.5 rounded-lg transition-all ${
                     swarmMode === mode.id
                       ? 'border-[#1A1C1A] bg-[#B7EFD0] text-[#002114] brutal-shadow-sm font-bold'
                       : 'border-[#1A1C1A] bg-[#FAF9F6] text-[#404943] hover:bg-[#EEEEEA]'
@@ -154,7 +154,7 @@ export default function NewTestRunModal({ isOpen, onClose }: NewTestRunModalProp
               <select
                 value={environment}
                 onChange={(e) => setEnvironment(e.target.value)}
-                className="w-full bg-[#FAF9F6] border-2 border-[#1A1C1A] px-3 py-2 font-mono text-[11px] font-bold text-[#1A1C1A] focus:outline-none brutal-shadow-sm"
+                className="w-full bg-[#FAF9F6] border-2 border-[#1A1C1A] px-3 py-2 font-mono text-[11px] font-bold text-[#1A1C1A] focus:outline-none brutal-shadow-sm rounded-lg"
               >
                 <option value="Staging (us-east-01)">Staging (us-east-01)</option>
                 <option value="Prod Canary (eu-west-01)">Prod Canary (eu-west-01)</option>
@@ -169,7 +169,7 @@ export default function NewTestRunModal({ isOpen, onClose }: NewTestRunModalProp
               <select
                 value={concurrency}
                 onChange={(e) => setConcurrency(e.target.value)}
-                className="w-full bg-[#FAF9F6] border-2 border-[#1A1C1A] px-3 py-2 font-mono text-[11px] font-bold text-[#1A1C1A] focus:outline-none brutal-shadow-sm"
+                className="w-full bg-[#FAF9F6] border-2 border-[#1A1C1A] px-3 py-2 font-mono text-[11px] font-bold text-[#1A1C1A] focus:outline-none brutal-shadow-sm rounded-lg"
               >
                 <option value="2">2 Headless Chromium Instances</option>
                 <option value="4">4 Headless Chromium Instances</option>
@@ -179,7 +179,7 @@ export default function NewTestRunModal({ isOpen, onClose }: NewTestRunModalProp
           </div>
 
           {/* Telemetry info banner */}
-          <div className="bg-[#FAF9F6] border border-[#717973] p-2.5 flex items-center gap-2 font-mono text-[11px]">
+          <div className="bg-[#FAF9F6] border border-[#717973] p-2.5 flex items-center gap-2 font-mono text-[11px] rounded-lg">
             <Icon name="analytics" className="w-4 h-4 text-[#285C45] flex-shrink-0" />
             <span className="text-[#404943]">
               Allocates isolated container sandbox with HAR trace recording and DevTools CDP hooks.
@@ -192,14 +192,14 @@ export default function NewTestRunModal({ isOpen, onClose }: NewTestRunModalProp
               type="button"
               onClick={onClose}
               disabled={isLaunching}
-              className="px-4 py-2 bg-[#FAF9F6] border-2 border-[#1A1C1A] font-headline text-[13px] uppercase font-bold brutal-shadow-sm hover:bg-[#E8E8E5]"
+              className="px-4 py-2 bg-[#FAF9F6] border-2 border-[#1A1C1A] font-headline text-[13px] uppercase font-bold brutal-shadow-sm hover:bg-[#E8E8E5] rounded-lg brutal-btn"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={isLaunching}
-              className="px-4 py-2 bg-[#285C45] text-white border-2 border-[#1A1C1A] font-headline text-[13px] uppercase font-bold brutal-shadow-sm hover:bg-[#0B442F] flex items-center gap-1.5 active:translate-x-0.5 active:translate-y-0.5"
+              className="px-4 py-2 bg-[#285C45] text-white border-2 border-[#1A1C1A] font-headline text-[13px] uppercase font-bold brutal-shadow-sm hover:bg-[#0B442F] flex items-center gap-1.5 rounded-lg brutal-btn disabled:opacity-50"
             >
               {isLaunching ? (
                 <>

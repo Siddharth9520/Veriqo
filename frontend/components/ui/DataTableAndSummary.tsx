@@ -28,42 +28,44 @@ export function DataTable<T>({
 }: DataTableProps<T>) {
   if (data.length === 0) {
     return (
-      <div className="bg-[#FFFFFF] border-2 border-[#1A1C1A] p-8 text-center font-mono text-[12px] text-[#717973] brutal-shadow">
+      <div className="bg-[#FFFFFF] border-2 border-[#1A1C1A] rounded-xl p-8 text-center font-mono text-[12px] text-[#717973] brutal-shadow">
         {emptyMessage}
       </div>
     );
   }
 
   return (
-    <div className="bg-[#FFFFFF] border-2 border-[#1A1C1A] brutal-shadow overflow-x-auto">
-      <table className="w-full text-left font-mono text-[12px]">
-        <thead>
-          <tr className="border-b-2 border-[#1A1C1A] bg-[#F4F4F0] text-[#1A1C1A] uppercase font-bold text-[11px]">
-            {columns.map((col, idx) => (
-              <th key={idx} className={`py-2.5 px-3 ${col.className || ''}`}>
-                {col.header}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-[#E2E3DF]">
-          {data.map((item) => (
-            <tr
-              key={keyExtractor(item)}
-              onClick={() => onRowClick && onRowClick(item)}
-              className={`hover:bg-[#FAF9F6] transition-colors ${
-                onRowClick ? 'cursor-pointer' : ''
-              }`}
-            >
+    <div className="bg-[#FFFFFF] border-2 border-[#1A1C1A] rounded-xl brutal-shadow overflow-hidden">
+      <div className="overflow-x-auto">
+        <table className="w-full text-left font-mono text-[12px]">
+          <thead>
+            <tr className="border-b-2 border-[#1A1C1A] bg-[#F4F4F0] text-[#1A1C1A] uppercase font-bold text-[11px]">
               {columns.map((col, idx) => (
-                <td key={idx} className={`py-3 px-3 ${col.className || ''}`}>
-                  {col.accessor(item)}
-                </td>
+                <th key={idx} className={`py-2.5 px-3 ${col.className || ''}`}>
+                  {col.header}
+                </th>
               ))}
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody className="divide-y divide-[#E2E3DF]">
+            {data.map((item) => (
+              <tr
+                key={keyExtractor(item)}
+                onClick={() => onRowClick && onRowClick(item)}
+                className={`hover:bg-[#FAF9F6] transition-colors ${
+                  onRowClick ? 'cursor-pointer' : ''
+                }`}
+              >
+                {columns.map((col, idx) => (
+                  <td key={idx} className={`py-3 px-3 ${col.className || ''}`}>
+                    {col.accessor(item)}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
@@ -73,7 +75,7 @@ export function TestRunSummary({ run }: { run: TestRun }) {
   const failPct = (run.failedAssertions / (run.totalAssertions || 1)) * 100;
 
   return (
-    <div className="bg-[#FFFFFF] border-2 border-[#1A1C1A] p-4 brutal-shadow flex flex-col gap-3">
+    <div className="bg-[#FFFFFF] border-2 border-[#1A1C1A] rounded-xl p-4 brutal-shadow flex flex-col gap-3">
       <div className="flex items-start justify-between">
         <div className="flex flex-col">
           <span className="font-mono text-[11px] font-bold text-[#0B442F]">{run.runNumber}</span>

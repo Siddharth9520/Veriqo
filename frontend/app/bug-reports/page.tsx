@@ -168,7 +168,7 @@ export default function BugReportsPage() {
             <span className="text-[#717973]">/</span>
             <span className="text-[#1A1C1A] font-bold">Bug Reports</span>
             <span
-              className={`ml-1 text-[10px] font-mono px-1.5 py-0.5 border border-[#1A1C1A] uppercase font-bold ${
+              className={`ml-1 text-[10px] font-mono px-2 py-0.5 border border-[#1A1C1A] uppercase font-bold rounded-md brutal-shadow-xs ${
                 isLive ? 'bg-[#B7EFD0] text-[#002114]' : 'bg-[#FFDAD6] text-[#93000A]'
               }`}
             >
@@ -186,7 +186,7 @@ export default function BugReportsPage() {
         <div className="flex items-center gap-2">
           <button
             onClick={() => showToast('Synced defect records with Jira Cloud Project QA-VERIQO.')}
-            className="bg-[#FFFFFF] text-[#1A1C1A] border-2 border-[#1A1C1A] px-4 py-2 font-headline text-[13px] uppercase font-bold brutal-shadow hover:bg-[#EEEEEA] brutal-btn flex items-center gap-1.5"
+            className="bg-[#FFFFFF] text-[#1A1C1A] border-2 border-[#1A1C1A] px-4 py-2 font-headline text-[13px] uppercase font-bold brutal-shadow hover:bg-[#EEEEEA] rounded-lg brutal-btn flex items-center gap-1.5"
           >
             <Icon name="sync" className="w-4 h-4" />
             <span>Sync to Jira</span>
@@ -195,11 +195,11 @@ export default function BugReportsPage() {
       </div>
 
       {error && (
-        <div className="bg-[#FFDAD6] border-2 border-[#AC3326] p-3 flex items-center justify-between gap-3 font-mono text-[12px] text-[#93000A] brutal-shadow-sm">
+        <div className="bg-[#FFDAD6] border-2 border-[#AC3326] p-3 flex items-center justify-between gap-3 font-mono text-[12px] text-[#93000A] brutal-shadow-sm rounded-xl">
           <span>Failed to connect to cluster: {error}. Showing offline data.</span>
           <button
             onClick={loadBugs}
-            className="bg-[#FFFFFF] text-[#1A1C1A] border border-[#1A1C1A] px-2.5 py-1 font-bold uppercase hover:bg-[#E8E8E5]"
+            className="bg-[#FFFFFF] text-[#1A1C1A] border border-[#1A1C1A] px-2.5 py-1 font-bold uppercase hover:bg-[#E8E8E5] rounded-md brutal-btn"
           >
             Retry
           </button>
@@ -207,8 +207,8 @@ export default function BugReportsPage() {
       )}
 
       {/* Filter and Search Console */}
-      <div className="bg-[#F4F4F0] border-2 border-[#1A1C1A] p-3 brutal-shadow flex flex-col md:flex-row gap-3 items-stretch md:items-center justify-between">
-        <div className="flex-1 flex items-center bg-[#FFFFFF] border-2 border-[#1A1C1A] px-3 py-1.5 brutal-shadow-sm">
+      <div className="bg-[#F4F4F0] border-2 border-[#1A1C1A] p-3 brutal-shadow rounded-xl flex flex-col md:flex-row gap-3 items-stretch md:items-center justify-between">
+        <div className="flex-1 flex items-center bg-[#FFFFFF] border-2 border-[#1A1C1A] px-3 py-1.5 brutal-shadow-sm focus-within:shadow-[3px_3px_0px_#285c45] rounded-lg">
           <Icon name="search" className="w-4 h-4 text-[#404943] mr-2" />
           <input
             type="text"
@@ -224,7 +224,7 @@ export default function BugReportsPage() {
             <button
               key={sev}
               onClick={() => setFilterSeverity(sev)}
-              className={`px-3 py-1 font-mono text-[11px] font-bold uppercase border-2 transition-all ${
+              className={`px-3 py-1 font-mono text-[11px] font-bold uppercase border-2 rounded-md transition-all ${
                 filterSeverity === sev
                   ? 'border-[#1A1C1A] bg-[#285C45] text-white brutal-shadow-sm'
                   : 'border-[#1A1C1A] bg-[#FFFFFF] text-[#404943] hover:bg-[#EEEEEA]'
@@ -241,14 +241,14 @@ export default function BugReportsPage() {
         {/* Left Column: List of bugs */}
         <div className="lg:col-span-7 flex flex-col gap-3">
           {loading && bugs.length === 0 ? (
-            <div className="bg-[#FFFFFF] border-2 border-[#1A1C1A] p-12 text-center flex flex-col items-center gap-3 brutal-shadow">
+            <div className="bg-[#FFFFFF] border-2 border-[#1A1C1A] p-12 text-center flex flex-col items-center gap-3 brutal-shadow rounded-xl">
               <div className="w-8 h-8 border-4 border-[#285C45] border-t-transparent rounded-full animate-spin"></div>
               <span className="font-mono text-[12px] uppercase font-bold text-[#1A1C1A]">
                 Querying Defect Vault Records...
               </span>
             </div>
           ) : filteredBugs.length === 0 ? (
-            <div className="bg-[#FFFFFF] border-2 border-[#1A1C1A] p-12 text-center flex flex-col items-center gap-2 brutal-shadow">
+            <div className="bg-[#FFFFFF] border-2 border-[#1A1C1A] p-12 text-center flex flex-col items-center gap-2 brutal-shadow rounded-xl">
               <Icon name="verified" className="w-9 h-9 text-[#717973]" />
               <span className="font-headline font-bold text-[18px]">No defects match current criteria</span>
               <span className="font-mono text-[12px] text-[#717973]">All assertions passing cleanly under active filters.</span>
@@ -260,7 +260,7 @@ export default function BugReportsPage() {
                 <div
                   key={bug.id}
                   onClick={() => setSelectedBug(bug)}
-                  className={`bg-[#FFFFFF] border-2 border-[#1A1C1A] p-4 brutal-shadow cursor-pointer transition-all ${
+                  className={`bg-[#FFFFFF] border-2 border-[#1A1C1A] p-4 brutal-shadow rounded-xl cursor-pointer transition-all ${
                     isSelected ? 'ring-2 ring-[#285C45] bg-[#FAF9F6]' : 'hover:-translate-y-0.5'
                   }`}
                 >
@@ -275,7 +275,7 @@ export default function BugReportsPage() {
                           {bug.projectName}
                         </span>
                         {bug.status === 'VERIFIED' && (
-                          <span className="bg-[#B7EFD0] text-[#002114] border border-[#1A1C1A] px-1.5 py-0.2 font-mono text-[9px] font-bold uppercase">
+                          <span className="bg-[#B7EFD0] text-[#002114] border border-[#1A1C1A] px-1.5 py-0.5 font-mono text-[9px] font-bold uppercase rounded-md">
                             BLINDREPLAY VERIFIED
                           </span>
                         )}
@@ -303,7 +303,7 @@ export default function BugReportsPage() {
         </div>
 
         {/* Right Column: Deep Dossier View */}
-        <div className="lg:col-span-5 bg-[#FFFFFF] border-2 border-[#1A1C1A] brutal-shadow-lg p-5 flex flex-col gap-4 sticky top-20">
+        <div className="lg:col-span-5 bg-[#FFFFFF] border-2 border-[#1A1C1A] brutal-shadow-lg rounded-xl p-5 flex flex-col gap-4 sticky top-20">
           {selectedBug ? (
             <>
               <div className="flex items-center justify-between pb-3 border-b-2 border-[#1A1C1A]">
@@ -328,7 +328,7 @@ export default function BugReportsPage() {
               </div>
 
               <div className="flex flex-col gap-2 font-mono text-[12px]">
-                <div className="bg-[#F4F4F0] p-2.5 border border-[#C0C9C1]">
+                <div className="bg-[#F4F4F0] p-2.5 border border-[#C0C9C1] rounded-lg">
                   <span className="text-[10px] uppercase font-bold text-[#404943] block">
                     Expected Behavior
                   </span>
@@ -337,7 +337,7 @@ export default function BugReportsPage() {
                   </p>
                 </div>
 
-                <div className="bg-[#FFDAD6]/30 border border-[#FD6E5B] p-2.5">
+                <div className="bg-[#FFDAD6]/30 border border-[#FD6E5B] p-2.5 rounded-lg">
                   <span className="text-[10px] uppercase font-bold text-[#AC3326] block">
                     Actual Failure
                   </span>
@@ -347,7 +347,7 @@ export default function BugReportsPage() {
                 </div>
 
                 {/* Steps to reproduce */}
-                <div className="bg-[#FAF9F6] border border-[#1A1C1A] p-2.5">
+                <div className="bg-[#FAF9F6] border border-[#1A1C1A] p-2.5 rounded-lg">
                   <span className="text-[10px] uppercase font-bold text-[#1A1C1A] block mb-1">
                     Reproduction Sequence
                   </span>
@@ -365,7 +365,7 @@ export default function BugReportsPage() {
                 <button
                   onClick={handleLaunchShowMe}
                   disabled={loadingShowMe}
-                  className="w-full bg-[#1A1C1A] text-white py-2 border-2 border-[#1A1C1A] font-headline text-[13px] uppercase font-bold text-center brutal-shadow brutal-btn flex items-center justify-center gap-2 hover:bg-[#333333]"
+                  className="w-full bg-[#1A1C1A] text-white py-2 border-2 border-[#1A1C1A] font-headline text-[13px] uppercase font-bold text-center brutal-shadow rounded-lg brutal-btn flex items-center justify-center gap-2 hover:bg-[#333333]"
                 >
                   <Icon name="psychology" className="w-4 h-4 text-[#B7EFD0]" />
                   <span>{loadingShowMe ? 'Diagnosing...' : 'Show Me Mode (Diagnosis)'}</span>
@@ -375,7 +375,7 @@ export default function BugReportsPage() {
                 <button
                   onClick={handleExecuteBlindReplay}
                   disabled={replaying}
-                  className={`w-full py-2 border-2 border-[#1A1C1A] font-headline text-[13px] uppercase font-bold text-center brutal-shadow brutal-btn flex items-center justify-center gap-2 ${
+                  className={`w-full py-2 border-2 border-[#1A1C1A] font-headline text-[13px] uppercase font-bold text-center brutal-shadow rounded-lg brutal-btn flex items-center justify-center gap-2 ${
                     replaying
                       ? 'bg-[#EEEEEA] text-[#1A1C1A]'
                       : 'bg-[#285C45] text-white hover:bg-[#0B442F]'
@@ -389,7 +389,7 @@ export default function BugReportsPage() {
                 <button
                   onClick={handleLaunchFixPrompt}
                   disabled={loadingFixPrompt}
-                  className="w-full bg-[#FFFFFF] text-[#1A1C1A] py-2 border-2 border-[#1A1C1A] font-headline text-[13px] uppercase font-bold text-center brutal-shadow brutal-btn flex items-center justify-center gap-2 hover:bg-[#EEEEEA]"
+                  className="w-full bg-[#FFFFFF] text-[#1A1C1A] py-2 border-2 border-[#1A1C1A] font-headline text-[13px] uppercase font-bold text-center brutal-shadow rounded-lg brutal-btn flex items-center justify-center gap-2 hover:bg-[#EEEEEA]"
                 >
                   <Icon name="terminal" className="w-4 h-4 text-[#285C45]" />
                   <span>{loadingFixPrompt ? 'Generating...' : 'Export Fix Prompt (Markdown)'}</span>
@@ -399,7 +399,7 @@ export default function BugReportsPage() {
                 <button
                   onClick={() => handlePinBug(selectedBug.id)}
                   disabled={pinning}
-                  className="w-full bg-[#F4F4F0] text-[#1A1C1A] py-2 border-2 border-[#1A1C1A] font-headline text-[12px] uppercase font-bold text-center hover:bg-[#E8E8E5] flex items-center justify-center gap-2"
+                  className="w-full bg-[#F4F4F0] text-[#1A1C1A] py-2 border-2 border-[#1A1C1A] font-headline text-[12px] uppercase font-bold text-center hover:bg-[#E8E8E5] rounded-lg brutal-btn flex items-center justify-center gap-2"
                 >
                   <Icon
                     name={selectedBug.status === 'VERIFIED' ? 'check_circle' : 'bookmark_add'}
@@ -417,7 +417,7 @@ export default function BugReportsPage() {
                 {/* 5. Playwright Repro Script */}
                 <button
                   onClick={() => setPlaywrightModalOpen(true)}
-                  className="w-full bg-[#FFFFFF] text-[#404943] py-1.5 border border-[#1A1C1A] font-headline text-[11px] uppercase font-bold text-center hover:bg-[#EEEEEA] flex items-center justify-center gap-2"
+                  className="w-full bg-[#FFFFFF] text-[#404943] py-1.5 border border-[#1A1C1A] font-headline text-[11px] uppercase font-bold text-center hover:bg-[#EEEEEA] rounded-lg brutal-btn flex items-center justify-center gap-2"
                 >
                   <Icon name="code" className="w-3.5 h-3.5" />
                   <span>View Playwright Script</span>
@@ -437,7 +437,7 @@ export default function BugReportsPage() {
       {/* Show Me Mode Modal */}
       {showMeModalOpen && showMeData && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#191B19]/75 backdrop-blur-xs">
-          <div className="bg-[#FFFFFF] border-2 border-[#1A1C1A] brutal-shadow-lg max-w-3xl w-full p-6 flex flex-col gap-4 animate-in fade-in zoom-in-95 duration-100 max-h-[90vh] overflow-y-auto">
+          <div className="bg-[#FFFFFF] border-2 border-[#1A1C1A] brutal-shadow-lg rounded-2xl max-w-3xl w-full p-6 flex flex-col gap-4 animate-in fade-in zoom-in-95 duration-100 max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between pb-3 border-b-2 border-[#1A1C1A]">
               <div className="flex items-center gap-2">
                 <Icon name="psychology" className="w-6 h-6 text-[#285C45]" />
@@ -450,13 +450,13 @@ export default function BugReportsPage() {
                   </span>
                 </div>
               </div>
-              <button onClick={() => setShowMeModalOpen(false)} className="hover:opacity-75">
+              <button onClick={() => setShowMeModalOpen(false)} className="hover:opacity-75 p-1 rounded-md">
                 <Icon name="close" className="w-5 h-5 text-[#1A1C1A]" />
               </button>
             </div>
 
             {/* Diagnostic Summary */}
-            <div className="bg-[#FAF9F6] border-2 border-[#1A1C1A] p-4 brutal-shadow-sm flex flex-col gap-2">
+            <div className="bg-[#FAF9F6] border-2 border-[#1A1C1A] p-4 brutal-shadow-sm rounded-xl flex flex-col gap-2">
               <span className="font-mono text-[11px] uppercase font-bold text-[#285C45]">
                 Automated Root-Cause Diagnostic
               </span>
@@ -471,12 +471,12 @@ export default function BugReportsPage() {
             </div>
 
             {/* BlindReplay Section */}
-            <div className="border border-[#1A1C1A] p-3 bg-[#F4F4F0]">
+            <div className="border border-[#1A1C1A] p-3 bg-[#F4F4F0] rounded-xl">
               <div className="flex items-center justify-between">
                 <span className="font-mono text-[11px] uppercase font-bold text-[#1A1C1A]">
                   Independent BlindReplay Evidence
                 </span>
-                <span className="font-mono text-[11px] bg-[#B7EFD0] text-[#002114] px-2 py-0.5 border border-[#1A1C1A] font-bold">
+                <span className="font-mono text-[11px] bg-[#B7EFD0] text-[#002114] px-2 py-0.5 border border-[#1A1C1A] font-bold rounded-md">
                   {showMeData.blind_replay?.latest_outcome || 'NO REPLAY YET'}
                 </span>
               </div>
@@ -492,7 +492,7 @@ export default function BugReportsPage() {
               </span>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 {showMeData.evidence?.artifacts?.map((art, idx) => (
-                  <div key={idx} className="bg-[#FFFFFF] border border-[#1A1C1A] p-2.5 font-mono text-[11px] flex flex-col justify-between">
+                  <div key={idx} className="bg-[#FFFFFF] border border-[#1A1C1A] p-2.5 font-mono text-[11px] flex flex-col justify-between rounded-lg">
                     <div>
                       <span className="font-bold text-[#1A1C1A] truncate block">{art.path}</span>
                       <span className="text-[#717973] text-[10px]">Source: {art.source}</span>
@@ -506,7 +506,7 @@ export default function BugReportsPage() {
                           href={`/api/v1/evidence/${art.path}`}
                           target="_blank"
                           rel="noreferrer"
-                          className="bg-[#285C45] text-white px-2 py-0.5 text-[10px] font-bold uppercase hover:bg-[#0B442F]"
+                          className="bg-[#285C45] text-white px-2 py-0.5 text-[10px] font-bold uppercase hover:bg-[#0B442F] rounded-md brutal-btn"
                         >
                           View Image
                         </a>
@@ -519,7 +519,7 @@ export default function BugReportsPage() {
 
             {/* Execution Logs */}
             {showMeData.evidence?.execution_logs && showMeData.evidence.execution_logs.length > 0 && (
-              <div className="bg-[#191B19] text-[#F1F1ED] p-3 font-mono text-[11px] overflow-x-auto border border-[#717973]">
+              <div className="bg-[#191B19] text-[#F1F1ED] p-3 font-mono text-[11px] overflow-x-auto border border-[#717973] rounded-lg">
                 <span className="text-[#B7EFD0] font-bold block mb-1">Execution Step Trace:</span>
                 {showMeData.evidence.execution_logs.map((log: Record<string, unknown>, idx: number) => (
                   <div key={idx} className="flex gap-2 py-0.5">
@@ -537,7 +537,7 @@ export default function BugReportsPage() {
             <div className="flex justify-end pt-2 border-t border-[#E2E3DF]">
               <button
                 onClick={() => setShowMeModalOpen(false)}
-                className="bg-[#1A1C1A] text-white px-5 py-2 font-headline text-[12px] uppercase font-bold hover:bg-[#333]"
+                className="bg-[#1A1C1A] text-white px-5 py-2 font-headline text-[12px] uppercase font-bold hover:bg-[#333] rounded-lg brutal-btn"
               >
                 Close Diagnostic
               </button>
@@ -549,7 +549,7 @@ export default function BugReportsPage() {
       {/* Fix Prompt Modal */}
       {fixPromptModalOpen && fixPromptData && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#191B19]/75 backdrop-blur-xs">
-          <div className="bg-[#FFFFFF] border-2 border-[#1A1C1A] brutal-shadow-lg max-w-3xl w-full p-6 flex flex-col gap-4 animate-in fade-in zoom-in-95 duration-100 max-h-[90vh] overflow-y-auto">
+          <div className="bg-[#FFFFFF] border-2 border-[#1A1C1A] brutal-shadow-lg rounded-2xl max-w-3xl w-full p-6 flex flex-col gap-4 animate-in fade-in zoom-in-95 duration-100 max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between pb-3 border-b-2 border-[#1A1C1A]">
               <div className="flex items-center gap-2">
                 <Icon name="terminal" className="w-6 h-6 text-[#285C45]" />
@@ -562,13 +562,13 @@ export default function BugReportsPage() {
                   </span>
                 </div>
               </div>
-              <button onClick={() => setFixPromptModalOpen(false)} className="hover:opacity-75">
+              <button onClick={() => setFixPromptModalOpen(false)} className="hover:opacity-75 p-1 rounded-md">
                 <Icon name="close" className="w-5 h-5 text-[#1A1C1A]" />
               </button>
             </div>
 
             {/* Trust Boundary Banner */}
-            <div className="bg-[#FAF9F6] border border-[#1A1C1A] p-3 font-mono text-[11px]">
+            <div className="bg-[#FAF9F6] border border-[#1A1C1A] p-3 font-mono text-[11px] rounded-xl">
               <strong className="text-[#285C45] block">Verified Trust Boundary:</strong>
               <p className="mt-1 text-[#404943]">
                 {fixPromptData.verification_context?.verification_notes}
@@ -576,7 +576,7 @@ export default function BugReportsPage() {
             </div>
 
             {/* Prompt Markdown Content */}
-            <div className="bg-[#191B19] text-[#F1F1ED] p-4 font-mono text-[12px] leading-relaxed overflow-x-auto border border-[#717973] max-h-72">
+            <div className="bg-[#191B19] text-[#F1F1ED] p-4 font-mono text-[12px] leading-relaxed overflow-x-auto border border-[#717973] max-h-72 rounded-xl">
               <pre className="whitespace-pre-wrap text-[#9CD2B5]">
                 {fixPromptData.prompt_text}
               </pre>
@@ -604,7 +604,7 @@ export default function BugReportsPage() {
                   showToast('Copied Developer Fix Prompt to clipboard!');
                   setFixPromptModalOpen(false);
                 }}
-                className="bg-[#285C45] text-white px-5 py-2 border-2 border-[#1A1C1A] font-headline text-[13px] uppercase font-bold hover:bg-[#0B442F] brutal-shadow-sm brutal-btn flex items-center gap-1.5"
+                className="bg-[#285C45] text-white px-5 py-2 border-2 border-[#1A1C1A] font-headline text-[13px] uppercase font-bold hover:bg-[#0B442F] brutal-shadow-sm brutal-btn rounded-lg flex items-center gap-1.5"
               >
                 <Icon name="content_copy" className="w-4 h-4" />
                 <span>Copy Prompt Markdown</span>
@@ -617,7 +617,7 @@ export default function BugReportsPage() {
       {/* Playwright Script Modal */}
       {playwrightModalOpen && selectedBug && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#191B19]/70 backdrop-blur-xs">
-          <div className="bg-[#FFFFFF] border-2 border-[#1A1C1A] brutal-shadow-lg max-w-2xl w-full p-6 flex flex-col gap-4 animate-in fade-in zoom-in-95 duration-100">
+          <div className="bg-[#FFFFFF] border-2 border-[#1A1C1A] brutal-shadow-lg rounded-2xl max-w-2xl w-full p-6 flex flex-col gap-4 animate-in fade-in zoom-in-95 duration-100">
             <div className="flex items-center justify-between pb-2 border-b-2 border-[#1A1C1A]">
               <div className="flex items-center gap-2">
                 <Icon name="terminal" className="w-5 h-5 text-[#285C45]" />
@@ -625,12 +625,12 @@ export default function BugReportsPage() {
                   Synthesized Playwright Repro // {selectedBug.id}
                 </h3>
               </div>
-              <button onClick={() => setPlaywrightModalOpen(false)}>
+              <button onClick={() => setPlaywrightModalOpen(false)} className="p-1 rounded-md hover:bg-[#F4F4F0]">
                 <Icon name="close" className="w-5 h-5 text-[#717973]" />
               </button>
             </div>
 
-            <div className="bg-[#191B19] text-[#F1F1ED] p-4 font-mono text-[12px] leading-relaxed overflow-x-auto border border-[#717973]">
+            <div className="bg-[#191B19] text-[#F1F1ED] p-4 font-mono text-[12px] leading-relaxed overflow-x-auto border border-[#717973] rounded-xl">
               <pre className="text-[#9CD2B5]">
 {`import { test, expect } from '@playwright/test';
 
@@ -663,7 +663,7 @@ test.describe('${selectedBug.id}: ${selectedBug.title}', () => {
                   showToast('Copied synthesized Playwright script to clipboard!');
                   setPlaywrightModalOpen(false);
                 }}
-                className="bg-[#285C45] text-white px-4 py-1.5 border-2 border-[#1A1C1A] font-headline text-[12px] uppercase font-bold hover:bg-[#0B442F] brutal-shadow-sm brutal-btn flex items-center gap-1.5"
+                className="bg-[#285C45] text-white px-4 py-1.5 border-2 border-[#1A1C1A] font-headline text-[12px] uppercase font-bold hover:bg-[#0B442F] brutal-shadow-sm brutal-btn rounded-lg flex items-center gap-1.5"
               >
                 <Icon name="content_copy" className="w-4 h-4" />
                 <span>Copy Script</span>
@@ -674,7 +674,7 @@ test.describe('${selectedBug.id}: ${selectedBug.title}', () => {
       )}
 
       {toastMessage && (
-        <div className="fixed bottom-6 right-6 bg-[#191B19] text-[#F1F1ED] border-2 border-[#1A1C1A] px-4 py-2.5 font-mono text-[12px] brutal-shadow-lg z-50 flex items-center gap-2 animate-in fade-in duration-100">
+        <div className="fixed bottom-6 right-6 bg-[#191B19] text-[#F1F1ED] border-2 border-[#1A1C1A] px-4 py-2.5 font-mono text-[12px] brutal-shadow rounded-lg z-50 flex items-center gap-2 animate-in fade-in duration-100">
           <Icon name="verified" className="w-4 h-4 text-[#B7EFD0]" />
           <span>{toastMessage}</span>
         </div>

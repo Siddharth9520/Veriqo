@@ -14,7 +14,7 @@ interface ChartCardProps {
 
 export function ChartCard({ title, subtitle, badge, children, footer }: ChartCardProps) {
   return (
-    <div className="bg-[#FFFFFF] border-2 border-[#1A1C1A] brutal-shadow-lg p-5 flex flex-col gap-4">
+    <div className="bg-[#FFFFFF] border-2 border-[#1A1C1A] rounded-xl brutal-shadow p-5 flex flex-col gap-4">
       <div className="flex items-center justify-between pb-2 border-b-2 border-[#1A1C1A]">
         <div className="flex flex-col">
           {subtitle && (
@@ -25,7 +25,7 @@ export function ChartCard({ title, subtitle, badge, children, footer }: ChartCar
           <h2 className="font-headline text-[18px] font-bold text-[#1A1C1A]">{title}</h2>
         </div>
         {badge && (
-          <span className="font-mono text-[11px] font-bold bg-[#E2E3DF] px-2 py-0.5 border border-[#1A1C1A]">
+          <span className="font-mono text-[11px] font-bold bg-[#E2E3DF] px-2 py-0.5 border border-[#1A1C1A] rounded-md">
             {badge}
           </span>
         )}
@@ -42,7 +42,7 @@ export function BugSummaryCard({ bug, onClick }: { bug: BugReport; onClick?: () 
   return (
     <div
       onClick={onClick}
-      className="bg-[#FFFFFF] border-2 border-[#1A1C1A] p-4 brutal-shadow cursor-pointer hover:-translate-y-0.5 transition-transform"
+      className="bg-[#FFFFFF] border-2 border-[#1A1C1A] rounded-xl p-4 brutal-shadow cursor-pointer hover:-translate-y-0.5 transition-transform"
     >
       <div className="flex items-start justify-between gap-2">
         <div className="flex flex-col">

@@ -41,18 +41,18 @@ export default function SettingsPage() {
 
       <form onSubmit={handleSave} className="flex flex-col gap-6">
         {/* User Profile Card */}
-        <div className="bg-[#FFFFFF] border-2 border-[#1A1C1A] shadow-[4px_4px_0px_#1a1c1a] p-5 flex flex-col gap-4">
+        <div className="bg-[#FFFFFF] border-2 border-[#1A1C1A] brutal-shadow rounded-xl p-5 flex flex-col gap-4">
           <div className="flex items-center justify-between pb-3 border-b-2 border-[#1A1C1A]">
             <h2 className="font-headline text-[18px] font-bold text-[#1A1C1A]">
               Operator Profile
             </h2>
-            <span className="font-mono text-[11px] bg-[#B7EFD0] text-[#002114] px-2 py-0.5 border border-[#1A1C1A] font-bold uppercase">
+            <span className="font-mono text-[11px] bg-[#B7EFD0] text-[#002114] px-2 py-0.5 border border-[#1A1C1A] font-bold uppercase rounded-md brutal-shadow-xs">
               Authenticated
             </span>
           </div>
 
           <div className="flex items-center gap-4">
-            <div className="w-14 h-14 rounded-full bg-[#0B442F] border-2 border-[#1A1C1A] flex items-center justify-center text-white shadow-[2px_2px_0px_#1a1c1a] flex-shrink-0">
+            <div className="w-14 h-14 rounded-full bg-[#0B442F] border-2 border-[#1A1C1A] flex items-center justify-center text-white brutal-shadow-xs flex-shrink-0">
               <Icon name="person" className="w-7 h-7 text-white" />
             </div>
             <div className="flex flex-col">
@@ -70,7 +70,7 @@ export default function SettingsPage() {
         </div>
 
         {/* Headless Browser Execution Engine */}
-        <div className="bg-[#FFFFFF] border-2 border-[#1A1C1A] shadow-[4px_4px_0px_#1a1c1a] p-5 flex flex-col gap-4 font-mono text-[12px]">
+        <div className="bg-[#FFFFFF] border-2 border-[#1A1C1A] brutal-shadow rounded-xl p-5 flex flex-col gap-4 font-mono text-[12px]">
           <div className="flex items-center justify-between pb-3 border-b-2 border-[#1A1C1A]">
             <div className="flex items-center gap-2">
               <Icon name="laptop_chromebook" className="w-5 h-5 text-[#285C45] flex-shrink-0" />
@@ -89,7 +89,7 @@ export default function SettingsPage() {
               <select
                 value={browserEngine}
                 onChange={(e) => setBrowserEngine(e.target.value)}
-                className="w-full bg-[#FAF9F6] border-2 border-[#1A1C1A] p-2 font-bold focus:outline-none"
+                className="w-full bg-[#FAF9F6] border-2 border-[#1A1C1A] p-2 font-bold focus:outline-none rounded-lg brutal-shadow-sm"
               >
                 <option value="Headless Chromium v128.0">Headless Chromium v128.0 (Recommended)</option>
                 <option value="Headless Chromium v127.0 LTS">Headless Chromium v127.0 LTS</option>
@@ -105,7 +105,7 @@ export default function SettingsPage() {
               <select
                 value={viewport}
                 onChange={(e) => setViewport(e.target.value)}
-                className="w-full bg-[#FAF9F6] border-2 border-[#1A1C1A] p-2 font-bold focus:outline-none"
+                className="w-full bg-[#FAF9F6] border-2 border-[#1A1C1A] p-2 font-bold focus:outline-none rounded-lg brutal-shadow-sm"
               >
                 <option value="1440x900 Desktop @ 60fps">1440x900 Desktop @ 60fps (Standard)</option>
                 <option value="1920x1080 1080p FHD">1920x1080 1080p FHD</option>
@@ -121,7 +121,7 @@ export default function SettingsPage() {
               <select
                 value={concurrency}
                 onChange={(e) => setConcurrency(e.target.value)}
-                className="w-full bg-[#FAF9F6] border-2 border-[#1A1C1A] p-2 font-bold focus:outline-none"
+                className="w-full bg-[#FAF9F6] border-2 border-[#1A1C1A] p-2 font-bold focus:outline-none rounded-lg brutal-shadow-sm"
               >
                 <option value="16 vCPUs (4 Nodes)">16 vCPUs (4 Distributed Swarm Nodes)</option>
                 <option value="8 vCPUs (2 Nodes)">8 vCPUs (2 Swarm Nodes)</option>
@@ -136,7 +136,7 @@ export default function SettingsPage() {
               <select
                 value={fuzzInterval}
                 onChange={(e) => setFuzzInterval(e.target.value)}
-                className="w-full bg-[#FAF9F6] border-2 border-[#1A1C1A] p-2 font-bold focus:outline-none"
+                className="w-full bg-[#FAF9F6] border-2 border-[#1A1C1A] p-2 font-bold focus:outline-none rounded-lg brutal-shadow-sm"
               >
                 <option value="12ms (Race Stress)">12ms (Extreme Race Condition Stress)</option>
                 <option value="25ms (Moderate)">25ms (Moderate Rapid Double-Click)</option>
@@ -147,7 +147,7 @@ export default function SettingsPage() {
         </div>
 
         {/* Telemetry & Notification Toggles */}
-        <div className="bg-[#FFFFFF] border-2 border-[#1A1C1A] shadow-[4px_4px_0px_#1a1c1a] p-5 flex flex-col gap-4 font-mono text-[12px]">
+        <div className="bg-[#FFFFFF] border-2 border-[#1A1C1A] brutal-shadow rounded-xl p-5 flex flex-col gap-4 font-mono text-[12px]">
           <div className="flex items-center justify-between pb-3 border-b-2 border-[#1A1C1A]">
             <div className="flex items-center gap-2">
               <Icon name="notifications_active" className="w-5 h-5 text-[#285C45] flex-shrink-0" />
@@ -158,7 +158,7 @@ export default function SettingsPage() {
           </div>
 
           <div className="flex flex-col gap-3">
-            <label className="flex items-center justify-between p-3 border border-[#C0C9C1] bg-[#FAF9F6] cursor-pointer hover:bg-[#EEEEEA]">
+            <label className="flex items-center justify-between p-3 border border-[#C0C9C1] bg-[#FAF9F6] cursor-pointer hover:bg-[#EEEEEA] rounded-lg transition-colors">
               <div className="flex flex-col">
                 <span className="font-bold text-[#1A1C1A]">Broadcast Critical P0 Alerts to Slack</span>
                 <span className="text-[#404943] text-[11px]">Send immediate webhook with HAR download links on regression detection</span>
@@ -167,11 +167,11 @@ export default function SettingsPage() {
                 type="checkbox"
                 checked={slackAlerts}
                 onChange={(e) => setSlackAlerts(e.target.checked)}
-                className="w-5 h-5 accent-[#285C45]"
+                className="w-5 h-5 accent-[#285C45] rounded-xs cursor-pointer"
               />
             </label>
 
-            <label className="flex items-center justify-between p-3 border border-[#C0C9C1] bg-[#FAF9F6] cursor-pointer hover:bg-[#EEEEEA]">
+            <label className="flex items-center justify-between p-3 border border-[#C0C9C1] bg-[#FAF9F6] cursor-pointer hover:bg-[#EEEEEA] rounded-lg transition-colors">
               <div className="flex flex-col">
                 <span className="font-bold text-[#1A1C1A]">Auto-Capture HAR Network Dumps on Assert Failure</span>
                 <span className="text-[#404943] text-[11px]">Dumps full request headers, payload bodies, and timing waterfalls to S3/GCS</span>
@@ -180,7 +180,7 @@ export default function SettingsPage() {
                 type="checkbox"
                 checked={harCapture}
                 onChange={(e) => setHarCapture(e.target.checked)}
-                className="w-5 h-5 accent-[#285C45]"
+                className="w-5 h-5 accent-[#285C45] rounded-xs cursor-pointer"
               />
             </label>
           </div>
@@ -191,13 +191,13 @@ export default function SettingsPage() {
           <button
             type="button"
             onClick={() => showToast('Changes discarded.')}
-            className="px-5 py-2.5 bg-[#FFFFFF] border-2 border-[#1A1C1A] font-headline text-[13px] uppercase font-bold shadow-[3px_3px_0px_#1a1c1a] hover:bg-[#EEEEEA] brutal-btn"
+            className="px-5 py-2.5 bg-[#FFFFFF] border-2 border-[#1A1C1A] font-headline text-[13px] uppercase font-bold brutal-shadow hover:bg-[#EEEEEA] rounded-lg brutal-btn"
           >
             Cancel
           </button>
           <button
             type="submit"
-            className="px-5 py-2.5 bg-[#285C45] text-white border-2 border-[#1A1C1A] font-headline text-[13px] uppercase font-bold shadow-[3px_3px_0px_#1a1c1a] hover:bg-[#0B442F] brutal-btn"
+            className="px-5 py-2.5 bg-[#285C45] text-white border-2 border-[#1A1C1A] font-headline text-[13px] uppercase font-bold brutal-shadow hover:bg-[#0B442F] rounded-lg brutal-btn"
           >
             Save Preferences
           </button>
@@ -205,7 +205,7 @@ export default function SettingsPage() {
       </form>
 
       {toastMessage && (
-        <div className="fixed bottom-6 right-6 bg-[#191B19] text-[#F1F1ED] border-2 border-[#1A1C1A] px-4 py-2.5 font-mono text-[12px] shadow-[4px_4px_0px_#1a1c1a] z-50 flex items-center gap-2 animate-in fade-in duration-100">
+        <div className="fixed bottom-6 right-6 bg-[#191B19] text-[#F1F1ED] border-2 border-[#1A1C1A] px-4 py-2.5 font-mono text-[12px] brutal-shadow rounded-lg z-50 flex items-center gap-2 animate-in fade-in duration-100">
           <Icon name="check" className="w-4 h-4 text-[#B7EFD0]" />
           <span>{toastMessage}</span>
         </div>

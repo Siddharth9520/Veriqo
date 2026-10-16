@@ -63,7 +63,7 @@ export default function AppHeader() {
         <div className="flex items-center gap-3">
           <button
             onClick={() => setMobileMenuOpen(true)}
-            className="md:hidden flex items-center justify-center p-1.5 border-2 border-[#1A1C1A] bg-[#FAF9F6] text-[#1A1C1A] brutal-shadow-sm hover:bg-[#E8E8E5]"
+            className="md:hidden flex items-center justify-center p-1.5 border-2 border-[#1A1C1A] bg-[#FAF9F6] text-[#1A1C1A] rounded-lg brutal-shadow-xs hover:bg-[#E8E8E5]"
             aria-label="Open Navigation Menu"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
@@ -79,7 +79,7 @@ export default function AppHeader() {
             <span className="text-[#1A1C1A] font-bold">{getRouteTitle()}</span>
           </div>
 
-          <div className="hidden lg:flex items-center gap-1.5 bg-[#EEEEEA] border border-[#1A1C1A] px-2.5 py-0.5 shadow-[2px_2px_0px_#1a1c1a]">
+          <div className="hidden lg:flex items-center gap-1.5 bg-[#EEEEEA] border border-[#1A1C1A] rounded-md px-2.5 py-0.5 shadow-[1.5px_1.5px_0px_#1a1c1a]">
             <span
               className={`w-2 h-2 rounded-full inline-block ${
                 isLive ? 'bg-[#285C45] animate-pulse' : 'bg-[#FD6E5B]'
@@ -100,13 +100,13 @@ export default function AppHeader() {
           {/* Quick Search Button */}
           <button
             onClick={() => setSearchOpen(true)}
-            className="hidden md:flex items-center gap-2 bg-[#F4F4F0] border-2 border-[#1A1C1A] px-3 py-1 shadow-[2px_2px_0px_#1a1c1a] hover:bg-[#EEEEEA] transition-transform"
+            className="hidden md:flex items-center gap-2 bg-[#F4F4F0] border-2 border-[#1A1C1A] rounded-lg px-3 py-1.5 shadow-[2px_2px_0px_#1a1c1a] hover:bg-[#EEEEEA] transition-transform"
           >
             <Icon name="search" className="w-4 h-4 text-[#404943]" />
             <span className="font-mono text-[12px] text-[#717973] text-left w-36 truncate">
               Quick search command...
             </span>
-            <span className="font-mono text-[10px] bg-[#E2E3DF] border border-[#1A1C1A] px-1 text-[#1A1C1A]">
+            <span className="font-mono text-[10px] bg-[#E2E3DF] border border-[#1A1C1A] rounded px-1 text-[#1A1C1A]">
               ⌘K
             </span>
           </button>
@@ -114,7 +114,7 @@ export default function AppHeader() {
           {/* Connect App Action */}
           <button
             onClick={() => setConnectOpen(true)}
-            className="hidden sm:flex items-center gap-1.5 bg-[#FFFFFF] border-2 border-[#1A1C1A] px-3 py-1.5 font-headline text-[13px] uppercase text-[#1A1C1A] font-bold hover:bg-[#E8E8E5] brutal-btn shadow-[3px_3px_0px_#1a1c1a]"
+            className="hidden sm:flex items-center gap-1.5 bg-[#FFFFFF] border-2 border-[#1A1C1A] rounded-lg px-3 py-1.5 font-headline text-[13px] uppercase text-[#1A1C1A] font-bold hover:bg-[#E8E8E5] brutal-btn shadow-[2.5px_2.5px_0px_#1a1c1a]"
           >
             <Icon name="cable" className="w-4 h-4 text-[#1A1C1A]" />
             <span>Connect App</span>
@@ -123,7 +123,7 @@ export default function AppHeader() {
           {/* New Test Run Action */}
           <button
             onClick={() => setTestRunOpen(true)}
-            className="flex items-center gap-1.5 bg-[#285C45] text-white border-2 border-[#1A1C1A] px-3 py-1.5 font-headline text-[13px] uppercase font-bold hover:bg-[#0B442F] brutal-btn shadow-[3px_3px_0px_#1a1c1a]"
+            className="flex items-center gap-1.5 bg-[#285C45] text-white border-2 border-[#1A1C1A] rounded-lg px-3 py-1.5 font-headline text-[13px] uppercase font-bold hover:bg-[#0B442F] brutal-btn shadow-[2.5px_2.5px_0px_#1a1c1a]"
           >
             <Icon name="plus" className="w-4 h-4 text-white" />
             <span className="hidden xs:inline">+ New Test Run</span>

@@ -98,7 +98,7 @@ export default function AnalyticsPage() {
             <span className="text-[#717973]">/</span>
             <span className="text-[#1A1C1A] font-bold">Analytics</span>
             <span
-              className={`ml-1 text-[10px] font-mono px-1.5 py-0.5 border border-[#1A1C1A] uppercase font-bold ${
+              className={`ml-1 text-[10px] font-mono px-2 py-0.5 border border-[#1A1C1A] uppercase font-bold rounded-md brutal-shadow-xs ${
                 isLive ? 'bg-[#B7EFD0] text-[#002114]' : 'bg-[#FFDAD6] text-[#93000A]'
               }`}
             >
@@ -114,7 +114,7 @@ export default function AnalyticsPage() {
         </div>
 
         {/* Time-Range Switcher */}
-        <div className="flex border-2 border-[#1A1C1A] bg-[#FFFFFF] p-0.5 font-mono text-[11px] font-bold">
+        <div className="flex border-2 border-[#1A1C1A] bg-[#FFFFFF] p-1 font-mono text-[11px] font-bold rounded-lg brutal-shadow-sm gap-1">
           {['24H', '7D', '30D', '90D'].map((range) => (
             <button
               key={range}
@@ -122,8 +122,8 @@ export default function AnalyticsPage() {
                 setTimeRange(range);
                 showToast(`Aggregated metrics scoped to ${range} window.`);
               }}
-              className={`px-3 py-1 transition-colors ${
-                timeRange === range ? 'bg-[#285C45] text-white' : 'text-[#404943] hover:bg-[#EEEEEA]'
+              className={`px-3 py-1 transition-colors rounded-md ${
+                timeRange === range ? 'bg-[#285C45] text-white shadow-xs' : 'text-[#404943] hover:bg-[#EEEEEA]'
               }`}
             >
               {range}
@@ -133,18 +133,18 @@ export default function AnalyticsPage() {
       </div>
 
       {loading && (
-        <div className="bg-[#FFFFFF] border-2 border-[#1A1C1A] p-4 flex items-center justify-center gap-3 brutal-shadow-sm font-mono text-[12px]">
+        <div className="bg-[#FFFFFF] border-2 border-[#1A1C1A] p-4 flex items-center justify-center gap-3 brutal-shadow-sm rounded-xl font-mono text-[12px]">
           <div className="w-4 h-4 border-2 border-[#285C45] border-t-transparent rounded-full animate-spin"></div>
           <span className="font-bold uppercase text-[#1A1C1A]">Retrieving real-time telemetry from cluster nodes...</span>
         </div>
       )}
 
       {error && (
-        <div className="bg-[#FFDAD6] border-2 border-[#AC3326] p-3 flex items-center justify-between gap-3 font-mono text-[12px] text-[#93000A] brutal-shadow-sm">
+        <div className="bg-[#FFDAD6] border-2 border-[#AC3326] p-3 flex items-center justify-between gap-3 font-mono text-[12px] text-[#93000A] brutal-shadow-sm rounded-xl">
           <span>Failed to query cluster telemetry: {error}. Displaying local cached metrics.</span>
           <button
             onClick={loadAnalytics}
-            className="bg-[#FFFFFF] text-[#1A1C1A] border border-[#1A1C1A] px-2.5 py-1 font-bold uppercase hover:bg-[#E8E8E5]"
+            className="bg-[#FFFFFF] text-[#1A1C1A] border border-[#1A1C1A] px-2.5 py-1 font-bold uppercase hover:bg-[#E8E8E5] rounded-md brutal-btn"
           >
             Retry
           </button>
@@ -183,14 +183,14 @@ export default function AnalyticsPage() {
           icon="bug_report"
           iconBg="bg-[#FFDAD5]"
           iconColor="text-[#AC3326]"
-          footerLeft={<span className="font-mono text-[10px] bg-[#AC3326] text-white px-1.5 py-0.5 font-bold uppercase">3 Critical P0</span>}
+          footerLeft={<span className="font-mono text-[10px] bg-[#AC3326] text-white px-2 py-0.5 font-bold uppercase rounded-md brutal-shadow-xs">3 Critical P0</span>}
         />
       </div>
 
       {/* Charts Split Row */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Pass Rate Trend Chart (7 cols) */}
-        <div className="lg:col-span-7 bg-[#FFFFFF] border-2 border-[#1A1C1A] brutal-shadow-lg p-5 flex flex-col gap-4">
+        <div className="lg:col-span-7 bg-[#FFFFFF] border-2 border-[#1A1C1A] brutal-shadow-lg rounded-xl p-5 flex flex-col gap-4">
           <div className="flex items-center justify-between pb-2 border-b-2 border-[#1A1C1A]">
             <div className="flex flex-col">
               <span className="font-mono text-[11px] uppercase font-bold text-[#717973]">Historical Trajectory</span>
@@ -200,29 +200,29 @@ export default function AnalyticsPage() {
             </div>
             <div className="flex items-center gap-2 font-mono text-[11px]">
               <span className="flex items-center gap-1">
-                <span className="w-2.5 h-2.5 bg-[#285C45] inline-block"></span> Pass %
+                <span className="w-2.5 h-2.5 bg-[#285C45] rounded-xs inline-block"></span> Pass %
               </span>
               <span className="flex items-center gap-1">
-                <span className="w-2.5 h-2.5 bg-[#FD6E5B] inline-block"></span> Defects
+                <span className="w-2.5 h-2.5 bg-[#FD6E5B] rounded-xs inline-block"></span> Defects
               </span>
             </div>
           </div>
 
           {/* SVG Bar Chart Visualization */}
-          <div className="h-64 w-full flex items-end justify-between gap-3 pt-6 pb-2 px-2 border border-[#C0C9C1] bg-[#FAF9F6]">
+          <div className="h-64 w-full flex items-end justify-between gap-3 pt-6 pb-2 px-2 border border-[#C0C9C1] bg-[#FAF9F6] rounded-xl">
             {data.history.map((d, idx) => {
               const heightPct = ((d.passRate - 80) / 20) * 100;
               return (
                 <div key={idx} className="flex-1 flex flex-col items-center h-full justify-end gap-1 group relative">
                   {/* Tooltip */}
-                  <div className="absolute -top-10 opacity-0 group-hover:opacity-100 transition-opacity bg-[#191B19] text-[#F1F1ED] font-mono text-[10px] px-2 py-1 border border-[#1A1C1A] whitespace-nowrap z-20 pointer-events-none brutal-shadow-sm">
+                  <div className="absolute -top-10 opacity-0 group-hover:opacity-100 transition-opacity bg-[#191B19] text-[#F1F1ED] font-mono text-[10px] px-2 py-1 border border-[#1A1C1A] whitespace-nowrap z-20 pointer-events-none brutal-shadow-sm rounded-md">
                     {d.day}: {d.passRate}% ({d.runs} runs, {d.defects} defects)
                   </div>
 
                   <div className="w-full flex items-end justify-center gap-1 h-48">
                     {/* Pass rate bar */}
                     <div
-                      className="w-full max-w-[28px] bg-[#285C45] border border-[#1A1C1A] transition-all duration-300 group-hover:bg-[#0B442F]"
+                      className="w-full max-w-[28px] bg-[#285C45] border border-[#1A1C1A] rounded-t-md transition-all duration-300 group-hover:bg-[#0B442F]"
                       style={{ height: `${Math.max(15, heightPct)}%` }}
                     ></div>
                   </div>
@@ -245,7 +245,7 @@ export default function AnalyticsPage() {
         </div>
 
         {/* Defect Severity Distribution (5 cols) */}
-        <div className="lg:col-span-5 bg-[#FFFFFF] border-2 border-[#1A1C1A] brutal-shadow-lg p-5 flex flex-col justify-between gap-4">
+        <div className="lg:col-span-5 bg-[#FFFFFF] border-2 border-[#1A1C1A] brutal-shadow-lg rounded-xl p-5 flex flex-col justify-between gap-4">
           <div>
             <div className="flex items-center justify-between pb-2 border-b-2 border-[#1A1C1A]">
               <div className="flex flex-col">
@@ -254,7 +254,7 @@ export default function AnalyticsPage() {
                   Defect Severity Breakdown
                 </h2>
               </div>
-              <span className="font-mono text-[11px] font-bold bg-[#E2E3DF] px-2 py-0.5 border border-[#1A1C1A]">
+              <span className="font-mono text-[11px] font-bold bg-[#E2E3DF] px-2 py-0.5 border border-[#1A1C1A] rounded-md">
                 {data.totalDefects} ACTIVE
               </span>
             </div>
@@ -267,9 +267,9 @@ export default function AnalyticsPage() {
                     <span className="font-bold text-[#1A1C1A]">{item.label}</span>
                     <span className={`font-bold ${item.text}`}>{item.count} defects ({item.pct}%)</span>
                   </div>
-                  <div className="w-full h-3 bg-[#E2E3DF] border border-[#1A1C1A] overflow-hidden">
+                  <div className="w-full h-3 bg-[#E2E3DF] border border-[#1A1C1A] rounded-full overflow-hidden">
                     <div
-                      className={`${item.color} h-full transition-all duration-300`}
+                      className={`${item.color} h-full transition-all duration-300 rounded-full`}
                       style={{ width: `${item.pct}%` }}
                     ></div>
                   </div>
@@ -279,7 +279,7 @@ export default function AnalyticsPage() {
           </div>
 
           {/* Quick takeaway note */}
-          <div className="bg-[#FAF9F6] border border-[#1A1C1A] p-3 font-mono text-[11px] text-[#404943] leading-relaxed">
+          <div className="bg-[#FAF9F6] border border-[#1A1C1A] p-3 font-mono text-[11px] text-[#404943] leading-relaxed rounded-xl">
             <strong className="text-[#1A1C1A] block mb-0.5">Autonomous Insight:</strong>
             Rapid double-click idempotency failures account for 66% of Critical P0 classifications detected in staging this week.
           </div>
@@ -287,7 +287,7 @@ export default function AnalyticsPage() {
       </div>
 
       {/* Subsystem Fleet Coverage Table */}
-      <div className="bg-[#FFFFFF] border-2 border-[#1A1C1A] brutal-shadow-lg p-5 flex flex-col gap-3">
+      <div className="bg-[#FFFFFF] border-2 border-[#1A1C1A] brutal-shadow-lg rounded-xl p-5 flex flex-col gap-3">
         <div className="flex items-center justify-between pb-2 border-b-2 border-[#1A1C1A]">
           <h2 className="font-headline text-[18px] font-bold text-[#1A1C1A]">
             Project Fleet Health Index Comparison
@@ -295,7 +295,7 @@ export default function AnalyticsPage() {
           <span className="font-mono text-[11px] text-[#717973]">Depth Matrix L1-L4</span>
         </div>
 
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto rounded-lg border border-[#1A1C1A]">
           <table className="w-full text-left font-mono text-[12px]">
             <thead>
               <tr className="border-b-2 border-[#1A1C1A] bg-[#F4F4F0] text-[#1A1C1A] uppercase font-bold text-[11px]">
@@ -311,14 +311,14 @@ export default function AnalyticsPage() {
                   <td className="py-3 px-3 font-bold text-[#1A1C1A]">{proj.name}</td>
                   <td className="py-3 px-3">
                     <div className="flex items-center gap-2 max-w-xs">
-                      <div className="w-full h-2 bg-[#E2E3DF] border border-[#1A1C1A] overflow-hidden">
-                        <div className={`${proj.color} h-full`} style={{ width: `${proj.coverage}%` }}></div>
+                      <div className="w-full h-2.5 bg-[#E2E3DF] border border-[#1A1C1A] rounded-full overflow-hidden">
+                        <div className={`${proj.color} h-full rounded-full`} style={{ width: `${proj.coverage}%` }}></div>
                       </div>
                       <span className="font-bold">{proj.coverage}%</span>
                     </div>
                   </td>
                   <td className="py-3 px-3">
-                    <span className="px-2 py-0.5 bg-[#EEEEEA] border border-[#1A1C1A] font-bold uppercase text-[10px]">
+                    <span className="px-2 py-0.5 bg-[#EEEEEA] border border-[#1A1C1A] font-bold uppercase text-[10px] rounded-md">
                       {proj.status}
                     </span>
                   </td>
@@ -338,7 +338,7 @@ export default function AnalyticsPage() {
       </div>
 
       {toastMessage && (
-        <div className="fixed bottom-6 right-6 bg-[#191B19] text-[#F1F1ED] border-2 border-[#1A1C1A] px-4 py-2.5 font-mono text-[12px] brutal-shadow-lg z-50 flex items-center gap-2 animate-in fade-in duration-100">
+        <div className="fixed bottom-6 right-6 bg-[#191B19] text-[#F1F1ED] border-2 border-[#1A1C1A] px-4 py-2.5 font-mono text-[12px] brutal-shadow rounded-lg z-50 flex items-center gap-2 animate-in fade-in duration-100">
           <Icon name="verified" className="w-4 h-4 text-[#B7EFD0]" />
           <span>{toastMessage}</span>
         </div>

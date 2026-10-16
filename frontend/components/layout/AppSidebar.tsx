@@ -28,8 +28,8 @@ export default function AppSidebar({ mobileOpen = false, onMobileClose }: AppSid
       <div className="flex flex-col">
         {/* Brand Header */}
         <div className="h-16 px-4 border-b-2 border-[#1A1C1A] flex items-center justify-between bg-[#191B19]">
-          <Link href="/command-center" className="flex items-center gap-2">
-            <div className="w-9 h-9 bg-[#285C45] border-2 border-[#1A1C1A] flex items-center justify-center relative brutal-shadow-sm">
+          <Link href="/command-center" className="flex items-center gap-2.5">
+            <div className="w-9 h-9 bg-[#285C45] border-2 border-[#1A1C1A] rounded-lg flex items-center justify-center relative brutal-shadow-xs">
               <Icon name="radar" className="w-5 h-5 text-[#9CD2B5]" />
               <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-[#9CD2B5] border border-[#1A1C1A] rounded-full"></span>
             </div>
@@ -47,7 +47,7 @@ export default function AppSidebar({ mobileOpen = false, onMobileClose }: AppSid
             {onMobileClose && (
               <button 
                 onClick={onMobileClose}
-                className="md:hidden text-[#C0C9C1] hover:text-[#FFFFFF] p-1"
+                className="md:hidden text-[#C0C9C1] hover:text-[#FFFFFF] p-1 rounded-md"
                 aria-label="Close Sidebar"
               >
                 <Icon name="close" className="w-5 h-5" />
@@ -60,7 +60,7 @@ export default function AppSidebar({ mobileOpen = false, onMobileClose }: AppSid
         <div className="p-2 border-b-2 border-[#1A1C1A] bg-[#191B19] relative">
           <button
             onClick={() => setShowClusterDropdown(!showClusterDropdown)}
-            className="w-full bg-[#1A1C1A] border border-[#717973] flex items-center justify-between px-3 py-1.5 brutal-shadow-black hover:border-[#9CD2B5] transition-colors text-left"
+            className="w-full bg-[#1A1C1A] border border-[#717973] rounded-lg flex items-center justify-between px-3 py-1.5 brutal-shadow-black hover:border-[#9CD2B5] transition-colors text-left"
           >
             <div className="flex flex-col overflow-hidden">
               <span className="font-mono text-[9px] uppercase tracking-wider text-[#C0C9C1]">Target Cluster</span>
@@ -70,7 +70,7 @@ export default function AppSidebar({ mobileOpen = false, onMobileClose }: AppSid
           </button>
 
           {showClusterDropdown && (
-            <div className="absolute left-2 right-2 top-full mt-1 bg-[#191B19] border-2 border-[#1A1C1A] brutal-shadow z-50 flex flex-col p-1">
+            <div className="absolute left-2 right-2 top-full mt-1 bg-[#191B19] border-2 border-[#1A1C1A] rounded-lg brutal-shadow z-50 flex flex-col p-1 gap-0.5">
               {clusters.map((c) => (
                 <button
                   key={c}
@@ -78,7 +78,7 @@ export default function AppSidebar({ mobileOpen = false, onMobileClose }: AppSid
                     setCluster(c);
                     setShowClusterDropdown(false);
                   }}
-                  className={`text-left px-2.5 py-1.5 font-mono text-[12px] uppercase transition-colors ${
+                  className={`text-left px-2.5 py-1.5 font-mono text-[12px] uppercase rounded-md transition-colors ${
                     cluster === c ? 'bg-[#285C45] text-white font-bold' : 'text-[#F1F1ED] hover:bg-[#1A1C1A]'
                   }`}
                 >
@@ -102,9 +102,9 @@ export default function AppSidebar({ mobileOpen = false, onMobileClose }: AppSid
                 key={item.href}
                 href={item.href}
                 onClick={onMobileClose}
-                className={`flex items-center justify-between px-3 py-1.5 font-mono text-[12px] tracking-wide uppercase transition-all ${
+                className={`flex items-center justify-between px-3 py-1.5 font-mono text-[12px] tracking-wide uppercase rounded-lg transition-all ${
                   isActive
-                    ? 'bg-[#285C45] text-[#FFFFFF] border-2 border-[#1A1C1A] shadow-[3px_3px_0px_#1a1c1a] font-semibold'
+                    ? 'bg-[#285C45] text-[#FFFFFF] border-2 border-[#1A1C1A] shadow-[2.5px_2.5px_0px_#1a1c1a] font-semibold'
                     : 'text-[#F1F1ED] hover:bg-[#1A1C1A] hover:text-[#FAF9F6] border border-transparent'
                 }`}
               >
@@ -113,7 +113,7 @@ export default function AppSidebar({ mobileOpen = false, onMobileClose }: AppSid
                   <span>{item.title}</span>
                 </div>
                 {item.badge && (
-                  <span className="bg-[#FD6E5B] text-white text-[10px] font-bold px-1.5 py-0.5 border border-[#1A1C1A]">
+                  <span className="bg-[#FD6E5B] text-white text-[10px] font-bold px-1.5 py-0.5 border border-[#1A1C1A] rounded-md">
                     {item.badge}
                   </span>
                 )}
@@ -126,7 +126,7 @@ export default function AppSidebar({ mobileOpen = false, onMobileClose }: AppSid
       {/* Sidebar Footer */}
       <div className="flex flex-col border-t-2 border-[#1A1C1A] p-2 gap-2 bg-[#191B19]">
         {/* Live Agent Engine Status */}
-        <div className="bg-[#1A1C1A] border border-[#717973] p-2.5 flex flex-col gap-1 brutal-shadow-black">
+        <div className="bg-[#1A1C1A] border border-[#717973] rounded-xl p-2.5 flex flex-col gap-1 brutal-shadow-black">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-1.5">
               <span className="w-2 h-2 rounded-full bg-[#B7EFD0] inline-block animate-ping"></span>
@@ -135,8 +135,8 @@ export default function AppSidebar({ mobileOpen = false, onMobileClose }: AppSid
             <span className="font-mono text-[10px] text-[#C0C9C1]">99.8%</span>
           </div>
           <span className="font-mono text-[11px] text-[#F1F1ED]">Veriqo Core v2.4 Active</span>
-          <div className="w-full bg-[#191B19] h-1.5 border border-[#717973] overflow-hidden">
-            <div className="bg-[#285C45] h-full w-[84%]"></div>
+          <div className="w-full bg-[#191B19] h-1.5 border border-[#717973] rounded-full overflow-hidden">
+            <div className="bg-[#285C45] h-full w-[84%] rounded-full"></div>
           </div>
         </div>
 

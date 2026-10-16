@@ -137,7 +137,7 @@ export default function TestLibraryPage() {
             <span className="text-[#717973]">/</span>
             <span className="text-[#1A1C1A] font-bold">Test Library</span>
             <span
-              className={`ml-1 text-[10px] font-mono px-1.5 py-0.5 border border-[#1A1C1A] uppercase font-bold ${
+              className={`ml-1 text-[10px] font-mono px-2 py-0.5 border border-[#1A1C1A] uppercase font-bold rounded-md brutal-shadow-xs ${
                 isLive ? 'bg-[#B7EFD0] text-[#002114]' : 'bg-[#FFDAD6] text-[#93000A]'
               }`}
             >
@@ -154,7 +154,7 @@ export default function TestLibraryPage() {
 
         <button
           onClick={() => setNewScenarioModalOpen(true)}
-          className="bg-[#285C45] text-white border-2 border-[#1A1C1A] px-4 py-2 font-headline text-[13px] uppercase font-bold brutal-shadow hover:bg-[#0B442F] brutal-btn flex items-center gap-1.5 self-start sm:self-auto"
+          className="bg-[#285C45] text-white border-2 border-[#1A1C1A] px-4 py-2 font-headline text-[13px] uppercase font-bold brutal-shadow hover:bg-[#0B442F] rounded-lg brutal-btn flex items-center gap-1.5 self-start sm:self-auto"
         >
           <Icon name="add" className="w-4 h-4" />
           <span>+ Create Test Scenario</span>
@@ -162,11 +162,11 @@ export default function TestLibraryPage() {
       </div>
 
       {error && (
-        <div className="bg-[#FFDAD6] border-2 border-[#AC3326] p-3 flex items-center justify-between gap-3 font-mono text-[12px] text-[#93000A] brutal-shadow-sm">
+        <div className="bg-[#FFDAD6] border-2 border-[#AC3326] p-3 flex items-center justify-between gap-3 font-mono text-[12px] text-[#93000A] brutal-shadow-sm rounded-xl">
           <span>Failed to connect to cluster: {error}. Showing offline data.</span>
           <button
             onClick={loadTests}
-            className="bg-[#FFFFFF] text-[#1A1C1A] border border-[#1A1C1A] px-2.5 py-1 font-bold uppercase hover:bg-[#E8E8E5]"
+            className="bg-[#FFFFFF] text-[#1A1C1A] border border-[#1A1C1A] px-2.5 py-1 font-bold uppercase hover:bg-[#E8E8E5] rounded-md brutal-btn"
           >
             Retry
           </button>
@@ -174,8 +174,8 @@ export default function TestLibraryPage() {
       )}
 
       {/* Search and Category Filter Bar */}
-      <div className="bg-[#F4F4F0] border-2 border-[#1A1C1A] p-3 brutal-shadow flex flex-col gap-3">
-        <div className="flex-1 flex items-center bg-[#FFFFFF] border-2 border-[#1A1C1A] px-3 py-1.5 brutal-shadow-sm">
+      <div className="bg-[#F4F4F0] border-2 border-[#1A1C1A] p-3.5 brutal-shadow rounded-xl flex flex-col gap-3">
+        <div className="flex-1 flex items-center bg-[#FFFFFF] border-2 border-[#1A1C1A] px-3 py-1.5 brutal-shadow-sm focus-within:shadow-[3px_3px_0px_#285c45] rounded-lg">
           <Icon name="search" className="w-4 h-4 text-[#404943] mr-2" />
           <input
             type="text"
@@ -191,7 +191,7 @@ export default function TestLibraryPage() {
             <button
               key={cat}
               onClick={() => setSelectedCategory(cat)}
-              className={`px-3 py-1 font-mono text-[11px] font-bold uppercase whitespace-nowrap border-2 transition-all ${
+              className={`px-3 py-1 font-mono text-[11px] font-bold uppercase whitespace-nowrap border-2 rounded-md transition-all ${
                 selectedCategory === cat
                   ? 'border-[#1A1C1A] bg-[#285C45] text-white brutal-shadow-sm'
                   : 'border-[#1A1C1A] bg-[#FFFFFF] text-[#404943] hover:bg-[#EEEEEA]'
@@ -206,14 +206,14 @@ export default function TestLibraryPage() {
       {/* Grid of Test Cases */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {loading && tests.length === 0 ? (
-          <div className="col-span-full bg-[#FFFFFF] border-2 border-[#1A1C1A] p-12 text-center flex flex-col items-center gap-3 brutal-shadow">
+          <div className="col-span-full bg-[#FFFFFF] border-2 border-[#1A1C1A] p-12 text-center flex flex-col items-center gap-3 brutal-shadow rounded-xl">
             <div className="w-8 h-8 border-4 border-[#285C45] border-t-transparent rounded-full animate-spin"></div>
             <span className="font-mono text-[12px] uppercase font-bold text-[#1A1C1A]">
               Loading test suites from registry...
             </span>
           </div>
         ) : filteredTests.length === 0 ? (
-          <div className="col-span-full bg-[#FFFFFF] border-2 border-[#1A1C1A] p-12 text-center flex flex-col items-center gap-2 brutal-shadow">
+          <div className="col-span-full bg-[#FFFFFF] border-2 border-[#1A1C1A] p-12 text-center flex flex-col items-center gap-2 brutal-shadow rounded-xl">
             <Icon name="folder_off" className="w-9 h-9 text-[#717973]" />
             <span className="font-headline font-bold text-[18px]">No test scenarios found</span>
             <span className="font-mono text-[12px] text-[#717973]">Try adjusting your search query or category filter.</span>
@@ -224,15 +224,15 @@ export default function TestLibraryPage() {
             return (
               <div
                 key={test.id}
-                className="bg-[#FFFFFF] border-2 border-[#1A1C1A] p-4 brutal-shadow flex flex-col justify-between hover:-translate-y-0.5 transition-all"
+                className="bg-[#FFFFFF] border-2 border-[#1A1C1A] p-4 brutal-shadow rounded-xl flex flex-col justify-between hover:-translate-y-0.5 transition-all"
               >
                 <div className="flex flex-col gap-2">
                   <div className="flex items-start justify-between gap-2">
-                    <span className="font-mono text-[10px] uppercase font-bold px-2 py-0.5 bg-[#EEEEEA] border border-[#1A1C1A] text-[#1A1C1A]">
+                    <span className="font-mono text-[10px] uppercase font-bold px-2 py-0.5 bg-[#EEEEEA] border border-[#1A1C1A] text-[#1A1C1A] rounded-md brutal-shadow-xs">
                       {test.category}
                     </span>
                     <span
-                      className={`font-mono text-[10px] font-bold px-2 py-0.5 border border-[#1A1C1A] ${
+                      className={`font-mono text-[10px] font-bold px-2 py-0.5 border border-[#1A1C1A] rounded-md brutal-shadow-xs ${
                         isPassed
                           ? 'bg-[#B7EFD0] text-[#002114]'
                           : 'bg-[#FFDAD6] text-[#AC3326]'
@@ -267,13 +267,13 @@ export default function TestLibraryPage() {
                   <div className="flex items-center gap-2 pt-2 border-t border-[#E2E3DF] mt-1">
                     <button
                       onClick={() => handleRunSingleTest(test)}
-                      className="flex-1 bg-[#285C45] text-white py-1.5 border border-[#1A1C1A] font-headline text-[11px] uppercase font-bold hover:bg-[#0B442F] brutal-shadow-sm brutal-btn"
+                      className="flex-1 bg-[#285C45] text-white py-1.5 border border-[#1A1C1A] font-headline text-[11px] uppercase font-bold hover:bg-[#0B442F] brutal-shadow-xs rounded-lg brutal-btn"
                     >
                       Run Test
                     </button>
                     <button
                       onClick={() => showToast(`Duplicated scenario "${test.name}"`)}
-                      className="bg-[#FFFFFF] text-[#1A1C1A] px-2.5 py-1.5 border border-[#1A1C1A] font-headline text-[11px] uppercase font-bold hover:bg-[#EEEEEA] brutal-shadow-sm brutal-btn"
+                      className="bg-[#FFFFFF] text-[#1A1C1A] px-2.5 py-1.5 border border-[#1A1C1A] font-headline text-[11px] uppercase font-bold hover:bg-[#EEEEEA] brutal-shadow-xs rounded-lg brutal-btn"
                       title="Duplicate Test"
                     >
                       <Icon name="content_copy" className="w-3.5 h-3.5" />
@@ -288,12 +288,12 @@ export default function TestLibraryPage() {
 
       {newScenarioModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#191B19]/70 backdrop-blur-xs">
-          <div className="bg-[#FFFFFF] border-2 border-[#1A1C1A] brutal-shadow-lg max-w-lg w-full p-6 flex flex-col gap-4 animate-in fade-in zoom-in-95 duration-100">
+          <div className="bg-[#FFFFFF] border-2 border-[#1A1C1A] brutal-shadow-lg rounded-2xl max-w-lg w-full p-6 flex flex-col gap-4 animate-in fade-in zoom-in-95 duration-100">
             <div className="flex items-center justify-between pb-2 border-b-2 border-[#1A1C1A]">
               <h2 className="font-headline text-[20px] font-bold uppercase text-[#1A1C1A]">
                 Create Autonomous Test Scenario
               </h2>
-              <button onClick={() => setNewScenarioModalOpen(false)}>
+              <button onClick={() => setNewScenarioModalOpen(false)} className="p-1 rounded-md hover:bg-[#F4F4F0]">
                 <Icon name="close" className="w-5 h-5 text-[#717973]" />
               </button>
             </div>
@@ -309,7 +309,7 @@ export default function TestLibraryPage() {
                   value={scenarioName}
                   onChange={(e) => setScenarioName(e.target.value)}
                   placeholder="e.g. Concurrent Basket Modification During Checkout"
-                  className="w-full bg-[#FAF9F6] border-2 border-[#1A1C1A] px-3 py-2 text-[12px] focus:outline-none"
+                  className="w-full bg-[#FAF9F6] border-2 border-[#1A1C1A] px-3 py-2 text-[12px] focus:outline-none rounded-lg brutal-shadow-sm"
                   disabled={saving}
                 />
               </div>
@@ -321,7 +321,7 @@ export default function TestLibraryPage() {
                 <select
                   value={scenarioCategory}
                   onChange={(e) => setScenarioCategory(e.target.value)}
-                  className="w-full bg-[#FAF9F6] border-2 border-[#1A1C1A] px-3 py-2 text-[12px] font-bold focus:outline-none"
+                  className="w-full bg-[#FAF9F6] border-2 border-[#1A1C1A] px-3 py-2 text-[12px] font-bold focus:outline-none rounded-lg brutal-shadow-sm"
                   disabled={saving}
                 >
                   <option value="E2E Concurrency & Payments">E2E Concurrency &amp; Payments</option>
@@ -341,7 +341,7 @@ export default function TestLibraryPage() {
                   value={scenarioDesc}
                   onChange={(e) => setScenarioDesc(e.target.value)}
                   placeholder="Describe the state transition or race condition to fuzz..."
-                  className="w-full bg-[#FAF9F6] border-2 border-[#1A1C1A] px-3 py-2 text-[12px] focus:outline-none font-body"
+                  className="w-full bg-[#FAF9F6] border-2 border-[#1A1C1A] px-3 py-2 text-[12px] focus:outline-none font-body rounded-lg brutal-shadow-sm"
                   disabled={saving}
                 />
               </div>
@@ -351,14 +351,14 @@ export default function TestLibraryPage() {
                   type="button"
                   onClick={() => setNewScenarioModalOpen(false)}
                   disabled={saving}
-                  className="px-4 py-1.5 bg-[#FAF9F6] border-2 border-[#1A1C1A] font-headline text-[12px] uppercase font-bold"
+                  className="px-4 py-1.5 bg-[#FAF9F6] border-2 border-[#1A1C1A] font-headline text-[12px] uppercase font-bold rounded-lg brutal-btn"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={saving}
-                  className="px-4 py-1.5 bg-[#285C45] text-white border-2 border-[#1A1C1A] font-headline text-[12px] uppercase font-bold hover:bg-[#0B442F] disabled:opacity-50"
+                  className="px-4 py-1.5 bg-[#285C45] text-white border-2 border-[#1A1C1A] font-headline text-[12px] uppercase font-bold hover:bg-[#0B442F] rounded-lg brutal-btn brutal-shadow-sm disabled:opacity-50"
                 >
                   {saving ? 'Saving...' : 'Save Scenario'}
                 </button>
@@ -369,7 +369,7 @@ export default function TestLibraryPage() {
       )}
 
       {toastMessage && (
-        <div className="fixed bottom-6 right-6 bg-[#191B19] text-[#F1F1ED] border-2 border-[#1A1C1A] px-4 py-2.5 font-mono text-[12px] brutal-shadow-lg z-50 flex items-center gap-2 animate-in fade-in duration-100">
+        <div className="fixed bottom-6 right-6 bg-[#191B19] text-[#F1F1ED] border-2 border-[#1A1C1A] px-4 py-2.5 font-mono text-[12px] brutal-shadow rounded-lg z-50 flex items-center gap-2 animate-in fade-in duration-100">
           <Icon name="verified" className="w-4 h-4 text-[#B7EFD0]" />
           <span>{toastMessage}</span>
         </div>

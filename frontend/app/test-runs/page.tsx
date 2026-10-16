@@ -152,7 +152,7 @@ export default function TestRunsPage() {
             <span className="text-[#717973]">/</span>
             <span className="text-[#1A1C1A] font-bold">Test Runs</span>
             <span
-              className={`ml-1 text-[10px] font-mono px-1.5 py-0.5 border border-[#1A1C1A] uppercase font-bold ${
+              className={`ml-1 text-[10px] font-mono px-2 py-0.5 border border-[#1A1C1A] uppercase font-bold rounded-md brutal-shadow-xs ${
                 isLive ? 'bg-[#B7EFD0] text-[#002114]' : 'bg-[#FFDAD6] text-[#93000A]'
               }`}
             >
@@ -169,7 +169,7 @@ export default function TestRunsPage() {
 
         <button
           onClick={() => setNewRunModalOpen(true)}
-          className="bg-[#285C45] text-white border-2 border-[#1A1C1A] px-4 py-2 font-headline text-[13px] uppercase font-bold shadow-[3px_3px_0px_#1a1c1a] hover:bg-[#0B442F] brutal-btn flex items-center gap-1.5 self-start sm:self-auto"
+          className="bg-[#285C45] text-white border-2 border-[#1A1C1A] px-4 py-2 font-headline text-[13px] uppercase font-bold brutal-shadow hover:bg-[#0B442F] rounded-lg brutal-btn flex items-center gap-1.5 self-start sm:self-auto"
         >
           <Icon name="plus" className="w-4 h-4 text-white" />
           <span>+ New Autonomous Run</span>
@@ -177,11 +177,11 @@ export default function TestRunsPage() {
       </div>
 
       {error && (
-        <div className="bg-[#FFDAD6] border-2 border-[#AC3326] p-3 flex items-center justify-between gap-3 font-mono text-[12px] text-[#93000A] shadow-[2px_2px_0px_#1a1c1a]">
+        <div className="bg-[#FFDAD6] border-2 border-[#AC3326] p-3 flex items-center justify-between gap-3 font-mono text-[12px] text-[#93000A] brutal-shadow-sm rounded-xl">
           <span>Failed to connect to cluster: {error}. Showing offline data.</span>
           <button
             onClick={loadRuns}
-            className="bg-[#FFFFFF] text-[#1A1C1A] border border-[#1A1C1A] px-2.5 py-1 font-bold uppercase hover:bg-[#E8E8E5]"
+            className="bg-[#FFFFFF] text-[#1A1C1A] border border-[#1A1C1A] px-2.5 py-1 font-bold uppercase hover:bg-[#E8E8E5] rounded-md brutal-btn"
           >
             Retry
           </button>
@@ -189,8 +189,8 @@ export default function TestRunsPage() {
       )}
 
       {/* Filter and Search Bar */}
-      <div className="bg-[#F4F4F0] border-2 border-[#1A1C1A] p-3 shadow-[4px_4px_0px_#1a1c1a] flex flex-col md:flex-row gap-3 items-stretch md:items-center justify-between">
-        <div className="flex-1 flex items-center bg-[#FFFFFF] border-2 border-[#1A1C1A] px-3 py-1.5 shadow-[2px_2px_0px_#1a1c1a]">
+      <div className="bg-[#F4F4F0] border-2 border-[#1A1C1A] p-3 brutal-shadow rounded-xl flex flex-col md:flex-row gap-3 items-stretch md:items-center justify-between">
+        <div className="flex-1 flex items-center bg-[#FFFFFF] border-2 border-[#1A1C1A] px-3 py-1.5 brutal-shadow-sm focus-within:shadow-[3px_3px_0px_#285c45] rounded-lg">
           <Icon name="search" className="w-4 h-4 text-[#404943] mr-2 flex-shrink-0" />
           <input
             type="text"
@@ -206,7 +206,7 @@ export default function TestRunsPage() {
             <button
               key={st}
               onClick={() => setFilterStatus(st)}
-              className={`px-3 py-1 font-mono text-[11px] font-bold uppercase border-2 transition-all ${
+              className={`px-3 py-1 font-mono text-[11px] font-bold uppercase border-2 rounded-md transition-all ${
                 filterStatus === st
                   ? 'border-[#1A1C1A] bg-[#285C45] text-white brutal-shadow-sm'
                   : 'border-[#1A1C1A] bg-[#FFFFFF] text-[#404943] hover:bg-[#EEEEEA]'
@@ -223,14 +223,14 @@ export default function TestRunsPage() {
         {/* Runs Table / List (7 cols) */}
         <div className="lg:col-span-7 flex flex-col gap-3">
           {loading && runs.length === 0 ? (
-            <div className="bg-[#FFFFFF] border-2 border-[#1A1C1A] p-12 text-center flex flex-col items-center gap-3 brutal-shadow">
+            <div className="bg-[#FFFFFF] border-2 border-[#1A1C1A] p-12 text-center flex flex-col items-center gap-3 brutal-shadow rounded-xl">
               <div className="w-8 h-8 border-4 border-[#285C45] border-t-transparent rounded-full animate-spin"></div>
               <span className="font-mono text-[12px] uppercase font-bold text-[#1A1C1A]">
                 Loading test executions from cluster...
               </span>
             </div>
           ) : filteredRuns.length === 0 ? (
-            <div className="bg-[#FFFFFF] border-2 border-[#1A1C1A] p-12 text-center flex flex-col items-center gap-2 brutal-shadow">
+            <div className="bg-[#FFFFFF] border-2 border-[#1A1C1A] p-12 text-center flex flex-col items-center gap-2 brutal-shadow rounded-xl">
               <Icon name="folder_off" className="w-9 h-9 text-[#717973]" />
               <span className="font-headline font-bold text-[18px]">No test runs found</span>
               <span className="font-mono text-[12px] text-[#717973]">
@@ -247,7 +247,7 @@ export default function TestRunsPage() {
                 <div
                   key={run.id}
                   onClick={() => setSelectedRun(run)}
-                  className={`bg-[#FFFFFF] border-2 border-[#1A1C1A] p-4 brutal-shadow cursor-pointer transition-all ${
+                  className={`bg-[#FFFFFF] border-2 border-[#1A1C1A] p-4 brutal-shadow rounded-xl cursor-pointer transition-all ${
                     isSelected ? 'ring-2 ring-[#285C45] bg-[#FAF9F6]' : 'hover:-translate-y-0.5'
                   }`}
                 >
@@ -293,7 +293,7 @@ export default function TestRunsPage() {
         </div>
 
         {/* Selected Run Inspection Drawer (5 cols) */}
-        <div className="lg:col-span-5 bg-[#FFFFFF] border-2 border-[#1A1C1A] brutal-shadow-lg p-5 flex flex-col gap-4 sticky top-20">
+        <div className="lg:col-span-5 bg-[#FFFFFF] border-2 border-[#1A1C1A] brutal-shadow-lg rounded-xl p-5 flex flex-col gap-4 sticky top-20">
           {selectedRun ? (
             <>
               <div className="flex items-center justify-between pb-3 border-b-2 border-[#1A1C1A]">
@@ -309,23 +309,23 @@ export default function TestRunsPage() {
               </div>
 
               <div className="flex flex-col gap-2 font-mono text-[12px]">
-                <div className="bg-[#F4F4F0] p-2.5 border border-[#1A1C1A]">
+                <div className="bg-[#F4F4F0] p-2.5 border border-[#1A1C1A] rounded-lg">
                   <span className="text-[#717973] block text-[10px] uppercase font-bold">Target URL</span>
                   <span className="font-bold text-[#1A1C1A] truncate block">{selectedRun.projectDomain}</span>
                 </div>
 
                 <div className="grid grid-cols-2 gap-2">
-                  <div className="bg-[#F4F4F0] p-2 border border-[#C0C9C1]">
+                  <div className="bg-[#F4F4F0] p-2 border border-[#C0C9C1] rounded-lg">
                     <span className="text-[#717973] block text-[10px] uppercase">Cluster</span>
                     <span className="font-bold text-[#1A1C1A]">{selectedRun.environment}</span>
                   </div>
-                  <div className="bg-[#F4F4F0] p-2 border border-[#C0C9C1]">
+                  <div className="bg-[#F4F4F0] p-2 border border-[#C0C9C1] rounded-lg">
                     <span className="text-[#717973] block text-[10px] uppercase">Runtime Engine</span>
                     <span className="font-bold text-[#1A1C1A]">{selectedRun.browser}</span>
                   </div>
                 </div>
 
-                <div className="bg-[#EEEEEA] p-2.5 border border-[#1A1C1A] flex items-center justify-between">
+                <div className="bg-[#EEEEEA] p-2.5 border border-[#1A1C1A] flex items-center justify-between rounded-lg">
                   <div className="flex flex-col">
                     <span className="text-[10px] uppercase text-[#404943] font-bold">Assertion Success</span>
                     <span className="font-headline text-[18px] font-bold text-[#0B442F]">
@@ -341,7 +341,7 @@ export default function TestRunsPage() {
                 </div>
 
                 {selectedRun.criticalDefectId && (
-                  <div className="bg-[#FFDAD6] border-2 border-[#AC3326] p-3 flex flex-col gap-1">
+                  <div className="bg-[#FFDAD6] border-2 border-[#AC3326] p-3 flex flex-col gap-1 rounded-lg">
                     <div className="flex items-center gap-1.5 text-[#AC3326] font-bold text-[11px] uppercase">
                       <Icon name="warning" className="w-4 h-4" />
                       <span>Critical P0 Defect Flagged</span>
@@ -365,7 +365,7 @@ export default function TestRunsPage() {
                   <>
                     <Link
                       href="/command-center"
-                      className="w-full bg-[#285C45] text-white py-2 border-2 border-[#1A1C1A] font-headline text-[13px] uppercase font-bold text-center brutal-shadow brutal-btn flex items-center justify-center gap-2"
+                      className="w-full bg-[#285C45] text-white py-2 border-2 border-[#1A1C1A] font-headline text-[13px] uppercase font-bold text-center brutal-shadow rounded-lg brutal-btn flex items-center justify-center gap-2"
                     >
                       <Icon name="terminal" className="w-4 h-4" />
                       <span>Attach to Live Command Center</span>
@@ -374,14 +374,14 @@ export default function TestRunsPage() {
                       <button
                         onClick={() => handleUpdateStatus(selectedRun.id, 'paused')}
                         disabled={actionLoading}
-                        className="flex-1 bg-[#EEEEEA] text-[#1A1C1A] py-1.5 border-2 border-[#1A1C1A] font-headline text-[12px] uppercase font-bold hover:bg-[#E2E3DF] brutal-btn"
+                        className="flex-1 bg-[#EEEEEA] text-[#1A1C1A] py-1.5 border-2 border-[#1A1C1A] font-headline text-[12px] uppercase font-bold hover:bg-[#E2E3DF] rounded-lg brutal-btn"
                       >
                         Pause
                       </button>
                       <button
                         onClick={() => handleUpdateStatus(selectedRun.id, 'aborted')}
                         disabled={actionLoading}
-                        className="flex-1 bg-[#FD6E5B] text-white py-1.5 border-2 border-[#1A1C1A] font-headline text-[12px] uppercase font-bold hover:bg-[#AC3326] brutal-btn"
+                        className="flex-1 bg-[#FD6E5B] text-white py-1.5 border-2 border-[#1A1C1A] font-headline text-[12px] uppercase font-bold hover:bg-[#AC3326] rounded-lg brutal-btn"
                       >
                         Abort
                       </button>
@@ -391,7 +391,7 @@ export default function TestRunsPage() {
                   <button
                     onClick={() => handleUpdateStatus(selectedRun.id, 'running')}
                     disabled={actionLoading}
-                    className="w-full bg-[#285C45] text-white py-2 border-2 border-[#1A1C1A] font-headline text-[13px] uppercase font-bold text-center brutal-shadow brutal-btn flex items-center justify-center gap-2"
+                    className="w-full bg-[#285C45] text-white py-2 border-2 border-[#1A1C1A] font-headline text-[13px] uppercase font-bold text-center brutal-shadow rounded-lg brutal-btn flex items-center justify-center gap-2"
                   >
                     <Icon name="replay" className="w-4 h-4" />
                     <span>Re-Execute Autonomous Suite</span>
@@ -400,7 +400,7 @@ export default function TestRunsPage() {
 
                 <button
                   onClick={() => handleExportHar(selectedRun)}
-                  className="w-full bg-[#FFFFFF] text-[#1A1C1A] py-2 border-2 border-[#1A1C1A] font-headline text-[13px] uppercase font-bold text-center brutal-shadow brutal-btn flex items-center justify-center gap-2 hover:bg-[#EEEEEA]"
+                  className="w-full bg-[#FFFFFF] text-[#1A1C1A] py-2 border-2 border-[#1A1C1A] font-headline text-[13px] uppercase font-bold text-center brutal-shadow rounded-lg brutal-btn flex items-center justify-center gap-2 hover:bg-[#EEEEEA]"
                 >
                   <Icon name="download" className="w-4 h-4" />
                   <span>Export Real HAR &amp; CDP Artifacts</span>
@@ -424,7 +424,7 @@ export default function TestRunsPage() {
       />
 
       {toastMessage && (
-        <div className="fixed bottom-6 right-6 bg-[#191B19] text-[#F1F1ED] border-2 border-[#1A1C1A] px-4 py-2.5 font-mono text-[12px] brutal-shadow-lg z-50 flex items-center gap-2 animate-in fade-in duration-100">
+        <div className="fixed bottom-6 right-6 bg-[#191B19] text-[#F1F1ED] border-2 border-[#1A1C1A] px-4 py-2.5 font-mono text-[12px] brutal-shadow rounded-lg z-50 flex items-center gap-2 animate-in fade-in duration-100">
           <Icon name="verified" className="w-4 h-4 text-[#B7EFD0]" />
           <span>{toastMessage}</span>
         </div>

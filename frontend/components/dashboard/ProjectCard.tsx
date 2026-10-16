@@ -25,7 +25,7 @@ export default function ProjectCard({
 
   return (
     <div
-      className={`bg-[#FFFFFF] border-2 border-[#1A1C1A] shadow-[4px_4px_0px_#1a1c1a] flex flex-col justify-between transition-transform hover:-translate-y-0.5 ${
+      className={`bg-[#FFFFFF] border-2 border-[#1A1C1A] rounded-xl brutal-shadow overflow-hidden flex flex-col justify-between transition-transform hover:-translate-y-0.5 ${
         viewMode === 'list' ? 'w-full' : ''
       }`}
     >
@@ -40,7 +40,7 @@ export default function ProjectCard({
                   : isScanning
                   ? 'bg-[#FFDF9B]'
                   : 'bg-[#B7EFD0]'
-              } border-2 border-[#1A1C1A] flex items-center justify-center shadow-[2px_2px_0px_#1a1c1a] flex-shrink-0`}
+              } border-2 border-[#1A1C1A] rounded-lg flex items-center justify-center brutal-shadow-xs flex-shrink-0`}
             >
               <Icon
                 name={project.icon || 'folder'}
@@ -63,7 +63,7 @@ export default function ProjectCard({
                   <Icon name="link" className="w-3.5 h-3.5 text-[#404943] flex-shrink-0" />
                   <span className="underline">{project.domain}</span>
                 </span>
-                <span className="px-1.5 py-0.5 bg-[#E2E3DF] border border-[#1A1C1A] text-[#1A1C1A] uppercase font-bold text-[10px]">
+                <span className="px-1.5 py-0.5 bg-[#E2E3DF] border border-[#1A1C1A] rounded-md text-[#1A1C1A] uppercase font-bold text-[10px]">
                   {project.environment}
                 </span>
               </div>
@@ -94,7 +94,7 @@ export default function ProjectCard({
       {/* Body: Telemetry Strip & Matrix */}
       <div className="p-4 flex flex-col gap-4">
         {/* Metric Strip */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-1 border-2 border-[#1A1C1A] p-2 bg-[#F4F4F0]">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-1 border-2 border-[#1A1C1A] rounded-lg p-2 bg-[#F4F4F0]">
           <div className="flex flex-col">
             <span className="font-mono text-[10px] uppercase text-[#717973]">Pass Rate</span>
             <span
@@ -141,7 +141,7 @@ export default function ProjectCard({
 
         {/* Live scanning progress bar OR Subsystem Coverage Matrix */}
         {isScanning && project.liveProgress ? (
-          <div className="flex flex-col gap-1.5 bg-[#EEEEEA] p-3 border-2 border-[#1A1C1A]">
+          <div className="flex flex-col gap-1.5 bg-[#EEEEEA] p-3 border-2 border-[#1A1C1A] rounded-lg">
             <div className="flex items-center justify-between font-mono text-[11px] uppercase font-bold">
               <span className="flex items-center gap-1.5 text-[#1A1C1A]">
                 <Icon name="sync" className="w-4 h-4 text-[#694E00] animate-spin" />
@@ -152,9 +152,9 @@ export default function ProjectCard({
               </span>
             </div>
 
-            <div className="w-full h-3 bg-white border border-[#1A1C1A] overflow-hidden p-0.5">
+            <div className="w-full h-3 bg-white border border-[#1A1C1A] rounded-full overflow-hidden p-0.5">
               <div
-                className="bg-[#694E00] h-full transition-all duration-300"
+                className="bg-[#694E00] h-full rounded-full transition-all duration-300"
                 style={{ width: `${project.liveProgress.percentage}%` }}
               ></div>
             </div>
@@ -204,7 +204,7 @@ export default function ProjectCard({
           <>
             <Link
               href="/command-center"
-              className="bg-[#191B19] text-[#F1F1ED] border-2 border-[#1A1C1A] px-4 py-1.5 font-headline text-[13px] uppercase shadow-[3px_3px_0px_#1a1c1a] hover:bg-[#1A1C1A] brutal-btn flex items-center gap-1.5"
+              className="bg-[#191B19] text-[#F1F1ED] border-2 border-[#1A1C1A] rounded-lg px-4 py-1.5 font-headline text-[13px] uppercase shadow-[2px_2px_0px_#1a1c1a] hover:bg-[#1A1C1A] brutal-btn flex items-center gap-1.5"
             >
               <Icon name="terminal" className="w-4 h-4 text-[#9CD2B5]" />
               <span>View Live Stream</span>
@@ -212,7 +212,7 @@ export default function ProjectCard({
 
             <button
               onClick={() => alert('Run paused for debugging snapshot.')}
-              className="bg-[#FFDAD5] text-[#410000] border-2 border-[#1A1C1A] px-4 py-1.5 font-headline text-[13px] uppercase font-bold shadow-[3px_3px_0px_#1a1c1a] hover:bg-[#AC3326] hover:text-white brutal-btn flex items-center gap-1.5"
+              className="bg-[#FFDAD5] text-[#410000] border-2 border-[#1A1C1A] rounded-lg px-4 py-1.5 font-headline text-[13px] uppercase font-bold shadow-[2px_2px_0px_#1a1c1a] hover:bg-[#AC3326] hover:text-white brutal-btn flex items-center gap-1.5"
             >
               <Icon name="stop_circle" className="w-4 h-4" />
               <span>Stop Run</span>
@@ -222,7 +222,7 @@ export default function ProjectCard({
           <>
             <button
               onClick={() => (onOpenDetails ? onOpenDetails(project) : alert(`Inspecting ${project.name}`))}
-              className="bg-[#FFFFFF] text-[#1A1C1A] border-2 border-[#1A1C1A] px-4 py-1.5 font-headline text-[13px] uppercase font-bold shadow-[3px_3px_0px_#1a1c1a] hover:bg-[#E8E8E5] brutal-btn flex items-center gap-1.5"
+              className="bg-[#FFFFFF] text-[#1A1C1A] border-2 border-[#1A1C1A] rounded-lg px-4 py-1.5 font-headline text-[13px] uppercase font-bold shadow-[2px_2px_0px_#1a1c1a] hover:bg-[#E8E8E5] brutal-btn flex items-center gap-1.5"
             >
               <Icon name="folder_open" className="w-4 h-4 text-[#1A1C1A]" />
               <span>Open Project</span>
@@ -231,7 +231,7 @@ export default function ProjectCard({
             {onStartRun ? (
               <button
                 onClick={() => onStartRun(project)}
-                className="bg-[#285C45] text-white border-2 border-[#1A1C1A] px-4 py-1.5 font-headline text-[13px] uppercase font-bold shadow-[3px_3px_0px_#1a1c1a] hover:bg-[#0B442F] brutal-btn flex items-center gap-1.5"
+                className="bg-[#285C45] text-white border-2 border-[#1A1C1A] rounded-lg px-4 py-1.5 font-headline text-[13px] uppercase font-bold shadow-[2px_2px_0px_#1a1c1a] hover:bg-[#0B442F] brutal-btn flex items-center gap-1.5"
               >
                 <Icon name="play" className="w-4 h-4" />
                 <span>+ Start Autonomous Run</span>
@@ -239,7 +239,7 @@ export default function ProjectCard({
             ) : (
               <Link
                 href="/command-center"
-                className="bg-[#285C45] text-white border-2 border-[#1A1C1A] px-4 py-1.5 font-headline text-[13px] uppercase font-bold shadow-[3px_3px_0px_#1a1c1a] hover:bg-[#0B442F] brutal-btn flex items-center gap-1.5"
+                className="bg-[#285C45] text-white border-2 border-[#1A1C1A] rounded-lg px-4 py-1.5 font-headline text-[13px] uppercase font-bold shadow-[2px_2px_0px_#1a1c1a] hover:bg-[#0B442F] brutal-btn flex items-center gap-1.5"
               >
                 <Icon name="play" className="w-4 h-4" />
                 <span>+ Start Autonomous Run</span>

@@ -182,7 +182,7 @@ export default function CommandBar({
           <div className="flex flex-wrap items-center gap-3 min-w-0">
             {/* Status Pill */}
             <div
-              className={`flex items-center gap-2 border-2 border-[#1A1C1A] px-3 py-1 brutal-shadow-sm ${
+              className={`flex items-center gap-2 border-2 border-[#1A1C1A] rounded-md px-3 py-1 brutal-shadow-xs ${
                 isAborted
                   ? 'bg-[#FFDAD6] text-[#93000A]'
                   : isPaused
@@ -234,7 +234,7 @@ export default function CommandBar({
             <button
               onClick={handleTogglePause}
               disabled={isAborted || updating}
-              className={`flex items-center gap-1.5 border-2 border-[#1A1C1A] px-3 py-1.5 font-headline text-[12px] uppercase font-bold brutal-shadow-sm brutal-btn transition-colors disabled:opacity-50 ${
+              className={`flex items-center gap-1.5 border-2 border-[#1A1C1A] rounded-lg px-3 py-1.5 font-headline text-[12px] uppercase font-bold brutal-shadow-xs brutal-btn transition-colors disabled:opacity-50 ${
                 isPaused
                   ? 'bg-[#FFDF9B] text-[#4C3800]'
                   : 'bg-[#EEEEEA] text-[#1A1C1A] hover:bg-[#E2E3DF]'
@@ -247,7 +247,7 @@ export default function CommandBar({
             <button
               onClick={() => setAbortModalOpen(true)}
               disabled={isAborted || updating}
-              className="flex items-center gap-1.5 bg-[#FD6E5B] text-white border-2 border-[#1A1C1A] px-3 py-1.5 font-headline text-[12px] uppercase font-bold brutal-shadow-sm hover:bg-[#AC3326] brutal-btn disabled:opacity-50"
+              className="flex items-center gap-1.5 bg-[#FD6E5B] text-white border-2 border-[#1A1C1A] rounded-lg px-3 py-1.5 font-headline text-[12px] uppercase font-bold brutal-shadow-xs hover:bg-[#AC3326] brutal-btn disabled:opacity-50"
             >
               <Icon name="cancel" className="w-4 h-4" />
               <span>ABORT</span>
@@ -255,7 +255,7 @@ export default function CommandBar({
 
             <button
               onClick={handleDownloadRealHar}
-              className="flex items-center gap-1.5 bg-[#FFFFFF] text-[#1A1C1A] border-2 border-[#1A1C1A] px-3 py-1.5 font-headline text-[12px] uppercase font-semibold brutal-shadow-sm hover:bg-[#F4F4F0] brutal-btn"
+              className="flex items-center gap-1.5 bg-[#FFFFFF] text-[#1A1C1A] border-2 border-[#1A1C1A] rounded-lg px-3 py-1.5 font-headline text-[12px] uppercase font-semibold brutal-shadow-xs hover:bg-[#F4F4F0] brutal-btn"
             >
               <Icon name="download" className="w-4 h-4" />
               <span>HAR SNAPSHOT</span>
@@ -263,7 +263,7 @@ export default function CommandBar({
 
             <button
               onClick={onScrollToTerminal}
-              className="flex items-center gap-1.5 bg-[#285C45] text-white border-2 border-[#1A1C1A] px-3 py-1.5 font-headline text-[12px] uppercase font-bold brutal-shadow-sm hover:bg-[#0B442F] brutal-btn"
+              className="flex items-center gap-1.5 bg-[#285C45] text-white border-2 border-[#1A1C1A] rounded-lg px-3 py-1.5 font-headline text-[12px] uppercase font-bold brutal-shadow-xs hover:bg-[#0B442F] brutal-btn"
             >
               <Icon name="terminal" className="w-4 h-4" />
               <span>LIVE AGENT LOG</span>
@@ -272,7 +272,7 @@ export default function CommandBar({
         </div>
 
         {/* Telemetry Numbers Strip */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-3 items-center bg-[#F4F4F0] border-2 border-[#1A1C1A] p-3 brutal-shadow-sm">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-3 items-center bg-[#F4F4F0] border-2 border-[#1A1C1A] rounded-xl p-3 sm:p-3.5 brutal-shadow-xs">
           {/* Time metrics */}
           <div className="md:col-span-5 flex items-center justify-between md:justify-start gap-4 lg:gap-6 font-mono text-[11px] uppercase">
             <div className="flex flex-col">
@@ -307,7 +307,7 @@ export default function CommandBar({
               <span className="font-bold text-[#0B442F]">{progressPct}% COMPLETE</span>
             </div>
 
-            <div className="w-full h-3.5 bg-[#E2E3DF] border border-[#1A1C1A] relative flex overflow-hidden shadow-inner">
+            <div className="w-full h-3.5 bg-[#E2E3DF] border border-[#1A1C1A] rounded-full relative flex overflow-hidden shadow-inner">
               <div
                 className="bg-[#285C45] h-full transition-all duration-300"
                 style={{ width: `${Math.round((passed / total) * 100)}%` }}
@@ -326,7 +326,7 @@ export default function CommandBar({
       {/* Abort Confirmation Dialog */}
       {abortModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#191B19]/70 backdrop-blur-xs">
-          <div className="bg-[#FFFFFF] border-2 border-[#1A1C1A] brutal-shadow-lg max-w-md w-full p-6 flex flex-col gap-4">
+          <div className="bg-[#FFFFFF] border-2 border-[#1A1C1A] rounded-2xl brutal-shadow-lg max-w-md w-full p-6 flex flex-col gap-4">
             <div className="flex items-center gap-2 text-[#AC3326]">
               <Icon name="warning" className="w-6 h-6" />
               <h3 className="font-headline font-bold text-[18px] uppercase">
@@ -339,13 +339,13 @@ export default function CommandBar({
             <div className="flex justify-end gap-2 pt-2 border-t border-[#E2E3DF]">
               <button
                 onClick={() => setAbortModalOpen(false)}
-                className="px-4 py-1.5 bg-[#FAF9F6] border-2 border-[#1A1C1A] font-headline text-[12px] uppercase font-bold brutal-shadow-sm hover:bg-[#E8E8E5]"
+                className="px-4 py-1.5 bg-[#FAF9F6] border-2 border-[#1A1C1A] rounded-lg font-headline text-[12px] uppercase font-bold brutal-shadow-xs hover:bg-[#E8E8E5] transition-colors"
               >
                 Continue Run
               </button>
               <button
                 onClick={handleAbort}
-                className="px-4 py-1.5 bg-[#AC3326] text-white border-2 border-[#1A1C1A] font-headline text-[12px] uppercase font-bold brutal-shadow-sm hover:bg-[#93000A]"
+                className="px-4 py-1.5 bg-[#AC3326] text-white border-2 border-[#1A1C1A] rounded-lg font-headline text-[12px] uppercase font-bold brutal-shadow-xs hover:bg-[#93000A] transition-colors"
               >
                 Confirm Abort
               </button>

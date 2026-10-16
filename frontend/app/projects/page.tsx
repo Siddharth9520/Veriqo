@@ -134,7 +134,7 @@ export default function ProjectsPage() {
             <span className="text-[#717973]">/</span>
             <span className="text-[#1A1C1A] font-semibold">Projects</span>
             <span
-              className={`ml-1 text-[10px] font-mono px-1.5 py-0.5 border border-[#1A1C1A] uppercase font-bold ${
+              className={`ml-1 text-[10px] font-mono px-2 py-0.5 border border-[#1A1C1A] uppercase font-bold rounded-md brutal-shadow-xs ${
                 isLive ? 'bg-[#B7EFD0] text-[#002114]' : 'bg-[#FFDAD6] text-[#93000A]'
               }`}
             >
@@ -152,14 +152,14 @@ export default function ProjectsPage() {
         <div className="flex flex-wrap items-center gap-2 self-start xl:self-end">
           <button
             onClick={() => setCertificateModalOpen(true)}
-            className="bg-[#FFFFFF] text-[#1A1C1A] border-2 border-[#1A1C1A] px-4 py-2 font-headline text-[13px] uppercase shadow-[3px_3px_0px_#1a1c1a] hover:bg-[#E8E8E5] brutal-btn flex items-center gap-1.5 font-bold"
+            className="bg-[#FFFFFF] text-[#1A1C1A] border-2 border-[#1A1C1A] px-4 py-2 font-headline text-[13px] uppercase brutal-shadow hover:bg-[#E8E8E5] rounded-lg brutal-btn flex items-center gap-1.5 font-bold"
           >
             <Icon name="verified" className="w-4 h-4 text-[#285C45]" />
             <span>QA Certificates &amp; Integrity</span>
           </button>
           <button
             onClick={() => setConnectModalOpen(true)}
-            className="bg-[#285C45] text-white border-2 border-[#1A1C1A] px-4 py-2 font-headline text-[13px] uppercase shadow-[3px_3px_0px_#1a1c1a] hover:bg-[#0B442F] brutal-btn flex items-center gap-1.5 font-bold"
+            className="bg-[#285C45] text-white border-2 border-[#1A1C1A] px-4 py-2 font-headline text-[13px] uppercase brutal-shadow hover:bg-[#0B442F] rounded-lg brutal-btn flex items-center gap-1.5 font-bold"
           >
             <Icon name="plus" className="w-4 h-4 text-white" />
             <span>+ Connect New Application</span>
@@ -169,14 +169,14 @@ export default function ProjectsPage() {
 
       {/* Error state if cluster fetch failed */}
       {fetchError && (
-        <div className="bg-[#FFDAD6] border-2 border-[#AC3326] p-3 flex items-center justify-between gap-3 font-mono text-[12px] text-[#93000A] shadow-[2px_2px_0px_#1a1c1a]">
+        <div className="bg-[#FFDAD6] border-2 border-[#AC3326] p-3 flex items-center justify-between gap-3 font-mono text-[12px] text-[#93000A] brutal-shadow-sm rounded-xl">
           <div className="flex items-center gap-2">
             <Icon name="warning" className="w-4 h-4 text-[#93000A]" />
             <span>Live cluster sync unavailable: {fetchError}. Serving local cache.</span>
           </div>
           <button
             onClick={loadProjects}
-            className="bg-[#FFFFFF] text-[#1A1C1A] border border-[#1A1C1A] px-2.5 py-1 font-bold uppercase hover:bg-[#E8E8E5]"
+            className="bg-[#FFFFFF] text-[#1A1C1A] border border-[#1A1C1A] px-2.5 py-1 font-bold uppercase hover:bg-[#E8E8E5] rounded-md brutal-btn"
           >
             Retry Connection
           </button>
@@ -229,12 +229,12 @@ export default function ProjectsPage() {
           iconBg="bg-[#FFDAD5]"
           iconColor="text-[#AC3326]"
           footerLeft={
-            <span className="font-mono text-[10px] bg-[#AC3326] text-white px-1.5 py-0.5 border border-[#1A1C1A] font-bold uppercase">
+            <span className="font-mono text-[10px] bg-[#AC3326] text-white px-2 py-0.5 border border-[#1A1C1A] font-bold uppercase rounded-md brutal-shadow-xs">
               3 Critical P0
             </span>
           }
           footerRight={
-            <span className="font-mono text-[10px] bg-[#E8E8E5] text-[#1A1C1A] px-1.5 py-0.5 border border-[#1A1C1A] font-semibold uppercase">
+            <span className="font-mono text-[10px] bg-[#E8E8E5] text-[#1A1C1A] px-2 py-0.5 border border-[#1A1C1A] font-semibold uppercase rounded-md brutal-shadow-xs">
               5 Medium P2
             </span>
           }
@@ -242,9 +242,9 @@ export default function ProjectsPage() {
       </div>
 
       {/* Search & Filter Console Controls */}
-      <div className="bg-[#F4F4F0] border-2 border-[#1A1C1A] p-3 shadow-[4px_4px_0px_#1a1c1a] flex flex-col lg:flex-row gap-3 items-stretch lg:items-center justify-between">
+      <div className="bg-[#F4F4F0] border-2 border-[#1A1C1A] p-3.5 brutal-shadow rounded-xl flex flex-col lg:flex-row gap-3 items-stretch lg:items-center justify-between">
         {/* Search Bar */}
-        <div className="flex-1 flex items-center bg-[#FFFFFF] border-2 border-[#1A1C1A] px-3 py-1.5 shadow-[2px_2px_0px_#1a1c1a] focus-within:shadow-[3px_3px_0px_#285c45]">
+        <div className="flex-1 flex items-center bg-[#FFFFFF] border-2 border-[#1A1C1A] px-3 py-1.5 brutal-shadow-sm focus-within:shadow-[3px_3px_0px_#285c45] rounded-lg">
           <Icon name="search" className="w-4 h-4 text-[#404943] mr-2 flex-shrink-0" />
           <input
             type="text"
@@ -253,7 +253,7 @@ export default function ProjectsPage() {
             placeholder="Search by project name, host or branch..."
             className="w-full bg-transparent font-mono text-[12px] text-[#1A1C1A] placeholder:text-[#717973] focus:outline-none"
           />
-          <span className="font-mono text-[10px] bg-[#E2E3DF] border border-[#1A1C1A] px-1.5 py-0.5 text-[#1A1C1A] hidden sm:inline-block">
+          <span className="font-mono text-[10px] bg-[#E2E3DF] border border-[#1A1C1A] px-1.5 py-0.5 text-[#1A1C1A] rounded-md hidden sm:inline-block font-bold">
             /
           </span>
         </div>
@@ -261,7 +261,7 @@ export default function ProjectsPage() {
         {/* Filter Dropdowns & View Mode Switcher */}
         <div className="flex flex-wrap items-center gap-2 sm:gap-3">
           {/* Environment Dropdown */}
-          <div className="relative flex items-center bg-[#FFFFFF] border-2 border-[#1A1C1A] px-3 py-1.5 shadow-[2px_2px_0px_#1a1c1a]">
+          <div className="relative flex items-center bg-[#FFFFFF] border-2 border-[#1A1C1A] px-3 py-1.5 brutal-shadow-sm rounded-lg">
             <span className="font-mono text-[11px] uppercase font-bold text-[#717973] mr-2">Env:</span>
             <select
               value={envFilter}
@@ -276,7 +276,7 @@ export default function ProjectsPage() {
           </div>
 
           {/* Health Status Dropdown */}
-          <div className="relative flex items-center bg-[#FFFFFF] border-2 border-[#1A1C1A] px-3 py-1.5 shadow-[2px_2px_0px_#1a1c1a]">
+          <div className="relative flex items-center bg-[#FFFFFF] border-2 border-[#1A1C1A] px-3 py-1.5 brutal-shadow-sm rounded-lg">
             <span className="font-mono text-[11px] uppercase font-bold text-[#717973] mr-2">Health:</span>
             <select
               value={healthFilter}
@@ -291,7 +291,7 @@ export default function ProjectsPage() {
           </div>
 
           {/* Sort Dropdown */}
-          <div className="relative flex items-center bg-[#FFFFFF] border-2 border-[#1A1C1A] px-3 py-1.5 shadow-[2px_2px_0px_#1a1c1a]">
+          <div className="relative flex items-center bg-[#FFFFFF] border-2 border-[#1A1C1A] px-3 py-1.5 brutal-shadow-sm rounded-lg">
             <span className="font-mono text-[11px] uppercase font-bold text-[#717973] mr-2">Sort:</span>
             <select
               value={sortOrder}
@@ -305,10 +305,10 @@ export default function ProjectsPage() {
           </div>
 
           {/* View Switcher */}
-          <div className="flex items-center border-2 border-[#1A1C1A] bg-[#FFFFFF] shadow-[2px_2px_0px_#1a1c1a] p-0.5">
+          <div className="flex items-center border-2 border-[#1A1C1A] bg-[#FFFFFF] brutal-shadow-sm p-0.5 rounded-lg gap-0.5">
             <button
               onClick={() => setViewMode('grid')}
-              className={`p-1.5 flex items-center justify-center transition-colors border ${
+              className={`p-1.5 flex items-center justify-center transition-colors border rounded-md ${
                 viewMode === 'grid'
                   ? 'bg-[#285C45] text-white border-[#1A1C1A]'
                   : 'text-[#1A1C1A] hover:bg-[#E8E8E5] border-transparent'
@@ -319,7 +319,7 @@ export default function ProjectsPage() {
             </button>
             <button
               onClick={() => setViewMode('list')}
-              className={`p-1.5 flex items-center justify-center transition-colors border ${
+              className={`p-1.5 flex items-center justify-center transition-colors border rounded-md ${
                 viewMode === 'list'
                   ? 'bg-[#285C45] text-white border-[#1A1C1A]'
                   : 'text-[#1A1C1A] hover:bg-[#E8E8E5] border-transparent'
@@ -334,7 +334,7 @@ export default function ProjectsPage() {
 
       {/* Projects Grid / List */}
       {loading && projects.length === 0 ? (
-        <div className="bg-[#FFFFFF] border-2 border-[#1A1C1A] p-12 text-center flex flex-col items-center gap-3 shadow-[4px_4px_0px_#1a1c1a]">
+        <div className="bg-[#FFFFFF] border-2 border-[#1A1C1A] p-12 text-center flex flex-col items-center gap-3 brutal-shadow rounded-xl">
           <div className="w-8 h-8 border-4 border-[#285C45] border-t-transparent rounded-full animate-spin"></div>
           <span className="font-mono text-[13px] font-bold uppercase text-[#1A1C1A]">
             Querying Veriqo Cluster Registry...
@@ -358,9 +358,9 @@ export default function ProjectsPage() {
           ))}
 
           {/* Quick Connect Promo Card (Connect Another Web App) */}
-          <div className="bg-[#F4F4F0] border-2 border-dashed border-[#1A1C1A] p-6 flex flex-col justify-between items-center text-center gap-4 hover:bg-[#EEEEEA] transition-colors">
+          <div className="bg-[#F4F4F0] border-2 border-dashed border-[#1A1C1A] p-6 flex flex-col justify-between items-center text-center gap-4 hover:bg-[#EEEEEA] transition-colors rounded-xl">
             <div className="flex flex-col items-center gap-2 mt-2">
-              <div className="w-14 h-14 bg-[#FFFFFF] border-2 border-[#1A1C1A] flex items-center justify-center shadow-[3px_3px_0px_#1a1c1a]">
+              <div className="w-14 h-14 bg-[#FFFFFF] border-2 border-[#1A1C1A] flex items-center justify-center brutal-shadow-sm rounded-xl">
                 <Icon name="link" className="w-7 h-7 text-[#1A1C1A]" />
               </div>
               <h3 className="font-headline text-[20px] text-[#1A1C1A] font-bold mt-2">
@@ -372,7 +372,7 @@ export default function ProjectsPage() {
             </div>
 
             <form onSubmit={handleQuickConnect} className="w-full max-w-md flex flex-col gap-2">
-              <div className="flex items-center bg-[#FFFFFF] border-2 border-[#1A1C1A] shadow-[2px_2px_0px_#1a1c1a] p-1">
+              <div className="flex items-center bg-[#FFFFFF] border-2 border-[#1A1C1A] brutal-shadow-sm p-1 rounded-lg">
                 <input
                   type="text"
                   value={quickUrl}
@@ -384,7 +384,7 @@ export default function ProjectsPage() {
                 <button
                   type="submit"
                   disabled={quickConnecting}
-                  className="bg-[#285C45] text-white px-3 py-1 font-headline text-[11px] uppercase border border-[#1A1C1A] whitespace-nowrap hover:bg-[#0B442F] font-bold shadow-[2px_2px_0px_#1a1c1a] brutal-btn disabled:opacity-50"
+                  className="bg-[#285C45] text-white px-3 py-1.5 font-headline text-[11px] uppercase border border-[#1A1C1A] whitespace-nowrap hover:bg-[#0B442F] font-bold brutal-shadow-xs rounded-md brutal-btn disabled:opacity-50"
                 >
                   {quickConnecting ? 'Connecting...' : 'Connect & Crawl'}
                 </button>
@@ -419,7 +419,7 @@ export default function ProjectsPage() {
       )}
 
       {/* Bottom Workspace Diagnostics Strip */}
-      <div className="bg-[#191B19] text-[#F1F1ED] border-2 border-[#1A1C1A] p-4 shadow-[4px_4px_0px_#1a1c1a] flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      <div className="bg-[#191B19] text-[#F1F1ED] border-2 border-[#1A1C1A] p-4 brutal-shadow rounded-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div className="flex items-center gap-3">
           <div className="w-3 h-3 rounded-full bg-[#B7EFD0] border border-[#1A1C1A] animate-pulse"></div>
           <div className="flex flex-col">
@@ -433,12 +433,12 @@ export default function ProjectsPage() {
         </div>
 
         <div className="flex items-center gap-2 font-mono text-[11px]">
-          <span className="bg-[#1A1C1A] border border-[#717973] px-2 py-1 text-[#FAF9F6]">
+          <span className="bg-[#1A1C1A] border border-[#717973] px-2 py-1 text-[#FAF9F6] rounded-md">
             Engine: v2.4.1b
           </span>
           <button
             onClick={handleFlushQueues}
-            className="bg-[#285C45] text-white px-3 py-1 border border-[#1A1C1A] font-semibold hover:bg-[#0B442F] uppercase shadow-[2px_2px_0px_#1a1c1a] brutal-btn"
+            className="bg-[#285C45] text-white px-3 py-1.5 border border-[#1A1C1A] font-semibold hover:bg-[#0B442F] uppercase brutal-shadow-xs rounded-lg brutal-btn"
           >
             Flush Runner Queues
           </button>
@@ -447,7 +447,7 @@ export default function ProjectsPage() {
 
       {/* Toast Feedback */}
       {toastMessage && (
-        <div className="fixed bottom-6 right-6 bg-[#191B19] text-[#F1F1ED] border-2 border-[#1A1C1A] px-4 py-2.5 font-mono text-[12px] shadow-[4px_4px_0px_#1a1c1a] z-50 flex items-center gap-2 animate-in fade-in duration-100">
+        <div className="fixed bottom-6 right-6 bg-[#191B19] text-[#F1F1ED] border-2 border-[#1A1C1A] px-4 py-2.5 font-mono text-[12px] brutal-shadow rounded-lg z-50 flex items-center gap-2 animate-in fade-in duration-100">
           <Icon name="check" className="w-4 h-4 text-[#B7EFD0]" />
           <span>{toastMessage}</span>
         </div>

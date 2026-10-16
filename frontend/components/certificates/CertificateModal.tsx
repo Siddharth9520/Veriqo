@@ -109,11 +109,11 @@ export default function CertificateModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#191B19]/75 backdrop-blur-xs">
-      <div className="bg-[#FFFFFF] border-2 border-[#1A1C1A] brutal-shadow-lg max-w-4xl w-full p-6 flex flex-col gap-5 animate-in fade-in zoom-in-95 duration-100 max-h-[92vh] overflow-y-auto">
+      <div className="bg-[#FFFFFF] border-2 border-[#1A1C1A] rounded-2xl brutal-shadow-lg max-w-4xl w-full p-6 flex flex-col gap-5 animate-in fade-in zoom-in-95 duration-100 max-h-[92vh] overflow-y-auto">
         {/* Header */}
         <div className="flex items-center justify-between pb-3 border-b-2 border-[#1A1C1A]">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 bg-[#285C45] text-white border border-[#1A1C1A] flex items-center justify-center">
+            <div className="w-8 h-8 bg-[#285C45] text-white border border-[#1A1C1A] rounded-lg flex items-center justify-center flex-shrink-0">
               <Icon name="verified" className="w-5 h-5 text-white" />
             </div>
             <div>
@@ -125,13 +125,13 @@ export default function CertificateModal({
               </span>
             </div>
           </div>
-          <button onClick={onClose} className="hover:opacity-75">
+          <button onClick={onClose} className="hover:opacity-75 p-1 rounded-md">
             <Icon name="close" className="w-5 h-5 text-[#1A1C1A]" />
           </button>
         </div>
 
         {/* Project Selector and Action Bar */}
-        <div className="bg-[#F4F4F0] border-2 border-[#1A1C1A] p-3 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+        <div className="bg-[#F4F4F0] border-2 border-[#1A1C1A] rounded-xl p-3 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
           <div className="flex items-center gap-2">
             <span className="font-mono text-[12px] font-bold text-[#1A1C1A] uppercase">
               Target App:
@@ -139,7 +139,7 @@ export default function CertificateModal({
             <select
               value={selectedAppId}
               onChange={(e) => setSelectedAppId(e.target.value)}
-              className="bg-[#FFFFFF] border border-[#1A1C1A] px-2 py-1 font-mono text-[12px] font-bold text-[#1A1C1A] focus:outline-none"
+              className="bg-[#FFFFFF] border border-[#1A1C1A] rounded-lg px-2.5 py-1 font-mono text-[12px] font-bold text-[#1A1C1A] focus:outline-none"
             >
               {projects.map((p) => (
                 <option key={p.id} value={p.id}>
@@ -152,7 +152,7 @@ export default function CertificateModal({
           <button
             onClick={handleGenerate}
             disabled={generating}
-            className="bg-[#285C45] text-white border-2 border-[#1A1C1A] px-4 py-1.5 font-headline text-[12px] uppercase font-bold hover:bg-[#0B442F] brutal-shadow-sm brutal-btn flex items-center justify-center gap-1.5"
+            className="bg-[#285C45] text-white border-2 border-[#1A1C1A] rounded-lg px-4 py-1.5 font-headline text-[12px] uppercase font-bold hover:bg-[#0B442F] brutal-shadow-xs brutal-btn flex items-center justify-center gap-1.5"
           >
             <Icon name="star" className="w-4 h-4 text-white" />
             <span>{generating ? 'Evaluating Runs...' : 'Generate New Certificate'}</span>
@@ -167,7 +167,7 @@ export default function CertificateModal({
               <span className="font-mono text-[12px] uppercase font-bold">Querying Certificates...</span>
             </div>
           ) : certificates.length === 0 ? (
-            <div className="bg-[#FAF9F6] border border-[#1A1C1A] p-8 text-center flex flex-col items-center gap-2">
+            <div className="bg-[#FAF9F6] border border-[#1A1C1A] rounded-xl p-8 text-center flex flex-col items-center gap-2">
               <Icon name="verified" className="w-8 h-8 text-[#717973]" />
               <span className="font-headline font-bold text-[16px]">No Certificates Issued Yet</span>
               <p className="font-mono text-[12px] text-[#717973] max-w-md">
@@ -192,7 +192,7 @@ export default function CertificateModal({
               return (
                 <div
                   key={cert.id}
-                  className="bg-[#FFFFFF] border-2 border-[#1A1C1A] p-4 brutal-shadow flex flex-col gap-3"
+                  className="bg-[#FFFFFF] border-2 border-[#1A1C1A] rounded-xl p-4 brutal-shadow flex flex-col gap-3"
                 >
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2 border-b border-[#E2E3DF]">
                     <div className="flex items-center gap-2">
@@ -200,13 +200,13 @@ export default function CertificateModal({
                         {cert.certificate_id}
                       </span>
                       <span
-                        className={`font-mono text-[11px] font-bold px-2 py-0.5 border border-[#1A1C1A] uppercase ${
+                        className={`font-mono text-[11px] font-bold px-2 py-0.5 border border-[#1A1C1A] rounded-md uppercase ${
                           gradeColor[cert.grade] || 'bg-[#FAF9F6]'
                         }`}
                       >
                         Grade: {cert.grade} ({cert.score}/100)
                       </span>
-                      <span className="bg-[#E8E8E5] text-[#1A1C1A] px-1.5 py-0.5 border border-[#1A1C1A] font-mono text-[10px] font-bold uppercase">
+                      <span className="bg-[#E8E8E5] text-[#1A1C1A] px-1.5 py-0.5 border border-[#1A1C1A] rounded-md font-mono text-[10px] font-bold uppercase">
                         {cert.status}
                       </span>
                     </div>
@@ -214,7 +214,7 @@ export default function CertificateModal({
                     <button
                       onClick={() => handleVerify(cert)}
                       disabled={verifyingId === cert.certificate_id}
-                      className="bg-[#FFFFFF] text-[#1A1C1A] border border-[#1A1C1A] px-3 py-1 font-headline text-[11px] uppercase font-bold hover:bg-[#EEEEEA] flex items-center gap-1 self-start sm:self-auto"
+                      className="bg-[#FFFFFF] text-[#1A1C1A] border border-[#1A1C1A] rounded-lg px-3 py-1 font-headline text-[11px] uppercase font-bold hover:bg-[#EEEEEA] flex items-center gap-1 self-start sm:self-auto brutal-btn"
                     >
                       <Icon
                         name="security"
@@ -231,7 +231,7 @@ export default function CertificateModal({
                   {/* Verification Status Banner */}
                   {verifyRes && (
                     <div
-                      className={`p-2.5 border font-mono text-[11px] flex items-center justify-between gap-2 ${
+                      className={`p-2.5 border rounded-lg font-mono text-[11px] flex items-center justify-between gap-2 ${
                         verifyRes.verified
                           ? 'bg-[#B7EFD0]/40 border-[#285C45] text-[#002114]'
                           : 'bg-[#FFDAD5]/40 border-[#AC3326] text-[#93000A]'
@@ -255,7 +255,7 @@ export default function CertificateModal({
                   )}
 
                   {/* Tamper Hash */}
-                  <div className="bg-[#F4F4F0] p-2 font-mono text-[11px] border border-[#C0C9C1] flex flex-col gap-0.5">
+                  <div className="bg-[#F4F4F0] p-2.5 font-mono text-[11px] border border-[#C0C9C1] rounded-lg flex flex-col gap-0.5">
                     <span className="text-[10px] uppercase font-bold text-[#717973]">
                       Tamper Hash (SHA-256 Unkeyed Checksum):
                     </span>
@@ -266,19 +266,19 @@ export default function CertificateModal({
 
                   {/* Metrics and Penalties Breakdown */}
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 font-mono text-[11px]">
-                    <div className="bg-[#FAF9F6] border border-[#1A1C1A] p-2">
+                    <div className="bg-[#FAF9F6] border border-[#1A1C1A] rounded-lg p-2.5">
                       <span className="text-[10px] uppercase text-[#717973] block">Base Score</span>
                       <strong className="text-[13px] text-[#1A1C1A]">
                         {String(scoreSummary.base_score || 50.0)} pts
                       </strong>
                     </div>
-                    <div className="bg-[#FAF9F6] border border-[#1A1C1A] p-2">
+                    <div className="bg-[#FAF9F6] border border-[#1A1C1A] rounded-lg p-2.5">
                       <span className="text-[10px] uppercase text-[#717973] block">Verified Defect Deductions</span>
                       <strong className="text-[13px] text-[#AC3326]">
                         -{String(penalties.verified_defects_deduction || 0)} pts
                       </strong>
                     </div>
-                    <div className="bg-[#FAF9F6] border border-[#1A1C1A] p-2">
+                    <div className="bg-[#FAF9F6] border border-[#1A1C1A] rounded-lg p-2.5">
                       <span className="text-[10px] uppercase text-[#717973] block">Evidence Artifacts Audit</span>
                       <strong className="text-[13px] text-[#0B442F]">
                         {String(evidenceAudit.verified_artifacts_count || 0)}/
@@ -302,7 +302,7 @@ export default function CertificateModal({
         <div className="flex justify-end pt-2 border-t border-[#E2E3DF]">
           <button
             onClick={onClose}
-            className="bg-[#1A1C1A] text-white px-5 py-2 font-headline text-[12px] uppercase font-bold hover:bg-[#333]"
+            className="bg-[#1A1C1A] text-white border-2 border-[#1A1C1A] rounded-lg px-5 py-2 font-headline text-[12px] uppercase font-bold hover:bg-[#333] brutal-btn"
           >
             Close Certificates Console
           </button>
@@ -310,7 +310,7 @@ export default function CertificateModal({
       </div>
 
       {toastMessage && (
-        <div className="fixed bottom-6 right-6 bg-[#191B19] text-[#F1F1ED] border-2 border-[#1A1C1A] px-4 py-2.5 font-mono text-[12px] brutal-shadow-lg z-50 flex items-center gap-2 animate-in fade-in duration-100">
+        <div className="fixed bottom-6 right-6 bg-[#191B19] text-[#F1F1ED] border-2 border-[#1A1C1A] rounded-lg px-4 py-2.5 font-mono text-[12px] brutal-shadow-lg z-50 flex items-center gap-2 animate-in fade-in duration-100">
           <Icon name="verified" className="w-4 h-4 text-[#B7EFD0]" />
           <span>{toastMessage}</span>
         </div>

@@ -23,7 +23,7 @@ export default function MetricCard({
   footerRight,
 }: MetricCardProps) {
   return (
-    <div className="bg-[#FFFFFF] border-2 border-[#1A1C1A] p-4 brutal-shadow-lg flex flex-col justify-between relative overflow-hidden">
+    <div className="bg-[#FFFFFF] border-2 border-[#1A1C1A] rounded-xl p-4 sm:p-5 brutal-shadow hover:-translate-y-0.5 transition-transform duration-150 flex flex-col justify-between relative overflow-hidden">
       <div className="flex items-start justify-between">
         <div className="flex flex-col pr-2">
           <span className="font-mono text-[10px] uppercase tracking-widest text-[#404943] font-bold">
@@ -33,7 +33,7 @@ export default function MetricCard({
             {value}
           </span>
         </div>
-        <div className={`w-10 h-10 ${iconBg} border-2 border-[#1A1C1A] flex items-center justify-center brutal-shadow-sm flex-shrink-0`}>
+        <div className={`w-10 h-10 ${iconBg} border-2 border-[#1A1C1A] rounded-lg flex items-center justify-center brutal-shadow-xs flex-shrink-0`}>
           {typeof icon === 'string' ? (
             <Icon name={icon} className={`w-5 h-5 ${iconColor}`} />
           ) : (
@@ -42,7 +42,7 @@ export default function MetricCard({
         </div>
       </div>
 
-      <div className="mt-4 pt-2 border-t-2 border-[#1A1C1A] flex items-center justify-between text-[#1A1C1A]">
+      <div className="mt-4 pt-2.5 border-t-2 border-[#1A1C1A] flex items-center justify-between text-[#1A1C1A]">
         <div>{footerLeft}</div>
         {footerRight && <div>{footerRight}</div>}
       </div>

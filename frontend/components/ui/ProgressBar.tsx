@@ -18,14 +18,14 @@ export default function ProgressBar({
   const primaryColor = flagged ? 'bg-[#AC3326]' : 'bg-[#285C45]';
 
   return (
-    <div className={`w-full ${height} bg-[#E2E3DF] border border-[#1A1C1A] overflow-hidden flex relative`}>
+    <div className={`w-full ${height} bg-[#E2E3DF] border border-[#1A1C1A] rounded-full overflow-hidden flex relative`}>
       <div
-        className={`${primaryColor} h-full transition-all duration-300`}
+        className={`${primaryColor} h-full transition-all duration-300 rounded-full`}
         style={{ width: `${Math.min(100, Math.max(0, percentage))}%` }}
       />
       {secondaryPercentage > 0 && (
         <div
-          className="bg-[#FD6E5B] h-full transition-all duration-300"
+          className="bg-[#FD6E5B] h-full transition-all duration-300 rounded-full"
           style={{ width: `${Math.min(100, Math.max(0, secondaryPercentage))}%` }}
         />
       )}

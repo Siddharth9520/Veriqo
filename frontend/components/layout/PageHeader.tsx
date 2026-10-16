@@ -25,7 +25,7 @@ export default function PageHeader({
           <span className="text-[#717973]">/</span>
           <span className="text-[#1A1C1A] font-semibold">{title}</span>
           {tag && (
-            <span className="ml-1 text-[10px] font-mono px-1.5 py-0.5 bg-[#E8E8E5] border border-[#1A1C1A] text-[#1A1C1A] uppercase font-bold">
+            <span className="ml-1 text-[10px] font-mono px-1.5 py-0.5 bg-[#E8E8E5] border border-[#1A1C1A] rounded-md text-[#1A1C1A] uppercase font-bold">
               {tag}
             </span>
           )}

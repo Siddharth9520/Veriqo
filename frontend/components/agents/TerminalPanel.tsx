@@ -84,7 +84,7 @@ export default function TerminalPanel() {
   };
 
   return (
-    <div className="bg-[#191B19] text-[#F1F1ED] border-2 border-[#1A1C1A] brutal-shadow-lg p-4 flex flex-col gap-2 font-mono">
+    <div className="bg-[#191B19] text-[#F1F1ED] border-2 border-[#1A1C1A] rounded-xl brutal-shadow p-4 flex flex-col gap-2 font-mono">
       {/* Header */}
       <div className="flex items-center justify-between pb-2 border-b border-[#717973]">
         <div className="flex items-center gap-2 text-[#B7EFD0]">
@@ -95,12 +95,12 @@ export default function TerminalPanel() {
         </div>
 
         <div className="flex items-center gap-2">
-          <span className="font-mono text-[11px] text-[#C0C9C1] font-bold bg-[#1A1C1A] px-1.5 py-0.5">
+          <span className="font-mono text-[11px] text-[#C0C9C1] font-bold bg-[#1A1C1A] border border-[#717973] rounded-md px-1.5 py-0.5">
             TAIL -F [LIVE IPC]
           </span>
           <button
             onClick={handleClear}
-            className="text-[#C0C9C1] hover:text-white p-1"
+            className="text-[#C0C9C1] hover:text-white p-1 rounded"
             title="Clear Output"
           >
             <Icon name="delete_sweep" className="w-4 h-4" />
@@ -111,7 +111,7 @@ export default function TerminalPanel() {
       {/* Terminal Content Box */}
       <div
         ref={logContainerRef}
-        className="bg-[#1A1C1A] border border-[#717973] p-3 h-64 overflow-y-auto flex flex-col gap-2 font-mono text-[12px] leading-relaxed text-[#F1F1ED] select-text shadow-inner terminal-scroll"
+        className="bg-[#1A1C1A] border border-[#717973] rounded-lg p-3 h-64 overflow-y-auto flex flex-col gap-2 font-mono text-[12px] leading-relaxed text-[#F1F1ED] select-text shadow-inner terminal-scroll"
       >
         {logs.map((log) => {
           let agentColor = 'text-[#B7EFD0]';
@@ -127,7 +127,7 @@ export default function TerminalPanel() {
             <div
               key={log.id}
               className={`flex items-start gap-2 ${
-                isDiscovery ? 'bg-[#FD6E5B]/20 border-l-2 border-[#FD6E5B] p-1' : ''
+                isDiscovery ? 'bg-[#FD6E5B]/20 border-l-2 border-[#FD6E5B] p-1 rounded-r' : ''
               }`}
             >
               <span className="text-[#C0C9C1] shrink-0">[{log.timestamp}]</span>
@@ -164,7 +164,7 @@ export default function TerminalPanel() {
             onClick={() => {
               setInputVal(cmd);
             }}
-            className="text-[10px] bg-[#1A1C1A] text-[#B7EFD0] border border-[#717973] px-2 py-0.5 hover:bg-[#285C45] hover:text-white transition-colors shrink-0 whitespace-nowrap cursor-pointer"
+            className="text-[10px] bg-[#1A1C1A] text-[#B7EFD0] border border-[#717973] rounded-md px-2 py-0.5 hover:bg-[#285C45] hover:text-white transition-colors shrink-0 whitespace-nowrap cursor-pointer"
           >
             {cmd}
           </button>
@@ -180,13 +180,13 @@ export default function TerminalPanel() {
           onChange={(e) => setInputVal(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && handleSendCommand()}
           placeholder="Inject live directive (e.g. status, pause, resume, fuzz checkout)..."
-          className="flex-1 bg-[#1A1C1A] border border-[#717973] px-3 py-1.5 text-[12px] font-mono text-[#F1F1ED] placeholder:text-[#717973] focus:outline-none focus:border-[#B7EFD0]"
+          className="flex-1 bg-[#1A1C1A] border border-[#717973] rounded-lg px-3 py-1.5 text-[12px] font-mono text-[#F1F1ED] placeholder:text-[#717973] focus:outline-none focus:border-[#B7EFD0]"
           disabled={isSending}
         />
         <button
           onClick={handleSendCommand}
           disabled={isSending}
-          className="bg-[#285C45] text-white border border-[#1A1C1A] px-3 py-1.5 text-[11px] uppercase font-mono font-bold hover:bg-[#0B442F] shadow-xs active:translate-x-0.5 active:translate-y-0.5 disabled:opacity-50"
+          className="bg-[#285C45] text-white border border-[#1A1C1A] rounded-lg px-3.5 py-1.5 text-[11px] uppercase font-mono font-bold hover:bg-[#0B442F] shadow-xs active:translate-x-0.5 active:translate-y-0.5 disabled:opacity-50 brutal-btn"
         >
           {isSending ? 'Sending...' : 'Send'}
         </button>

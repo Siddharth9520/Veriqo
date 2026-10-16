@@ -27,6 +27,15 @@
     --outline-variant: #C0C9C1;
     --on-surface-variant: #404943;
     --error-container: #FFDAD6;
+
+    /* Centralized Soft Neo-Brutalist Border-Radius Tokens */
+    --radius-badge: 6px;       /* Compact badges, small tags, indicators */
+    --radius-control: 8px;     /* Inputs, dropdowns, filter controls */
+    --radius-btn: 8px;         /* Standard & primary action buttons */
+    --radius-card: 12px;       /* Standard cards, metric blocks, panels */
+    --radius-container: 14px;  /* Major dashboard sections, preview frames */
+    --radius-modal: 16px;      /* Modals, dialogs, drawers */
+    --radius-pill: 9999px;     /* Pure pill badges & toggle capsules */
   }
 
   html, body {
@@ -71,7 +80,40 @@
   -webkit-font-smoothing: antialiased;
 }
 
-/* Neo-Brutalist Shadow Tokens */
+/* Centralized Soft Neo-Brutalist Radius Utilities */
+.brutal-radius-badge {
+  border-radius: var(--radius-badge);
+}
+
+.brutal-radius-control {
+  border-radius: var(--radius-control);
+}
+
+.brutal-radius-btn {
+  border-radius: var(--radius-btn);
+}
+
+.brutal-radius-card {
+  border-radius: var(--radius-card);
+}
+
+.brutal-radius-container {
+  border-radius: var(--radius-container);
+}
+
+.brutal-radius-modal {
+  border-radius: var(--radius-modal);
+}
+
+.brutal-radius-pill {
+  border-radius: var(--radius-pill);
+}
+
+/* Refined Neo-Brutalist Shadow Tokens */
+.brutal-shadow-xs {
+  box-shadow: 1.5px 1.5px 0px #1A1C1A;
+}
+
 .brutal-shadow-sm {
   box-shadow: 2px 2px 0px #1A1C1A;
 }
@@ -88,13 +130,25 @@
   box-shadow: 2px 2px 0px #000000;
 }
 
+/* Interactive Elements & Transitions */
 .brutal-btn {
-  transition: transform 0.08s ease, box-shadow 0.08s ease;
+  border-radius: var(--radius-btn);
+  transition: transform 0.12s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.12s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.12s ease, border-color 0.12s ease;
 }
 
-.brutal-btn:active {
-  transform: translate(2px, 2px);
+.brutal-btn:hover:not(:disabled) {
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0px #1A1C1A;
+}
+
+.brutal-btn:active:not(:disabled) {
+  transform: translate(1.5px, 1.5px);
   box-shadow: 0px 0px 0px #1A1C1A !important;
+}
+
+.brutal-card {
+  border-radius: var(--radius-card);
+  transition: transform 0.14s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.14s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* Terminal & Log Scrollbars */
@@ -109,11 +163,23 @@
 
 .terminal-scroll::-webkit-scrollbar-thumb {
   background: #404943;
-  border-radius: 0px;
+  border-radius: 4px;
 }
 
 .terminal-scroll::-webkit-scrollbar-thumb:hover {
   background: #717973;
+}
+
+/* Reduced Motion & Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .brutal-btn,
+  .brutal-card,
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 /* Animation utilities */

@@ -17,8 +17,8 @@ export function SearchInput({
   className = '',
 }: SearchInputProps) {
   return (
-    <div className={`flex items-center bg-[#FFFFFF] border-2 border-[#1A1C1A] px-3 py-1.5 brutal-shadow-sm focus-within:shadow-[3px_3px_0px_#285c45] ${className}`}>
-      <Icon name="search" className="w-5 h-5 text-[#404943] mr-2" />
+    <div className={`flex items-center bg-[#FFFFFF] border-2 border-[#1A1C1A] rounded-lg px-3 py-1.5 brutal-shadow-xs focus-within:shadow-[3px_3px_0px_#285c45] transition-shadow ${className}`}>
+      <Icon name="search" className="w-5 h-5 text-[#404943] mr-2 flex-shrink-0" />
       <input
         type="text"
         value={value}
@@ -27,7 +27,7 @@ export function SearchInput({
         className="w-full bg-transparent font-mono text-[12px] text-[#1A1C1A] placeholder:text-[#717973] focus:outline-none"
       />
       {shortcut && (
-        <span className="font-mono text-[10px] bg-[#E2E3DF] border border-[#1A1C1A] px-1.5 py-0.5 text-[#1A1C1A] hidden sm:inline-block">
+        <span className="font-mono text-[10px] bg-[#E2E3DF] border border-[#1A1C1A] rounded px-1.5 py-0.5 text-[#1A1C1A] hidden sm:inline-block">
           {shortcut}
         </span>
       )}
@@ -42,7 +42,7 @@ interface FilterBarProps {
 
 export function FilterBar({ children, className = '' }: FilterBarProps) {
   return (
-    <div className={`bg-[#F4F4F0] border-2 border-[#1A1C1A] p-3 brutal-shadow flex flex-col lg:flex-row gap-3 items-stretch lg:items-center justify-between ${className}`}>
+    <div className={`bg-[#F4F4F0] border-2 border-[#1A1C1A] rounded-xl p-3 sm:p-3.5 brutal-shadow flex flex-col lg:flex-row gap-3 items-stretch lg:items-center justify-between ${className}`}>
       {children}
     </div>
   );

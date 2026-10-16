@@ -54,7 +54,7 @@ export default function CriticalDefectCard({ onPinSuccess }: CriticalDefectCardP
 
   return (
     <>
-      <div className="bg-[#FFFFFF] border-2 border-[#1A1C1A] brutal-shadow-lg p-4 flex flex-col gap-3 relative overflow-hidden">
+      <div className="bg-[#FFFFFF] border-2 border-[#1A1C1A] rounded-xl brutal-shadow p-4 flex flex-col gap-3 relative overflow-hidden">
         {/* Header */}
         <div className="flex items-center justify-between pb-2 border-b border-[#C0C9C1]">
           <div className="flex items-center gap-1.5">
@@ -64,7 +64,7 @@ export default function CriticalDefectCard({ onPinSuccess }: CriticalDefectCardP
             </span>
           </div>
 
-          <span className="bg-[#FD6E5B] text-white border border-[#1A1C1A] px-2.5 py-0.5 font-mono text-[11px] font-bold uppercase brutal-shadow-sm">
+          <span className="bg-[#FD6E5B] text-white border border-[#1A1C1A] rounded-md px-2.5 py-0.5 font-mono text-[11px] font-bold uppercase brutal-shadow-xs">
             SEVERITY: {defect.severity}
           </span>
         </div>
@@ -76,7 +76,7 @@ export default function CriticalDefectCard({ onPinSuccess }: CriticalDefectCardP
           </span>
 
           <div className="flex flex-col gap-2">
-            <div className="bg-[#F4F4F0] border border-[#C0C9C1] p-2.5 flex flex-col gap-1">
+            <div className="bg-[#F4F4F0] border border-[#C0C9C1] rounded-lg p-2.5 flex flex-col gap-1">
               <span className="font-mono text-[10px] uppercase font-bold text-[#404943]">
                 Expected Behavior
               </span>
@@ -85,7 +85,7 @@ export default function CriticalDefectCard({ onPinSuccess }: CriticalDefectCardP
               </p>
             </div>
 
-            <div className="bg-[#FFDAD5]/40 border border-[#FD6E5B] p-2.5 flex flex-col gap-1">
+            <div className="bg-[#FFDAD5]/40 border border-[#FD6E5B] rounded-lg p-2.5 flex flex-col gap-1">
               <span className="font-mono text-[10px] uppercase font-bold text-[#AC3326]">
                 Actual Failure
               </span>
@@ -98,14 +98,14 @@ export default function CriticalDefectCard({ onPinSuccess }: CriticalDefectCardP
 
         {/* Evidence Telemetry Chips */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 font-mono text-[11px] pt-1 border-t border-[#E2E3DF]">
-          <div className="bg-[#F4F4F0] border border-[#C0C9C1] p-2 flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+          <div className="bg-[#F4F4F0] border border-[#C0C9C1] rounded-lg p-2 flex flex-col sm:flex-row sm:items-center justify-between gap-1">
             <span className="text-[#404943]">Repro Confidence:</span>
-            <span className="font-bold text-[#002114] bg-[#B7EFD0] px-1.5 py-0.5 border border-[#1A1C1A] w-fit">
+            <span className="font-bold text-[#002114] bg-[#B7EFD0] px-1.5 py-0.5 border border-[#1A1C1A] rounded-md w-fit">
               {defect.reproConfidence}
             </span>
           </div>
 
-          <div className="bg-[#F4F4F0] border border-[#C0C9C1] p-2 flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+          <div className="bg-[#F4F4F0] border border-[#C0C9C1] rounded-lg p-2 flex flex-col sm:flex-row sm:items-center justify-between gap-1">
             <span className="text-[#404943]">Target Element:</span>
             <span className="font-bold text-[#AC3326] w-fit">{defect.targetElement}</span>
           </div>
@@ -116,7 +116,7 @@ export default function CriticalDefectCard({ onPinSuccess }: CriticalDefectCardP
           <button
             onClick={handlePin}
             disabled={pinning}
-            className={`flex-1 border-2 border-[#1A1C1A] px-3 py-2 font-headline text-[12px] uppercase font-bold brutal-shadow-sm brutal-btn flex items-center justify-center gap-1.5 transition-colors disabled:opacity-50 ${
+            className={`flex-1 border-2 border-[#1A1C1A] rounded-lg px-3 py-2 font-headline text-[12px] uppercase font-bold brutal-shadow-xs brutal-btn flex items-center justify-center gap-1.5 transition-colors disabled:opacity-50 ${
               pinned
                 ? 'bg-[#EEEEEA] text-[#1A1C1A]'
                 : 'bg-[#FD6E5B] text-white hover:bg-[#AC3326]'
@@ -134,7 +134,7 @@ export default function CriticalDefectCard({ onPinSuccess }: CriticalDefectCardP
 
           <button
             onClick={() => setEvidenceOpen(true)}
-            className="flex-1 bg-[#FFFFFF] text-[#1A1C1A] border-2 border-[#1A1C1A] px-3 py-2 font-headline text-[12px] uppercase font-bold brutal-shadow-sm hover:bg-[#E8E8E5] brutal-btn flex items-center justify-center gap-1.5"
+            className="flex-1 bg-[#FFFFFF] text-[#1A1C1A] border-2 border-[#1A1C1A] rounded-lg px-3 py-2 font-headline text-[12px] uppercase font-bold brutal-shadow-xs hover:bg-[#E8E8E5] brutal-btn flex items-center justify-center gap-1.5"
           >
             <Icon name="visibility" className="w-4 h-4" />
             <span>INSPECT EVIDENCE</span>

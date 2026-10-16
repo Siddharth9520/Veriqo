@@ -55,7 +55,7 @@ export default function GlobalSearchModal({ isOpen, onClose }: GlobalSearchModal
 
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-center pt-20 p-4 bg-[#191B19]/70 backdrop-blur-xs">
-      <div className="bg-[#FFFFFF] border-2 border-[#1A1C1A] brutal-shadow-lg w-full max-w-xl flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-100">
+      <div className="bg-[#FFFFFF] border-2 border-[#1A1C1A] brutal-shadow-lg rounded-2xl w-full max-w-xl flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-100">
         {/* Search Input Bar */}
         <div className="p-3 border-b-2 border-[#1A1C1A] bg-[#FAF9F6] flex items-center gap-2">
           <Icon name="search" className="w-5 h-5 text-[#717973] flex-shrink-0" />
@@ -67,13 +67,13 @@ export default function GlobalSearchModal({ isOpen, onClose }: GlobalSearchModal
             placeholder="Type a command, route, defect ID or project..."
             className="w-full bg-transparent font-mono text-[13px] text-[#1A1C1A] placeholder:text-[#717973] focus:outline-none"
           />
-          <span className="font-mono text-[10px] bg-[#E2E3DF] border border-[#1A1C1A] px-1.5 py-0.5 text-[#1A1C1A]">
+          <span className="font-mono text-[10px] bg-[#E2E3DF] border border-[#1A1C1A] px-1.5 py-0.5 text-[#1A1C1A] rounded-md font-bold">
             ESC
           </span>
         </div>
 
         {/* Results List */}
-        <div className="max-h-80 overflow-y-auto divide-y divide-[#E2E3DF] p-1 bg-[#FFFFFF]">
+        <div className="max-h-80 overflow-y-auto divide-y divide-[#E2E3DF] p-1.5 bg-[#FFFFFF] flex flex-col gap-0.5">
           {filtered.length === 0 ? (
             <div className="p-6 text-center font-mono text-[12px] text-[#717973]">
               No matching commands or resources found for &quot;{query}&quot;.
@@ -83,10 +83,10 @@ export default function GlobalSearchModal({ isOpen, onClose }: GlobalSearchModal
               <button
                 key={idx}
                 onClick={() => handleSelect(item.href)}
-                className="w-full px-3 py-2.5 flex items-center justify-between text-left hover:bg-[#FAF9F6] transition-colors group"
+                className="w-full px-3 py-2.5 flex items-center justify-between text-left hover:bg-[#FAF9F6] transition-colors group rounded-lg"
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 bg-[#F4F4F0] border border-[#1A1C1A] flex items-center justify-center group-hover:bg-[#B7EFD0] transition-colors flex-shrink-0">
+                  <div className="w-8 h-8 bg-[#F4F4F0] border border-[#1A1C1A] flex items-center justify-center group-hover:bg-[#B7EFD0] transition-colors flex-shrink-0 rounded-lg">
                     <Icon name={item.icon} className="w-4 h-4 text-[#1A1C1A]" />
                   </div>
                   <div className="flex flex-col">
@@ -98,7 +98,7 @@ export default function GlobalSearchModal({ isOpen, onClose }: GlobalSearchModal
                     </span>
                   </div>
                 </div>
-                <span className="font-mono text-[10px] uppercase font-bold px-1.5 py-0.5 bg-[#EEEEEA] border border-[#1A1C1A] text-[#404943]">
+                <span className="font-mono text-[10px] uppercase font-bold px-1.5 py-0.5 bg-[#EEEEEA] border border-[#1A1C1A] text-[#404943] rounded-md">
                   {item.type}
                 </span>
               </button>
