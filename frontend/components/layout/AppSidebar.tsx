@@ -153,18 +153,23 @@ export default function AppSidebar({ mobileOpen = false, onMobileClose }: AppSid
         </div>
 
         {/* User Profile */}
-        <div className="flex items-center justify-between pt-1.5 border-t border-[#717973]">
+        <Link
+          href="/settings"
+          onClick={onMobileClose}
+          className="flex items-center justify-between pt-1.5 border-t border-[#717973] hover:bg-[#1A1C1A] -mx-1 px-1 py-1 rounded-lg transition-colors group"
+          title="View Operator Profile & Settings"
+        >
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-full bg-[#0B442F] flex items-center justify-center border border-[#1A1C1A] flex-shrink-0">
               <Icon name="person" className="w-4 h-4 text-white" />
             </div>
             <div className="flex flex-col">
-              <span className="font-mono text-[12px] text-[#F1F1ED] font-semibold leading-tight">E. Turing</span>
+              <span className="font-mono text-[12px] text-[#F1F1ED] font-semibold leading-tight group-hover:text-white">E. Turing</span>
               <span className="font-mono text-[10px] text-[#C0C9C1]">Lead QA Architect</span>
             </div>
           </div>
-          <Icon name="more_vert" className="w-4 h-4 text-[#C0C9C1] flex-shrink-0 cursor-pointer" />
-        </div>
+          <Icon name="settings" className="w-4 h-4 text-[#C0C9C1] group-hover:text-white flex-shrink-0 transition-colors" />
+        </Link>
       </div>
     </div>
   );
