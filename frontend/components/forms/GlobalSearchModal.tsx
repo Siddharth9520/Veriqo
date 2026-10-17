@@ -54,7 +54,12 @@ export default function GlobalSearchModal({ isOpen, onClose }: GlobalSearchModal
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center pt-20 p-4 bg-[#191B19]/70 backdrop-blur-xs">
+    <div
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+      className="fixed inset-0 z-50 flex items-start justify-center pt-20 p-4 bg-[#191B19]/70 backdrop-blur-xs"
+    >
       <div className="bg-[#FFFFFF] border-2 border-[#1A1C1A] brutal-shadow-lg rounded-2xl w-full max-w-xl flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-100">
         {/* Search Input Bar */}
         <div className="p-3 border-b-2 border-[#1A1C1A] bg-[#FAF9F6] flex items-center gap-2">
@@ -67,9 +72,15 @@ export default function GlobalSearchModal({ isOpen, onClose }: GlobalSearchModal
             placeholder="Type a command, route, defect ID or project..."
             className="w-full bg-transparent font-mono text-[13px] text-[#1A1C1A] placeholder:text-[#717973] focus:outline-none"
           />
-          <span className="font-mono text-[10px] bg-[#E2E3DF] border border-[#1A1C1A] px-1.5 py-0.5 text-[#1A1C1A] rounded-md font-bold">
+          <button
+            type="button"
+            onClick={onClose}
+            title="Close / Go Back (Escape)"
+            aria-label="Close search"
+            className="font-mono text-[10px] bg-[#E2E3DF] hover:bg-[#D5D7D1] active:scale-95 border border-[#1A1C1A] px-1.5 py-0.5 text-[#1A1C1A] rounded-md font-bold cursor-pointer transition-all flex items-center gap-1 select-none"
+          >
             ESC
-          </span>
+          </button>
         </div>
 
         {/* Results List */}

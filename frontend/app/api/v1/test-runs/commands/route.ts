@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/lib/db';
 import { TerminalLog } from '@/lib/types';
+import { backendFetch } from '@/lib/backend-bridge';
 
 export async function POST(req: NextRequest) {
   try {
@@ -15,6 +16,26 @@ export async function POST(req: NextRequest) {
     }
 
     const trimmed = command.trim();
+
+    // 1. Attempt dispatch to FastAPI backend first
+    try {
+      const backendRes = await backendFetch<{
+        success: boolean;
+        command: string;
+        logs: TerminalLog[];
+      }>('/api/v1/test-runs/commands', {
+        method: 'POST',
+        body: JSON.stringify({ command: trimmed }),
+      });
+
+      if (backendRes && backendRes.logs) {
+        backendRes.logs.forEach((log) => db.addLog(log));
+        return NextResponse.json(backendRes);
+      }
+    } catch {
+      // Backend unavailable; fall through to local offline mock engine
+    }
+
     const timestamp = new Date().toISOString().substring(11, 19);
 
     // Record user command injection

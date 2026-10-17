@@ -16,10 +16,65 @@ export default function IntegrationsPage() {
   const [toastMessage, setToastMessage] = useState('');
   const [apiKeyInput, setApiKeyInput] = useState('');
   const [saving, setSaving] = useState(false);
+  const [specModalOpen, setSpecModalOpen] = useState(false);
+  const [specType, setSpecType] = useState<'openapi' | 'har'>('openapi');
+  const [specInput, setSpecInput] = useState('');
+  const [ingesting, setIngesting] = useState(false);
 
   const showToast = (msg: string) => {
     setToastMessage(msg);
     setTimeout(() => setToastMessage(''), 3000);
+  };
+
+  const handleIngestSpec = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIngesting(true);
+    try {
+      if (specType === 'openapi') {
+        const payload = specInput.trim()
+          ? JSON.parse(specInput)
+          : {
+              openapi: '3.1.0',
+              info: { title: 'Commerce Platform Storefront Web API', version: '1.0.0' },
+              paths: {
+                '/': { get: { summary: 'Catalog Home' } },
+                '/order': { get: { summary: 'Healthy Checkout Flow' } },
+                '/buggy-order': { get: { summary: 'Duplicate Order Race Condition' } },
+              },
+            };
+        const res = await apiClient.ingestOpenApiSpec(1, payload);
+        showToast(
+          `Ingested OpenAPI spec! Discovered ${res.routes_discovered} routes, synthesized regression suite #${res.regression_journey_id || 'active'}`
+        );
+      } else {
+        const payload = specInput.trim()
+          ? JSON.parse(specInput)
+          : {
+              log: {
+                entries: [
+                  {
+                    request: {
+                      url: 'http://127.0.0.1:8080/',
+                      headers: [{ name: 'Authorization', value: 'Bearer secret_token' }],
+                    },
+                  },
+                  { request: { url: 'http://127.0.0.1:8080/order', headers: [] } },
+                ],
+              },
+            };
+        const res = await apiClient.ingestHarSpec(1, payload);
+        showToast(
+          `Ingested HAR archive! Scrubbed ${res.scrubbed_secret_count} credentials, created regression suite #${res.regression_journey_id || 'active'}`
+        );
+      }
+      setSpecModalOpen(false);
+      setSpecInput('');
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : 'Failed to ingest specification';
+      showToast(`Ingestion error: ${msg}`);
+    } finally {
+      setIngesting(false);
+    }
   };
 
   const loadIntegrations = useCallback(async () => {
@@ -135,11 +190,11 @@ export default function IntegrationsPage() {
         </div>
 
         <button
-          onClick={() => showToast('Discovered 2 pending OpenAPI specifications in repository.')}
+          onClick={() => setSpecModalOpen(true)}
           className="bg-[#285C45] text-white border-2 border-[#1A1C1A] px-4 py-2 font-headline text-[13px] uppercase font-bold brutal-shadow hover:bg-[#0B442F] rounded-lg brutal-btn flex items-center gap-2 self-start sm:self-auto"
         >
           <Icon name="autorenew" className="w-4 h-4 text-white" />
-          <span>Sync All Specs</span>
+          <span>Sync & Ingest Specs</span>
         </button>
       </div>
 
@@ -298,6 +353,103 @@ export default function IntegrationsPage() {
                     {saving ? 'Validating...' : 'Save & Connect'}
                   </button>
                 </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Spec Ingestion Modal */}
+      {specModalOpen && (
+        <div
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setSpecModalOpen(false);
+          }}
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#191B19]/70 backdrop-blur-xs"
+        >
+          <div className="bg-[#FFFFFF] border-2 border-[#1A1C1A] brutal-shadow-lg rounded-2xl max-w-lg w-full p-6 flex flex-col gap-4 animate-in fade-in zoom-in-95 duration-100">
+            <div className="flex items-center justify-between pb-3 border-b-2 border-[#1A1C1A]">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 bg-[#285C45] text-white flex items-center justify-center border border-[#1A1C1A] rounded-lg">
+                  <Icon name="upload" className="w-5 h-5 text-white" />
+                </div>
+                <div>
+                  <h3 className="font-headline font-bold text-[18px] uppercase">
+                    Ingest Spec &amp; Generate Journeys
+                  </h3>
+                  <span className="font-mono text-[10px] text-[#717973]">
+                    OpenAPI 3.1 &bull; HAR Network Traces
+                  </span>
+                </div>
+              </div>
+              <button
+                onClick={() => setSpecModalOpen(false)}
+                className="text-[#717973] hover:text-[#1A1C1A] p-1 border border-transparent hover:border-[#1A1C1A] rounded-md transition-colors"
+              >
+                <Icon name="close" className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="flex bg-[#F4F4F0] p-1 rounded-lg border border-[#1A1C1A] gap-1 font-mono text-[11px] font-bold uppercase">
+              <button
+                type="button"
+                onClick={() => setSpecType('openapi')}
+                className={`flex-1 py-1.5 rounded-md transition-colors ${
+                  specType === 'openapi' ? 'bg-[#285C45] text-white shadow-xs' : 'text-[#404943] hover:text-[#1A1C1A]'
+                }`}
+              >
+                OpenAPI 3.x
+              </button>
+              <button
+                type="button"
+                onClick={() => setSpecType('har')}
+                className={`flex-1 py-1.5 rounded-md transition-colors ${
+                  specType === 'har' ? 'bg-[#285C45] text-white shadow-xs' : 'text-[#404943] hover:text-[#1A1C1A]'
+                }`}
+              >
+                HAR Network Archive
+              </button>
+            </div>
+
+            <form onSubmit={handleIngestSpec} className="flex flex-col gap-3">
+              <div>
+                <label className="block font-mono text-[11px] font-bold uppercase text-[#404943] mb-1">
+                  {specType === 'openapi' ? 'OpenAPI JSON Payload (Leave empty for demo fixture spec)' : 'HAR JSON Payload (Leave empty for demo checkout trace)'}
+                </label>
+                <textarea
+                  rows={5}
+                  value={specInput}
+                  onChange={(e) => setSpecInput(e.target.value)}
+                  placeholder={
+                    specType === 'openapi'
+                      ? '{\n  "openapi": "3.1.0",\n  "paths": { ... }\n}'
+                      : '{\n  "log": { "entries": [ ... ] }\n}'
+                  }
+                  className="w-full bg-[#FAF9F6] border-2 border-[#1A1C1A] px-3 py-2 font-mono text-[11px] text-[#1A1C1A] focus:outline-none brutal-shadow-sm rounded-lg"
+                />
+              </div>
+
+              <div className="bg-[#EEEEEA] p-2.5 border border-[#C0C9C1] font-mono text-[11px] text-[#404943] rounded-lg">
+                {specType === 'openapi'
+                  ? 'Parses endpoints, extracts safe GET/HEAD routes, and generates executable assertion journeys.'
+                  : 'Strips sensitive Authorization & Cookie headers, filters to target origin, and creates replay sequences.'}
+              </div>
+
+              <div className="flex items-center justify-end gap-2 pt-3 border-t border-[#E2E3DF]">
+                <button
+                  type="button"
+                  onClick={() => setSpecModalOpen(false)}
+                  className="px-4 py-1.5 bg-[#FAF9F6] border-2 border-[#1A1C1A] font-headline text-[12px] uppercase font-bold hover:bg-[#E8E8E5] rounded-lg brutal-btn"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={ingesting}
+                  className="px-4 py-1.5 bg-[#285C45] text-white border-2 border-[#1A1C1A] font-headline text-[12px] uppercase font-bold hover:bg-[#0B442F] brutal-shadow-sm rounded-lg brutal-btn disabled:opacity-50"
+                >
+                  {ingesting ? 'Synthesizing...' : 'Ingest & Generate Regression'}
+                </button>
               </div>
             </form>
           </div>

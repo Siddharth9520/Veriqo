@@ -135,14 +135,24 @@ async def start_autonomous_test_run(
 
     journey = payload.journey
     if not journey:
-        journey = JourneyDefinition(
-            name=f"Autonomous Audit // {payload.swarmMode or 'Deep Heuristic'}",
-            actions=[
-                NavigateAction(type="navigate", url="/"),
-                ScreenshotAction(type="screenshot", description="landing_page"),
-                AssertTitleContainsAction(type="assert_title_contains", value=""),
-            ],
-        )
+        try:
+            from app.services.exploration import explore_target_application
+            explore_res = await explore_target_application(
+                target_app_url=target_app.url,
+                max_pages=5,
+                max_actions=12,
+            )
+            journey = explore_res.generated_journey
+        except Exception as exp_err:
+            logger.warning("Autonomous exploration fallback to baseline scan: %s", exp_err)
+            journey = JourneyDefinition(
+                name=f"Autonomous Audit // {payload.swarmMode or 'Deep Heuristic'}",
+                actions=[
+                    NavigateAction(type="navigate", url="/"),
+                    ScreenshotAction(type="screenshot", description="landing_page"),
+                    AssertTitleContainsAction(type="assert_title_contains", value=""),
+                ],
+            )
 
     test_run = TestRun(
         target_app_id=target_app.id,

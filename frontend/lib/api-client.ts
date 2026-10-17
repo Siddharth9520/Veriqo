@@ -60,6 +60,28 @@ export interface CertificateVerifyResult {
   verification_timestamp: string;
 }
 
+export interface ExplorationResponse {
+  test_run_id: number;
+  status: string;
+  discovered_urls: string[];
+  pages_crawled: number;
+  actions_count: number;
+  duration_ms: number;
+  regression_journey_id: number | null;
+  generated_journey: Record<string, unknown>;
+}
+
+export interface SpecIngestionResponse {
+  status: string;
+  spec_type: string;
+  routes_discovered: number;
+  actions_generated: number;
+  scrubbed_secret_count?: number;
+  regression_journey_id: number | null;
+  generated_journey: Record<string, unknown>;
+  warnings: string[];
+}
+
 /**
  * Resolve base API URL:
  * If NEXT_PUBLIC_API_BASE_URL is defined, use it.
@@ -335,5 +357,54 @@ export const apiClient = {
   getEvidenceFileUrl(path: string): string {
     const cleanPath = path.startsWith('/') ? path.slice(1) : path;
     return `/api/v1/evidence/${cleanPath}`;
+  },
+
+  // Autonomous Exploration & Synthesis
+  async exploreTargetApp(
+    appId: number,
+    options?: { max_pages?: number; max_actions?: number; save_as_regression?: boolean }
+  ): Promise<ExplorationResponse> {
+    const params = new URLSearchParams();
+    if (options?.max_pages) params.set('max_pages', String(options.max_pages));
+    if (options?.max_actions) params.set('max_actions', String(options.max_actions));
+    if (options?.save_as_regression !== undefined) {
+      params.set('save_as_regression', String(options.save_as_regression));
+    }
+    const query = params.toString() ? `?${params.toString()}` : '';
+    return request<ExplorationResponse>(`/target-apps/${appId}/explore${query}`, {
+      method: 'POST',
+      timeoutMs: 45000,
+    });
+  },
+
+  // OpenAPI & HAR Spec Ingestion
+  async ingestOpenApiSpec(
+    targetAppId: number,
+    specContent: Record<string, unknown> | string,
+    maxEndpoints = 15
+  ): Promise<SpecIngestionResponse> {
+    return request<SpecIngestionResponse>('/integrations/specs/openapi', {
+      method: 'POST',
+      body: JSON.stringify({
+        target_app_id: targetAppId,
+        spec_content: specContent,
+        max_endpoints: maxEndpoints,
+      }),
+    });
+  },
+
+  async ingestHarSpec(
+    targetAppId: number,
+    harContent: Record<string, unknown> | string,
+    maxRoutes = 15
+  ): Promise<SpecIngestionResponse> {
+    return request<SpecIngestionResponse>('/integrations/specs/har', {
+      method: 'POST',
+      body: JSON.stringify({
+        target_app_id: targetAppId,
+        har_content: harContent,
+        max_routes: maxRoutes,
+      }),
+    });
   },
 };

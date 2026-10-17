@@ -14,6 +14,8 @@ interface ConnectAppModalProps {
 export default function ConnectAppModal({ isOpen, onClose, onSuccess }: ConnectAppModalProps) {
   const [tab, setTab] = useState<'url' | 'github' | 'spec'>('url');
   const [url, setUrl] = useState('');
+  const [githubRepo, setGithubRepo] = useState('acmeflow/web-checkout');
+  const [specUrl, setSpecUrl] = useState('https://api.acmeflow.dev/openapi.json');
   const [appName, setAppName] = useState('');
   const [env, setEnv] = useState<ProjectEnvironment>('Staging');
   const [loading, setLoading] = useState(false);
@@ -43,12 +45,29 @@ export default function ConnectAppModal({ isOpen, onClose, onSuccess }: ConnectA
         return;
       }
     } else if (tab === 'github') {
-      domainToSubmit = 'preview.acmeflow.dev';
+      const cleanRepo = githubRepo.trim().replace(/^https?:\/\/github\.com\//, '');
+      if (!cleanRepo) {
+        setError('GitHub repository is required (e.g., owner/repo).');
+        return;
+      }
+      domainToSubmit = `${cleanRepo.replace(/[^a-zA-Z0-9-]/g, '-')}.preview.dev`;
     } else {
-      domainToSubmit = 'api.acmeflow.dev';
+      const cleanSpec = specUrl.trim();
+      if (!cleanSpec) {
+        setError('OpenAPI or HAR specification URL is required.');
+        return;
+      }
+      try {
+        const parsed = cleanSpec.includes('://') ? new URL(cleanSpec) : new URL(`https://${cleanSpec}`);
+        domainToSubmit = parsed.hostname;
+      } catch {
+        domainToSubmit = 'api.acmeflow.dev';
+      }
     }
 
-    const nameToSubmit = appName.trim() || (tab === 'github' ? 'acmeflow/web-checkout' : `Connected: ${domainToSubmit}`);
+    const nameToSubmit =
+      appName.trim() ||
+      (tab === 'github' ? githubRepo.trim() : tab === 'spec' ? `Spec: ${domainToSubmit}` : `Connected: ${domainToSubmit}`);
 
     setLoading(true);
 
@@ -200,7 +219,9 @@ export default function ConnectAppModal({ isOpen, onClose, onSuccess }: ConnectA
                 </label>
                 <input
                   type="text"
-                  defaultValue="github.com/acmeflow/web-checkout"
+                  value={githubRepo}
+                  onChange={(e) => setGithubRepo(e.target.value)}
+                  placeholder="e.g. acmeflow/web-checkout"
                   className="w-full bg-[#FAF9F6] border-2 border-[#1A1C1A] px-3 py-2 font-mono text-[12px] text-[#1A1C1A] focus:outline-none brutal-shadow-sm rounded-lg"
                   disabled={loading}
                 />
@@ -219,7 +240,9 @@ export default function ConnectAppModal({ isOpen, onClose, onSuccess }: ConnectA
                 </label>
                 <input
                   type="text"
-                  defaultValue="https://api.acmeflow.dev/openapi.json"
+                  value={specUrl}
+                  onChange={(e) => setSpecUrl(e.target.value)}
+                  placeholder="https://api.acmeflow.dev/openapi.json"
                   className="w-full bg-[#FAF9F6] border-2 border-[#1A1C1A] px-3 py-2 font-mono text-[12px] text-[#1A1C1A] focus:outline-none brutal-shadow-sm rounded-lg"
                   disabled={loading}
                 />

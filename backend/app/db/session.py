@@ -2,7 +2,7 @@
 
 import logging
 from typing import Any, Dict, Generator
-from sqlalchemy import create_engine, text
+from sqlalchemy import create_engine, event, text
 from sqlalchemy.orm import Session, sessionmaker
 
 from app.core.config import settings
@@ -13,6 +13,7 @@ logger = logging.getLogger(__name__)
 connect_args: Dict[str, Any] = {}
 if settings.DATABASE_URL.startswith("sqlite"):
     connect_args["check_same_thread"] = False
+    connect_args["timeout"] = 15.0
 
 engine = create_engine(
     settings.DATABASE_URL,
@@ -20,6 +21,16 @@ engine = create_engine(
     echo=settings.DEBUG,
     pool_pre_ping=True,
 )
+
+if settings.DATABASE_URL.startswith("sqlite"):
+    @event.listens_for(engine, "connect")
+    def set_sqlite_pragma(dbapi_connection, connection_record):
+        """Enforces relational foreign keys, WAL mode, and busy timeout for concurrent safety."""
+        cursor = dbapi_connection.cursor()
+        cursor.execute("PRAGMA foreign_keys=ON")
+        cursor.execute("PRAGMA journal_mode=WAL")
+        cursor.execute("PRAGMA busy_timeout=5000")
+        cursor.close()
 
 SessionLocal = sessionmaker(
     autocommit=False,
